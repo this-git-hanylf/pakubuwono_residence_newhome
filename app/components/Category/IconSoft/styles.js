@@ -5,7 +5,7 @@ export default StyleSheet.create({
   contain: {
     textAlign: 'center',
     alignItems: 'center',
-    // minWidth: 80,
+    // minWidth: 100,
   },
   iconContent: {
     width: 60,

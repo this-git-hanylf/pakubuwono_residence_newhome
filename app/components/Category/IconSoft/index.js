@@ -18,7 +18,7 @@ export default function CategoryIconSoft({
   isWhite = false,
   isRound = false,
   isBlack = false,
-  maxWidth = 80,
+  maxWidth = 150,
 }) {
   const {colors} = useTheme();
   if (loading) {

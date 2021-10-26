@@ -5,7 +5,7 @@ export const FCategories = [
     id: 1,
     title: 'Billing',
     icon: 'credit-card',
-    screen: 'FBank',
+    screen: 'Billing',
   },
   {
     id: 2,
@@ -23,7 +23,7 @@ export const FCategories = [
     id: 4,
     title: 'Rent/Sell',
     icon: 'leaf',
-    screen: 'FCategory',
+    screen: 'Rent',
   },
   {
     id: 5,
@@ -33,6 +33,18 @@ export const FCategories = [
   },
   {
     id: 6,
+    screen: 'News',
+    icon: 'book',
+    title: 'News',
+  },
+  {
+    id: 7,
+    screen: 'Announce',
+    icon: 'info',
+    title: 'Announce',
+  },
+  {
+    id: 8,
     title: 'more',
     icon: 'ellipsis-v',
     screen: 'FCategory',

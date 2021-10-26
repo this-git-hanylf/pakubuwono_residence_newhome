@@ -11,7 +11,7 @@ const Categories = ({style = {}}) => {
   const goToScreen = name => name && navigation.navigate(name);
 
   return (
-    <View style={[{flexDirection: 'row', marginVertical: 20}, style]}>
+    <View style={[{flexDirection: 'row'}, style]}>
       <FlatList
         data={FCategories}
         renderItem={({item}) => (
@@ -31,7 +31,7 @@ const Categories = ({style = {}}) => {
           </View>
         )}
         //Setting the number of column
-        numColumns={3}
+        numColumns={4}
         keyExtractor={(item, index) => index}
       />
     </View>

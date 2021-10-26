@@ -7,7 +7,7 @@ import {API_URL} from 'react-native-dotenv';
   timeouts and middleware used for each request.
 */
 const client = axios.create({
-  baseURL: 'http://34.87.121.155:8181/apiwebifca/api',
+  baseURL: 'http://34.87.121.155:8181/apiwebpbi/api',
   // baseURL: "http://35.198.219.220:2121/alfaAPI/approval",
 
   timeout: 10000,

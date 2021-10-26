@@ -9,6 +9,7 @@ import {
   NewsList,
   SafeAreaView,
   Text,
+  Transaction2Col,
 } from '@components';
 import {BaseColor, BaseStyle} from '@config';
 import {

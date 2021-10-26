@@ -41,7 +41,9 @@ export default StyleSheet.create({
   avatar: {
     height: 46,
     width: 46,
-    borderRadius: 18,
+    borderRadius: 50,
+    borderColor: BaseColor.grayColor,
+    borderWidth: 2,
   },
   titleList: {
     flexDirection: 'row',

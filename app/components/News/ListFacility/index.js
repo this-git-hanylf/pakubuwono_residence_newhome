@@ -7,17 +7,9 @@ import {TouchableOpacity, View} from 'react-native';
 import styles from './styles';
 import Loading from './Loading';
 
-const NewsList = props => {
-  const {
-    style,
-    onPress,
-    image,
-    facility_descs,
-    title,
-    subtitle,
-    date,
-    loading,
-  } = props;
+const ListFacility = props => {
+  const {style, onPress, facility_name, image, title, subtitle, date, loading} =
+    props;
   if (loading) {
     return <Loading style={style} />;
   }
@@ -34,14 +26,14 @@ const NewsList = props => {
           paddingVertical: 5,
         }}>
         <Text light footnote semibold grayColor>
-          {facility_descs}
+          {facility_name}
         </Text>
         <Text
           headline
           semibold
           numberOfLines={2}
           style={styles.marginVertical5}>
-          {title}
+          {facility_name}
         </Text>
         <Text caption1 light grayColor>
           {date}
@@ -52,22 +44,22 @@ const NewsList = props => {
   );
 };
 
-NewsList.propTypes = {
+ListFacility.propTypes = {
   style: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
   image: PropTypes.node.isRequired,
   onPress: PropTypes.func,
   title: PropTypes.string,
-  subtitle: PropTypes.string,
+  facility_name: PropTypes.string,
   date: PropTypes.string,
 };
 
-NewsList.defaultProps = {
+ListFacility.defaultProps = {
   style: {},
   onPress: () => {},
   image: Images.news,
   title: '',
-  subtitle: '',
+  facility_name: '',
   date: '',
 };
 
-export default NewsList;
+export default ListFacility;

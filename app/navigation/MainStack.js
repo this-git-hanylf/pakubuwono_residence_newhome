@@ -18,6 +18,11 @@ import FCategory from '@screens/FCategory';
 import Notification from '@screens/Notification';
 
 import {BottomTabNavigatorMazi, tabBarIcon} from './components';
+import Billing from '../screens/Billing';
+import Facility from '../screens/Facility';
+import Announce from '../screens/Announce';
+import News from '../screens/News';
+import Rent from '../screens/Rent';
 
 const Stack = createStackNavigator();
 
@@ -27,6 +32,13 @@ export const WalletTabScreens = {
     options: {
       title: 'home',
       tabBarIcon: ({color}) => tabBarIcon({color, name: 'home'}),
+    },
+  },
+  EmegerncyScreen: {
+    component: ProfileScreen,
+    options: {
+      title: 'Emergency',
+      tabBarIcon: ({color}) => tabBarIcon({color, name: 'phone'}),
     },
   },
   ProfileScreen: {
@@ -47,7 +59,7 @@ function MainStack() {
     <Stack.Navigator>
       <Stack.Screen
         name="Home"
-        component={HomeScreen}
+        component={WalletMenu}
         options={{headerShown: false}}
       />
       <Stack.Screen
@@ -109,6 +121,31 @@ function MainStack() {
       <Stack.Screen
         name="FCategory"
         component={FCategory}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Billing"
+        component={Billing}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Facility"
+        component={Facility}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Announce"
+        component={Announce}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="News"
+        component={News}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Rent"
+        component={Rent}
         options={{headerShown: false}}
       />
     </Stack.Navigator>
