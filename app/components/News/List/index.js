@@ -15,6 +15,7 @@ const NewsList = props => {
     facility_descs,
     title,
     subtitle,
+    news_title,
     date,
     loading,
   } = props;
@@ -43,7 +44,7 @@ const NewsList = props => {
           style={styles.marginVertical5}>
           {title}
         </Text>
-        <Text caption1 light grayColor>
+        <Text caption1 semibold grayColor>
           {date}
         </Text>
         <View style={styles.contentRate} />

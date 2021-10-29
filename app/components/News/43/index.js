@@ -8,8 +8,20 @@ import styles from './styles';
 import Loading from './Loading';
 
 const News43 = props => {
-  const {name, description, title, image, style, avatar, onPress, loading} =
-    props;
+  const {
+    name,
+    description,
+    title,
+    image,
+    style,
+    avatar,
+    onPress,
+    news_title,
+    facility_descs,
+    subtitle,
+    date,
+    loading,
+  } = props;
   if (loading) {
     return <Loading style={style} />;
   }
@@ -35,6 +47,9 @@ const News43 = props => {
           </View>
           <Text title3 whiteColor semibold>
             {title}
+          </Text>
+          <Text title3 semibold>
+            {subtitle}
           </Text>
         </View>
       </ImageBackground>

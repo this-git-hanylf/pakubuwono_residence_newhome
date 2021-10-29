@@ -28,16 +28,14 @@ import {
   FlatList,
   StyleSheet,
 } from 'react-native';
-import HeaderHome from './HeaderHome';
 import styles from './styles';
-import HeaderCard from './HeaderCard';
 import getUser from '../../selectors/UserSelectors';
 import {useDispatch, useSelector} from 'react-redux';
 import axios from 'axios';
 import numFormat from '../../components/numFormat';
 import CurrencyFormatter from '../../components/CurrencyFormatter';
 
-const Billing = ({
+const MeterInfo = ({
   isCenter = false,
   isPrimary = false,
   style = {},
@@ -79,7 +77,7 @@ const Billing = ({
   async function fetchData() {
     try {
       const res = await axios.get(
-        `http://34.87.121.155:2121/apiwebpbi/api/getDataDue/IFCAPB/${user.user}`,
+        `http://34.87.121.155:2121/apiwebpbi/api/getDataMeter/IFCAPB/01/01/${user.user}`,
       );
       setDataCurrent(res.data.Data);
       console.log('data', data);
@@ -112,7 +110,7 @@ const Billing = ({
       style={[BaseStyle.safeAreaView, {flex: 1}]}
       edges={['right', 'top', 'left']}>
       <Header
-        title={t('Billing')}
+        title={t('MeterInfo')}
         renderLeft={() => {
           return (
             <Icon
@@ -130,47 +128,27 @@ const Billing = ({
       <ScrollView
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          {TABS.map((item, index) => (
-            <View key={index} style={{flex: 1, paddingHorizontal: 20}}>
-              <Tag
-                primary
-                style={{
-                  backgroundColor:
-                    tab.id == item.id ? colors.primary : colors.background,
-                }}
-                onPress={() => {
-                  enableExperimental();
-                  setTab(item);
-                }}>
-                <Text
-                  body1={tab.id != item.id}
-                  light={tab.id != item.id}
-                  whiteColor={tab.id == item.id}>
-                  {item.title}
-                </Text>
-              </Tag>
-            </View>
+        <View style={{flex: 1, paddingHorizontal: 20}}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('FHistoryDetail')}>
+            <Text>Search</Text>
+          </TouchableOpacity>
+          {dataCurrent.map(item => (
+            <ListTransactionExpand
+              onPress={() => navigation.navigate('FHistoryDetail')}
+              key={item.id}
+              tower={item.tower}
+              name={item.name}
+              trx_type={item.trx_type}
+              doc_no={item.doc_no}
+              doc_date={moment(item.doc_date).format('DD MMMM YYYY')}
+              descs={item.descs}
+              due_date={moment(item.due_date).format('DD MMMM YYYY')}
+              mbal_amt={`${numFormat(`${item.mbal_amt}`)}`}
+            />
           ))}
         </View>
-        <View style={{flex: 1, paddingHorizontal: 20}}>
-          {tab.id == 1 &&
-            dataCurrent.map(item => (
-              <ListTransactionExpand
-                onPress={() => navigation.navigate('FHistoryDetail')}
-                key={item.id}
-                tower={item.tower}
-                name={item.name}
-                trx_type={item.trx_type}
-                doc_no={item.doc_no}
-                doc_date={moment(item.doc_date).format('DD MMMM YYYY')}
-                descs={item.descs}
-                due_date={moment(item.due_date).format('DD MMMM YYYY')}
-                mbal_amt={`${numFormat(`${item.mbal_amt}`)}`}
-              />
-            ))}
-        </View>
-        <View style={{flex: 1, paddingHorizontal: 20}}>
+        {/* <View style={{flex: 1, paddingHorizontal: 20}}>
           {tab.id == 2 &&
             data.map(item => (
               <ListTransactionExpand
@@ -186,10 +164,10 @@ const Billing = ({
                 mbal_amt={`${numFormat(`${item.mbal_amt}`)}`}
               />
             ))}
-        </View>
+        </View> */}
       </ScrollView>
     </SafeAreaView>
   );
 };
 
-export default Billing;
+export default MeterInfo;

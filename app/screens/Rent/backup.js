@@ -6,9 +6,11 @@ import {
   ListFacility,
   SafeAreaView,
   Text,
+  NewsList,
   Header,
   Icon,
   colors,
+  PlaceItem,
 } from '@components';
 import {BaseStyle, useTheme} from '@config';
 import {
@@ -19,15 +21,17 @@ import {
   PostListData,
 } from '@data';
 import axios from 'axios';
+import moment from 'moment';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {FlatList, ScrollView, View, ActivityIndicator} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {CardReport01, CardReport08} from '../../components';
+import {ProductBlock} from '../../components';
+import numFormat from '../../components/numFormat';
 import List from '../../components/Product/List';
 import styles from './styles';
 
-const Announce = props => {
+const Rent = props => {
   const {navigation} = props;
   const {t} = useTranslation();
   const {colors} = useTheme();
@@ -37,11 +41,10 @@ const Announce = props => {
 
   useEffect(() => {
     axios
-      .get('http://34.87.121.155:8000/ifcaprop-api/api/announce/')
+      .get('http://34.87.121.155:2121/apiwebpbi/api/rsentryMobile/')
       .then(({data}) => {
         console.log('defaultApp -> data', data);
-        const peopleArray = Object.values(data);
-        setData(peopleArray);
+        setData(data);
       })
       .catch(error => console.error(error))
       .finally(() => setLoading(false));
@@ -56,9 +59,11 @@ const Announce = props => {
   const goPost = item => () => {
     navigation.navigate('Post', {item: item});
   };
-
-  const goAnnouceDetail = item => () => {
-    navigation.navigate('AnnouceDetail', {item: item});
+  const goProductDetail = item => {
+    navigation.navigate('EProductDetail', {item: item});
+  };
+  const goPostDetail = item => () => {
+    navigation.navigate('PostDetail', {item: item});
   };
 
   const goToCategory = () => {
@@ -68,11 +73,9 @@ const Announce = props => {
   const renderContent = () => {
     const mainNews = PostListData[0];
     return (
-      <SafeAreaView
-        style={[BaseStyle.safeAreaView, {flex: 1}]}
-        edges={['right', 'top', 'left']}>
+      <SafeAreaView edges={['right', 'top', 'left']}>
         <Header
-          title={t('Announce')}
+          title={t('Rent or Sale')}
           renderLeft={() => {
             return (
               <Icon
@@ -92,19 +95,25 @@ const Announce = props => {
             scrollEnabled={false}
             contentContainerStyle={styles.paddingFlatList}
             data={data}
-            keyExtractor={(item, index) => index.toString()}
             renderItem={({item, index}) => (
-              <CardReport01
+              <ProductBlock
                 loading={loading}
-                image={{uri: `${item.images}`}}
-                subtitle={item.announce_descs}
-                title={item.announce_title}
-                icon="bullhorn"
-                date={item.audit_date}
-                style={{
-                  marginBottom: index == data.length - 1 ? 0 : 15,
-                }}
-                onPress={goAnnouceDetail(item)}
+                description={item.description}
+                subject={item.subject}
+                style={{marginVertical: 8}}
+                pict={item.pict}
+                avatar={item.avatar}
+                email={item.email}
+                bath_room={item.bath_room}
+                bed_room={item.bed_room}
+                land_area={item.land_area}
+                build_area={item.build_area}
+                agent_name={item.agent_name}
+                publish_date={moment(item.publish_date).format('H:mm:ss')}
+                price_descs={item.price_descs}
+                onPress={() => goProductDetail(item)}
+                isFavorite={item.isFavorite}
+                salePercent={item.salePercent}
               />
             )}
           />
@@ -124,4 +133,4 @@ const Announce = props => {
   );
 };
 
-export default Announce;
+export default Rent;

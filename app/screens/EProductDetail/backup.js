@@ -31,6 +31,33 @@ import {PlaceholderLine, Placeholder} from '@components';
 import moment from 'moment';
 import numFormat from '../../components/numFormat';
 
+let imagesInit = [
+  {
+    id: 1,
+    image: Images.productView,
+  },
+  {
+    id: 2,
+    image: Images.productGrid01,
+  },
+  {
+    id: 3,
+    image: Images.productGrid04,
+  },
+  {
+    id: 4,
+    image: Images.productGrid03,
+  },
+  {
+    id: 5,
+    image: Images.productGrid05,
+  },
+  {
+    id: 6,
+    image: Images.productGrid06,
+  },
+];
+
 const itemInit = {
   price: 60,
   image: Images.eProduct,
@@ -98,20 +125,16 @@ const EProductDetail = props => {
     electrical_power,
     parking,
     avatar,
-    images,
     market_type,
   } = productData;
 
   useEffect(() => {
-    console.log('texttdsadas', productData);
-    console.log('liatttt', galery);
-
     setTimeout(() => {
       setLoading(false);
     }, 1000);
   }, []);
 
-  const galery = [...images];
+  const images = [{id: 0, image: image}].concat(imagesInit);
 
   const goPostDetail = item => () => {
     navigation.push('PostDetail', {item: item});
@@ -241,14 +264,6 @@ const EProductDetail = props => {
               paddingVertical: 15,
             }}>
             {description}
-          </Text>
-        </View>
-        <View>
-          <Text headline style={{marginTop: 20}}>
-            {t('Type Market')}
-          </Text>
-          <Text subhead style={{marginTop: 20, colors: BaseColor.grayColor}}>
-            {market_type}
           </Text>
         </View>
 
@@ -405,7 +420,7 @@ const EProductDetail = props => {
           activeDotColor={colors.primary}
           removeClippedSubviews={false}
           onIndexChanged={index => onSelect(index)}>
-          {galery.map((item, key) => {
+          {images.map((item, key) => {
             return (
               <TouchableOpacity
                 key={key}
@@ -417,14 +432,14 @@ const EProductDetail = props => {
                 <Image
                   key={key}
                   style={{flex: 1, width: '100%'}}
-                  source={{uri: `${item.pict}`}}
+                  source={item.image}
                 />
               </TouchableOpacity>
             );
           })}
         </Swiper>
 
-        {/* <TouchableOpacity
+        <TouchableOpacity
           style={[
             styles.viewIcon,
             {
@@ -435,14 +450,14 @@ const EProductDetail = props => {
             },
           ]}
           onPress={() => setIsFavourtie(!isFavourite)}>
-          <Icon
-            solid
-            name="heart"
-            size={20}
-            color={isFavourite ? colors.primaryLight : BaseColor.whiteColor}
-          />
-          <Text semibold>{market_type}</Text>
-        </TouchableOpacity> */}
+          {/* <Icon
+              solid
+              name="heart"
+              size={20}
+              color={isFavourite ? colors.primaryLight : BaseColor.whiteColor}
+            /> */}
+          <Text>{market_type}</Text>
+        </TouchableOpacity>
       </Animated.View>
       <Animated.View style={[styles.headerStyle, {position: 'absolute'}]}>
         <SafeAreaView

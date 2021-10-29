@@ -19,6 +19,7 @@ import {
   PostListData,
 } from '@data';
 import axios from 'axios';
+import moment from 'moment';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {FlatList, ScrollView, View, ActivityIndicator} from 'react-native';
@@ -37,9 +38,9 @@ const News = props => {
 
   useEffect(() => {
     axios
-      .get('http://34.87.121.155:2121/apiwebpbi/api/news/')
+      .get('http://34.87.121.155:8000/ifcaprop-api/api/news/')
       .then(({data}) => {
-        console.log('defaultApp -> data', data);
+        console.log('defaultApp -> data', data.data[0].status);
         setData(data.data);
       })
       .catch(error => console.error(error))
@@ -59,7 +60,6 @@ const News = props => {
   const goPostDetail = item => () => {
     navigation.navigate('PostDetail', {item: item});
   };
-
   const goToCategory = () => {
     navigation.navigate('Category');
   };
@@ -96,9 +96,10 @@ const News = props => {
               <NewsList
                 loading={loading}
                 image={{uri: `${item.url_image}`}}
-                subtitle={item.announce_descs}
+                subtitle={item.news_descs}
                 title={item.news_title}
-                date={item.date_created}
+                source={item.source}
+                date={moment(item.date_created).startOf('hour').fromNow()}
                 style={{
                   marginBottom: index == data.length - 1 ? 0 : 15,
                 }}

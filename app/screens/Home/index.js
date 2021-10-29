@@ -21,7 +21,7 @@ import {
 } from '@data';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {FlatList, ScrollView, View} from 'react-native';
+import {FlatList, ScrollView, View, Image} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useSelector} from 'react-redux';
 import getUser from '../../selectors/UserSelectors';
@@ -29,6 +29,7 @@ import HeaderCard from './HeaderCard';
 import HeaderHome from './HeaderHome';
 import styles from './styles';
 import Categories from './Categories';
+import axios from 'axios';
 
 const Home = props => {
   const {navigation} = props;
@@ -39,6 +40,18 @@ const Home = props => {
   const [list, setList] = useState(HomeListData);
   const [loading, setLoading] = useState(true);
   const user = useSelector(state => getUser(state));
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get('http://34.87.121.155:8000/ifcaprop-api/api/about/01/01')
+      .then(({data}) => {
+        console.log('defaultApp -> data', data[0]);
+        setData(data.data);
+      })
+      .catch(error => console.error(error))
+      .finally(() => setLoading(false));
+  }, []);
 
   useEffect(() => {
     setTimeout(() => {
@@ -78,6 +91,19 @@ const Home = props => {
         </View> */}
         <HeaderHome />
         <ScrollView contentContainerStyle={styles.paddingSrollView}>
+          {/* <Image
+            source={require('../../assets/images/pakubuwono.png')}
+            style={{
+              height: 60,
+              width: 180,
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginHorizontal: 100,
+              marginBottom: 15,
+              flexDirection: 'row',
+            }}
+          /> */}
+
           <News43
             loading={loading}
             onPress={goPostDetail(mainNews)}

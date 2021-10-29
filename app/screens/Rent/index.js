@@ -9,6 +9,7 @@ import {
   NewsList,
   Header,
   Icon,
+  Tag,
   colors,
   PlaceItem,
 } from '@components';
@@ -20,28 +21,66 @@ import {
   HomeTopicData,
   PostListData,
 } from '@data';
+import {useRoute} from '@react-navigation/core';
 import axios from 'axios';
+import moment from 'moment';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {FlatList, ScrollView, View, ActivityIndicator} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import {ProductBlock} from '../../components';
+import numFormat from '../../components/numFormat';
 import List from '../../components/Product/List';
 import styles from './styles';
+import {enableExperimental} from '@utils';
 
 const Rent = props => {
   const {navigation} = props;
   const {t} = useTranslation();
   const {colors} = useTheme();
+  const route = useRoute();
   const [data, setData] = useState([]);
+  const [rent, setRent] = useState([]);
   const [loading, setLoading] = useState(true);
   const [hasError, setErrors] = useState(false);
+  const TABS = [
+    {
+      id: 1,
+      title: t('Rent'),
+    },
+    {
+      id: 2,
+      title: t('Sale'),
+    },
+  ];
+  const [tab, setTab] = useState(TABS[0]);
+
+  useEffect(() => {
+    const id = route?.params?.id;
+    if (id) {
+      TABS.forEach(tab => {
+        tab.id == id && setTab(tab);
+      });
+    }
+  }, [route?.params?.id]);
 
   useEffect(() => {
     axios
-      .get('http://34.87.121.155:2121/apiwebpbi/api/rsentryMobile/')
+      .get('http://34.87.121.155:2121/apiwebpbi/api/rsentryMobileSale/')
       .then(({data}) => {
         console.log('defaultApp -> data', data);
         setData(data);
+      })
+      .catch(error => console.error(error))
+      .finally(() => setLoading(false));
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get('http://34.87.121.155:2121/apiwebpbi/api/rsentryMobile')
+      .then(({data}) => {
+        console.log('defaultApp -> data', rent);
+        setRent(data);
       })
       .catch(error => console.error(error))
       .finally(() => setLoading(false));
@@ -56,7 +95,9 @@ const Rent = props => {
   const goPost = item => () => {
     navigation.navigate('Post', {item: item});
   };
-
+  const goProductDetail = item => {
+    navigation.navigate('EProductDetail', {item: item});
+  };
   const goPostDetail = item => () => {
     navigation.navigate('PostDetail', {item: item});
   };
@@ -68,11 +109,9 @@ const Rent = props => {
   const renderContent = () => {
     const mainNews = PostListData[0];
     return (
-      <SafeAreaView
-        style={[BaseStyle.safeAreaView, {flex: 1}]}
-        edges={['right', 'top', 'left']}>
+      <SafeAreaView edges={['right', 'top', 'left']}>
         <Header
-          title={t('Rent or Sell')}
+          title={t('Rent or Sale')}
           renderLeft={() => {
             return (
               <Icon
@@ -88,23 +127,115 @@ const Rent = props => {
           }}
         />
         <ScrollView contentContainerStyle={styles.paddingSrollView}>
-          <FlatList
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            {TABS.map((item, index) => (
+              <View key={index} style={{flex: 1, paddingHorizontal: 20}}>
+                <Tag
+                  primary
+                  style={{
+                    backgroundColor:
+                      tab.id == item.id ? colors.primary : colors.background,
+                  }}
+                  onPress={() => {
+                    enableExperimental();
+                    setTab(item);
+                  }}>
+                  <Text
+                    body1={tab.id != item.id}
+                    light={tab.id != item.id}
+                    whiteColor={tab.id == item.id}>
+                    {item.title}
+                  </Text>
+                </Tag>
+              </View>
+            ))}
+          </View>
+          <View style={{flex: 1}}>
+            {tab.id == 1 && (
+              <FlatList
+                scrollEnabled={false}
+                contentContainerStyle={styles.paddingFlatList}
+                data={rent}
+                renderItem={({item, index}) => (
+                  <ProductBlock
+                    loading={loading}
+                    description={item.description}
+                    subject={item.subject}
+                    style={{marginVertical: 8}}
+                    images={item.images[0].pict}
+                    avatar={item.avatar}
+                    email={item.email}
+                    bath_room={item.bath_room}
+                    bed_room={item.bed_room}
+                    land_area={item.land_area}
+                    build_area={item.build_area}
+                    agent_name={item.agent_name}
+                    publish_date={moment(item.publish_date).format('H:mm:ss')}
+                    price_descs={item.price_descs}
+                    onPress={() => goProductDetail(item)}
+                    isFavorite={item.isFavorite}
+                    salePercent={item.salePercent}
+                  />
+                )}
+              />
+            )}
+          </View>
+          <View style={{flex: 1}}>
+            {tab.id == 2 && (
+              <FlatList
+                scrollEnabled={false}
+                contentContainerStyle={styles.paddingFlatList}
+                data={data}
+                renderItem={({item, index}) => (
+                  <ProductBlock
+                    loading={loading}
+                    description={item.description}
+                    subject={item.subject}
+                    style={{marginVertical: 8}}
+                    images={item.images[0].pict}
+                    avatar={item.avatar}
+                    email={item.email}
+                    bath_room={item.bath_room}
+                    bed_room={item.bed_room}
+                    land_area={item.land_area}
+                    build_area={item.build_area}
+                    agent_name={item.agent_name}
+                    publish_date={moment(item.publish_date).format('H:mm:ss')}
+                    price_descs={item.price_descs}
+                    onPress={() => goProductDetail(item)}
+                    isFavorite={item.isFavorite}
+                    salePercent={item.salePercent}
+                  />
+                )}
+              />
+            )}
+          </View>
+          {/* <FlatList
             scrollEnabled={false}
             contentContainerStyle={styles.paddingFlatList}
             data={data}
             renderItem={({item, index}) => (
-              <NewsList
+              <ProductBlock
                 loading={loading}
-                title={item.title}
-                subtitle={item.subject}
-                date={item.date}
-                style={{
-                  marginBottom: index == data.length - 1 ? 0 : 15,
-                }}
-                onPress={goPostDetail(item)}
+                description={item.description}
+                subject={item.subject}
+                style={{marginVertical: 8}}
+                images={item.images[0].pict}
+                avatar={item.avatar}
+                email={item.email}
+                bath_room={item.bath_room}
+                bed_room={item.bed_room}
+                land_area={item.land_area}
+                build_area={item.build_area}
+                agent_name={item.agent_name}
+                publish_date={moment(item.publish_date).format('H:mm:ss')}
+                price_descs={item.price_descs}
+                onPress={() => goProductDetail(item)}
+                isFavorite={item.isFavorite}
+                salePercent={item.salePercent}
               />
             )}
-          />
+          /> */}
         </ScrollView>
       </SafeAreaView>
     );

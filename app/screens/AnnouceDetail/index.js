@@ -19,7 +19,6 @@ import {
   Animated,
   FlatList,
   I18nManager,
-  Linking,
   ScrollView,
   Share,
   TouchableOpacity,
@@ -27,10 +26,8 @@ import {
 } from 'react-native';
 import styles from './styles';
 import {PlaceholderLine, Placeholder} from '@components';
-import {Button} from '../../components';
-import RenderHtml from 'react-native-render-html';
-import moment from 'moment';
-const PostDetail = props => {
+
+const AnnouceDetail = props => {
   const {navigation, route} = props;
   const {t} = useTranslation();
   const {colors} = useTheme();
@@ -48,10 +45,10 @@ const PostDetail = props => {
     facility_descs,
     title,
     subtitle,
-    news_title,
     url_image,
+    announce_descs,
+    announce_file,
     date,
-    source,
   } = item;
 
   useEffect(() => {
@@ -67,17 +64,17 @@ const PostDetail = props => {
   const onShare = async () => {
     try {
       const result = await Share.share({
-        message: item.news_descs,
-        title: item.news_title,
-        url: item.source,
+        message: 'http://pakubuwonoview.com/',
       });
 
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
-          alert('Post Shared');
+          // shared with activity type of result.activityType
+        } else {
+          // shared
         }
       } else if (result.action === Share.dismissedAction) {
-        alert('Post cancelled');
+        // dismissed
       }
     } catch (error) {
       alert(error.message);
@@ -134,7 +131,7 @@ const PostDetail = props => {
               paddingBottom: 20,
             }}
             numberOfLines={100}>
-            {news_descs.replace(/<\/?[^>]+(>|$;)/gi, '')}
+            {announce_descs}
           </Text>
         </View>
       </Fragment>
@@ -146,7 +143,7 @@ const PostDetail = props => {
       <SafeAreaView
         style={[BaseStyle.safeAreaView]}
         forceInset={{top: 'always', bottom: 'always'}}>
-        <Header title={item.news_title} />
+        <Header title={subtitle} />
         <ScrollView
           onContentSizeChange={() => {
             setHeightHeader(Utils.heightHeader());
@@ -175,11 +172,10 @@ const PostDetail = props => {
               paddingHorizontal: 20,
             }}>
             <Text medium caption1 grayColor>
-              {item.date}
-              {moment(item.date_created).startOf('hour').fromNow()}
+              {date}
             </Text>
             <Text title1 semibold style={{marginVertical: 10}}>
-              {item.news_title}
+              {item.announce_descs}
             </Text>
           </View>
 
@@ -195,22 +191,9 @@ const PostDetail = props => {
           },
         ]}>
         <Image
-          source={{uri: `${url_image}`}}
+          source={{uri: `${announce_file}`}}
           style={{height: '100%', width: '100%'}}
         />
-        <TouchableOpacity
-          style={[styles.viewIcon, {backgroundColor: colors.primaryLight}]}
-          onPress={() => {
-            Linking.openURL(`${item.source}`);
-          }}>
-          <Icon
-            solid
-            name="paper-plane"
-            size={20}
-            color={BaseColor.whiteColor}
-            // onPress={() => console.log("Your code")}
-          />
-        </TouchableOpacity>
       </Animated.View>
       <Animated.View style={[styles.headerStyle, {position: 'absolute'}]}>
         <SafeAreaView
@@ -262,4 +245,4 @@ const PostDetail = props => {
   );
 };
 
-export default PostDetail;
+export default AnnouceDetail;

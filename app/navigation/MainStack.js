@@ -21,8 +21,16 @@ import {BottomTabNavigatorMazi, tabBarIcon} from './components';
 import Billing from '../screens/Billing';
 import Facility from '../screens/Facility';
 import Announce from '../screens/Announce';
+import AnnounceDetail from '../screens/AnnouceDetail';
 import News from '../screens/News';
 import Rent from '../screens/Rent';
+import EProductDetail from '../screens/EProductDetail';
+import PostDetail from '../screens/PostDetail';
+import MeterInfo from '../screens/MeterInfo';
+import Search from '../screens/Search';
+import PreviewImage from '../screens/PreviewImage';
+
+import SelectDarkOption from '../screens/SelectDarkOption';
 
 const Stack = createStackNavigator();
 
@@ -129,6 +137,11 @@ function MainStack() {
         options={{headerShown: false}}
       />
       <Stack.Screen
+        name="MeterInfo"
+        component={MeterInfo}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
         name="Facility"
         component={Facility}
         options={{headerShown: false}}
@@ -146,6 +159,36 @@ function MainStack() {
       <Stack.Screen
         name="Rent"
         component={Rent}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="EProductDetail"
+        component={EProductDetail}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="PostDetail"
+        component={PostDetail}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="AnnouceDetail"
+        component={AnnounceDetail}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Search"
+        component={Search}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="PreviewImage"
+        component={PreviewImage}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="SelectDarkOption"
+        component={SelectDarkOption}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

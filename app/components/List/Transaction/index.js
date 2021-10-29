@@ -42,6 +42,15 @@ const ListTransaction = ({
         <Text footnote light style={[styles.text, {marginTop: 5}]}>
           {due_date}
         </Text>
+        <Text
+          bold
+          footnote
+          light
+          grayColor
+          numberOfLines={1}
+          style={styles.text}>
+          {descs}
+        </Text>
       </View>
     </TouchableOpacity>
   );
@@ -51,6 +60,7 @@ ListTransaction.propTypes = {
   style: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
   icon: PropTypes.string,
   name: PropTypes.string,
+  descs: PropTypes.string,
   mbal_amt: PropTypes.string,
   due_date: PropTypes.string,
   doc_no: PropTypes.string,

@@ -1,14 +1,15 @@
-import Text from "@components/Text";
-import { useTheme } from "@config";
-import PropTypes from "prop-types";
-import React, { useState } from "react";
-import { TouchableOpacity, View } from "react-native";
-import DateTimePicker from "react-native-modal-datetime-picker";
-import styles from "./styles";
+import Text from '@components/Text';
+import {useTheme} from '@config';
+import PropTypes from 'prop-types';
+import React, {useState} from 'react';
+import {TouchableOpacity, View} from 'react-native';
+import DateTimePicker from 'react-native-modal-datetime-picker';
+import styles from './styles';
+import MonthPicker from 'react-native-month-year-picker';
 
-const BookingTime = (props) => {
-  const { style, checkInTime, checkOutTime, onCancel, onChange } = props;
-  const { colors } = useTheme();
+const BookingTime = props => {
+  const {style, checkInTime, checkOutTime, onCancel, onChange} = props;
+  const {colors} = useTheme();
 
   const [isDateTimePickerVisible, setIsDateTimePickerVisible] = useState(false);
 
@@ -20,7 +21,7 @@ const BookingTime = (props) => {
     setIsDateTimePickerVisible(false);
   };
 
-  const handleDatePicked = (date) => {
+  const handleDatePicked = date => {
     hideDateTimePicker();
   };
 
@@ -28,10 +29,9 @@ const BookingTime = (props) => {
     <View
       style={[
         styles.contentPickDate,
-        { backgroundColor: colors.background },
+        {backgroundColor: colors.background},
         style,
-      ]}
-    >
+      ]}>
       <DateTimePicker
         mode="time"
         isVisible={isDateTimePickerVisible}
@@ -39,7 +39,7 @@ const BookingTime = (props) => {
         onCancel={hideDateTimePicker}
       />
       <TouchableOpacity style={styles.itemPick} onPress={showDateTimePicker}>
-        <Text caption1 light style={{ marginBottom: 5 }}>
+        <Text caption1 light style={{marginBottom: 5}}>
           Check In
         </Text>
         <Text headline semibold>
@@ -49,9 +49,8 @@ const BookingTime = (props) => {
       <View style={styles.linePick} />
       <TouchableOpacity
         style={[styles.itemPick, styles.right]}
-        onPress={showDateTimePicker}
-      >
-        <Text caption1 light style={{ marginBottom: 5 }}>
+        onPress={showDateTimePicker}>
+        <Text caption1 light style={{marginBottom: 5}}>
           Check Out
         </Text>
         <Text headline semibold>
@@ -72,8 +71,8 @@ BookingTime.propTypes = {
 
 BookingTime.defaultProps = {
   style: {},
-  checkInTime: "09:00",
-  checkOutTime: "18:00",
+  checkInTime: '09:00',
+  checkOutTime: '18:00',
   onCancel: () => {},
   onChange: () => {},
 };

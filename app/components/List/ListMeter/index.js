@@ -7,7 +7,7 @@ import styles from './styles';
 import {useTheme} from '@config';
 import numFormat from '../../numFormat';
 
-const TransactionExpand = ({
+const MeterExpand = ({
   style = {
     paddingTop: 5,
   },
@@ -148,4 +148,4 @@ TransactionExpand.propTypes = {
   currentValue: PropTypes.string,
 };
 
-export default TransactionExpand;
+export default MeterExpand;
