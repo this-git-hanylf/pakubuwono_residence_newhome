@@ -16,7 +16,7 @@ export default StyleSheet.create({
   viewItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: 5,
+    marginVertical: 1,
   },
   thumb: {
     width: 40,

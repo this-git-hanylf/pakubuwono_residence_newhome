@@ -6,26 +6,51 @@ import {
   ProfileDescription,
   SafeAreaView,
   Text,
-} from "@components";
-import { BaseColor, BaseStyle, useTheme } from "@config";
-import { Images } from "@config";
-import { AboutUsData } from "@data";
-import * as Utils from "@utils";
-import React, { useState } from "react";
-import { ScrollView, View } from "react-native";
-import styles from "./styles";
-import { useTranslation } from "react-i18next";
+} from '@components';
+import {BaseColor, BaseStyle, useTheme} from '@config';
+import {Images} from '@config';
+import {AboutUsData} from '@data';
+import * as Utils from '@utils';
+import React, {useState, useEffect} from 'react';
+import {ScrollView, View} from 'react-native';
+import styles from './styles';
+import {useTranslation} from 'react-i18next';
+import axios from 'axios';
 
-const AboutUs = (props) => {
-  const { navigation } = props;
-  const { colors } = useTheme();
-  const { t } = useTranslation();
-  const [ourTeam, setOurTeam] = useState(AboutUsData);
+const AboutUs = props => {
+  const {navigation} = props;
+  const {colors} = useTheme();
+  const {t} = useTranslation();
+  const [loading, setLoading] = useState(true);
+
+  // const [ourTeam, setOurTeam] = useState(AboutUsData);
+
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get('http://34.87.121.155:8000/ifcaprop-api/api/about/01/01')
+      .then(({data}) => {
+        console.log('data', data);
+        setData(data[0]);
+      })
+      .catch(error => console.error(error))
+      .finally(() => setLoading(false));
+  }, []);
+
+  useEffect(() => {
+    console.log('datauser', data);
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+  }, []);
 
   return (
-    <SafeAreaView style={BaseStyle.safeAreaView} edges={['right', 'top', 'left']}>
+    <SafeAreaView
+      style={BaseStyle.safeAreaView}
+      edges={['right', 'top', 'left']}>
       <Header
-        title={t("about_us")}
+        title={t('about_us')}
         renderLeft={() => {
           return (
             <Icon
@@ -42,92 +67,73 @@ const AboutUs = (props) => {
       />
       <ScrollView>
         <View>
-          <Image source={Images.trip4} style={{ width: "100%", height: 135 }} />
+          {/* <Image source={Images.trip4} style={{width: '100%', height: 135}} /> */}
+          <Image
+            source={require('../../assets/images/pakubuwono.png')}
+            style={{
+              height: 60,
+              width: 180,
+              alignItems: 'center',
+              marginHorizontal: 100,
+              flexDirection: 'row',
+            }}
+          />
           <View style={styles.titleAbout}>
-            <Text title1 semibold whiteColor>
-              {t("about_us")}
-            </Text>
-            <Text subhead whiteColor>
-              {t("slogan_about_us")}
+            {/* <Text title1 semibold whiteColor>
+              {t('about_us')}
+            </Text> */}
+            <Text subhead greyColor style={{marginTop: 70}}>
+              {/* {t('slogan_about_us')} */}
+              {data.about_title}
             </Text>
           </View>
         </View>
-        <View style={{ padding: 20 }}>
+        <View style={{padding: 20}}>
           <Text headline semibold>
-            {t("who_we_are")}
+            {/* {t('who_we_are')} */}
+            {data.about_title}
           </Text>
-          <Text body2 style={{ marginTop: 5 }}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat
-          </Text>
-          <Text headline semibold style={{ marginTop: 20 }}>
-            {t("what_we_do")}
-          </Text>
-          <Text body2 style={{ marginTop: 5 }}>
-            - First Class Flights
-          </Text>
-          <Text body2 style={{ marginTop: 5 }}>
-            - 5 Star Accommodations
-          </Text>
-          <Text body2 style={{ marginTop: 5 }}>
-            - Inclusive Packages
-          </Text>
-          <Text body2 style={{ marginTop: 5 }}>
-            - Latest Model Vehicles
-          </Text>
-          <Text headline semibold style={{ marginTop: 20, marginBottom: 15 }}>
-            {t("meet_our_team")}
-          </Text>
-          <View
-            style={{
-              flexDirection: "row",
-              flexWrap: "wrap",
-              justifyContent: "space-between",
-            }}
-          >
-            {ourTeam.map((item, index) => {
-              return (
-                <View
-                  style={{
-                    height: 200,
-                    width: Utils.getWidthDevice() / 2 - 30,
-                    marginBottom: 20,
-                  }}
-                  key={"ourTeam" + index}
-                >
-                  <Card
-                    image={item.image}
-                    onPress={() => navigation.navigate(item.screen)}
-                  >
-                    <Text footnote whiteColor>
-                      {item.subName}
-                    </Text>
-                    <Text headline whiteColor semibold>
-                      {item.name}
-                    </Text>
-                  </Card>
-                </View>
-              );
-            })}
+          <View>
+            <Text
+              body2
+              style={{
+                paddingTop: 10,
+                paddingBottom: 10,
+              }}
+              numberOfLines={100}>
+              {data.about_us?.replace(/<\/?[^>]+(>|$;)/gi, '')}
+            </Text>
           </View>
-          <Text headline semibold>
-            {t("our_service")}
-          </Text>
-          {ourTeam.map((item, index) => {
-            return (
-              <ProfileDescription
-                key={"service" + index}
-                image={item.image}
-                name={item.name}
-                subName={item.subName}
-                description={item.description}
-                style={{ marginTop: 10 }}
-                onPress={() => navigation.navigate(item.screen)}
-              />
-            );
-          })}
+          <View style={styles.address}>
+            <Text
+              semibold
+              style={{
+                fontSize: 18,
+                paddingBottom: 15,
+              }}>
+              Contact Us
+            </Text>
+            <Text body>{data.address}</Text>
+            <Text
+              semibold
+              style={{
+                paddingTop: 20,
+                paddingBottom: 10,
+                fontSize: 15,
+              }}>
+              {data.contact_name}
+            </Text>
+            <View
+              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              <Icon name="mobile" size={20} />
+              <Text> {data.contact_no}</Text>
+            </View>
+            <View
+              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              <Icon name="envelope" size={20} />
+              <Text> {data.contact_email}</Text>
+            </View>
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>

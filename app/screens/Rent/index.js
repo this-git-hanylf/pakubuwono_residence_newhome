@@ -195,6 +195,7 @@ const Rent = props => {
                     images={item.images[0].pict}
                     avatar={item.avatar}
                     email={item.email}
+                    advID={item.advID}
                     bath_room={item.bath_room}
                     bed_room={item.bed_room}
                     land_area={item.land_area}

@@ -31,6 +31,16 @@ import Search from '../screens/Search';
 import PreviewImage from '../screens/PreviewImage';
 
 import SelectDarkOption from '../screens/SelectDarkOption';
+import EProductPageNotFound from '../screens/EProductPageNotFound';
+import Helpdesk from '../screens/Helpdesk';
+import SpecHelpDesk from '../screens/Helpdesk/SpecHelpDesk';
+import SelectCategory from '../screens/Helpdesk/SelectCategory';
+import CategoryHelp from '../screens/Helpdesk/CategoryHelp';
+import ModalLocation from '../screens/Helpdesk/ModalLocation';
+import Package from '../screens/Package';
+import Privacy from '../screens/Privacy';
+import Skip from '../screens/Skip';
+import Emergency from '../screens/Emergency';
 
 const Stack = createStackNavigator();
 
@@ -43,7 +53,7 @@ export const WalletTabScreens = {
     },
   },
   EmegerncyScreen: {
-    component: ProfileScreen,
+    component: Emergency,
     options: {
       title: 'Emergency',
       tabBarIcon: ({color}) => tabBarIcon({color, name: 'phone'}),
@@ -84,6 +94,21 @@ function MainStack() {
       <Stack.Screen
         name="ContactUs"
         component={ContactUs}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Skip"
+        component={Skip}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Package"
+        component={Package}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Privacy"
+        component={Privacy}
         options={{headerShown: false}}
       />
       <Stack.Screen
@@ -136,6 +161,32 @@ function MainStack() {
         component={Billing}
         options={{headerShown: false}}
       />
+      <Stack.Screen
+        name="Helpdesk"
+        component={Helpdesk}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="SpecHelpDesk"
+        component={SpecHelpDesk}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="SelectCategory"
+        component={SelectCategory}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="ModalLocation"
+        component={ModalLocation}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="CategoryHelp"
+        component={CategoryHelp}
+        options={{headerShown: false}}
+      />
+
       <Stack.Screen
         name="MeterInfo"
         component={MeterInfo}

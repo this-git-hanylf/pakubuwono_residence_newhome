@@ -19,6 +19,7 @@ import {
   PostListData,
 } from '@data';
 import axios from 'axios';
+import moment from 'moment';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {FlatList, ScrollView, View, ActivityIndicator} from 'react-native';
@@ -96,11 +97,10 @@ const Announce = props => {
             renderItem={({item, index}) => (
               <CardReport01
                 loading={loading}
-                image={{uri: `${item.images}`}}
                 subtitle={item.announce_descs}
                 title={item.announce_title}
                 icon="bullhorn"
-                date={item.audit_date}
+                date={moment(item.date_created).startOf('hour').fromNow()}
                 style={{
                   marginBottom: index == data.length - 1 ? 0 : 15,
                 }}

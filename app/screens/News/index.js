@@ -24,7 +24,7 @@ import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {FlatList, ScrollView, View, ActivityIndicator} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {NewsList} from '../../components';
+import {NewsList, NotFound} from '../../components';
 import List from '../../components/Product/List';
 import styles from './styles';
 
@@ -87,26 +87,34 @@ const News = props => {
           }}
         />
         <ScrollView contentContainerStyle={styles.paddingSrollView}>
-          <FlatList
-            scrollEnabled={false}
-            contentContainerStyle={styles.paddingFlatList}
-            data={data}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={({item, index}) => (
-              <NewsList
-                loading={loading}
-                image={{uri: `${item.url_image}`}}
-                subtitle={item.news_descs}
-                title={item.news_title}
-                source={item.source}
-                date={moment(item.date_created).startOf('hour').fromNow()}
-                style={{
-                  marginBottom: index == data.length - 1 ? 0 : 15,
-                }}
-                onPress={goPostDetail(item)}
-              />
-            )}
-          />
+          {data.length > 0 ? (
+            <FlatList
+              scrollEnabled={false}
+              contentContainerStyle={styles.paddingFlatList}
+              data={data}
+              keyExtractor={(item, index) => index.toString()}
+              renderItem={({item, index}) => (
+                <NewsList
+                  loading={loading}
+                  image={{uri: `${item.url_image}`}}
+                  subtitle={item.news_descs}
+                  title={item.news_title}
+                  source={item.source}
+                  date={moment(item.date_created).startOf('hour').fromNow()}
+                  style={{
+                    marginBottom: index == data.length - 1 ? 0 : 15,
+                  }}
+                  onPress={goPostDetail(item)}
+                />
+              )}
+            />
+          ) : loading ? (
+            <View>
+              <ActivityIndicator size="large" color="#37BEB7" />
+            </View>
+          ) : (
+            <NotFound />
+          )}
         </ScrollView>
       </SafeAreaView>
     );

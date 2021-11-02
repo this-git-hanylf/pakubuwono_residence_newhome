@@ -11,7 +11,7 @@ export const FCategories = [
     id: 2,
     title: 'Helpdesk',
     icon: 'h-square',
-    screen: 'FTopUp',
+    screen: 'Helpdesk',
   },
   {
     id: 3,
@@ -29,7 +29,7 @@ export const FCategories = [
     id: 5,
     title: 'Package',
     icon: 'cube',
-    screen: 'FAddTransaction',
+    screen: 'Package',
   },
   {
     id: 6,

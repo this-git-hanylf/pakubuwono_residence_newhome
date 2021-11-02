@@ -59,3 +59,4 @@ export {FPayment, FPeriod} from './fActivityFilter';
 export {FNotificationData} from './fNotification';
 // export { MaziListApp } from "./maziHome";
 export {FCategoryData} from './fCategory';
+export {notfound} from './notfound.json';

@@ -5,8 +5,10 @@ import Image from '@components/Image';
 
 import {BaseColor, Images, useTheme} from '@config';
 import PropTypes from 'prop-types';
+import {parseHexTransparency} from '@utils';
+
 import React from 'react';
-import {ImageBackground, TouchableOpacity, View} from 'react-native';
+import {ImageBackground, Linking, TouchableOpacity, View} from 'react-native';
 import styles from './styles';
 import Loading from './Loading';
 import Button from '@components/Button';
@@ -35,9 +37,22 @@ const Block = ({
   email,
   isFavorite = false,
   salePercent,
+  advID,
+  hp_wa,
   loading = false,
 }) => {
   const {colors} = useTheme();
+
+  const message =
+    '\n Advertising ID : ' +
+    `${advID}` +
+    '\n Name : ' +
+    Block.agent_name +
+    '\n Email : ' +
+    Block.email +
+    '\n Phone Number : ' +
+    Block.hp_wa +
+    '\n Contact me for the details information.';
 
   if (loading) {
     return <Loading style={style} />;
@@ -120,20 +135,67 @@ const Block = ({
         </Text>
 
         <View style={styles.content}>
-          <View style={styles.left}>
+          <View style={styles.right}>
             <Image source={{uri: `${avatar}`}} style={styles.thumb} />
           </View>
           <View>
-            <Text title4 semibold style={{marginRight: 100, marginTop: 5}}>
+            <Text title4 semibold style={{marginRight: 210, marginTop: 5}}>
               {agent_name}
             </Text>
-            <Text title4 light style={styles.left}>
+            <Text title4 light style={styles.contentRight}>
               {email}
             </Text>
           </View>
-          <Button small style={style.costPrice}>
-            <Text>Contact Us</Text>
-          </Button>
+
+          {/* <TouchableOpacity onPress={() =>
+              Linking.openURL(
+                `mailto:${email}?subject=${subject}&body=Description`,
+              )}
+            >
+          <Icon
+            name="mail"
+            size={14}
+            style={{
+              flexDirection: 'row-reverse',
+              marginRight: 60,
+              color: BaseColor.grayColor,
+            }}/>
+            </TouchableOpacity> */}
+
+          {/* <TouchableOpacity
+            onPress={() =>
+              Linking.openURL(
+                `mailto:${email}?subject=${subject}&body=${message}`,
+              )
+            }
+            style={[styles.contentRight]}>
+            <View
+              style={[
+                styles.viewIcon,
+                {
+                  backgroundColor: parseHexTransparency(colors.primary, 30),
+                },
+              ]}>
+              <Icon name="envelope" size={20} color={colors.primary} />
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() =>
+              Linking.openURL(
+                `whatsapp://send?text=${subject}\n${message}&phone=${hp_wa}`,
+              )
+            }
+            style={[styles.contentRight]}>
+            <View
+              style={[
+                styles.viewIcon,
+                {
+                  backgroundColor: parseHexTransparency(colors.primary, 30),
+                },
+              ]}>
+              <Icon name="whatsapp" size={20} color={colors.primary} />
+            </View>
+          </TouchableOpacity> */}
         </View>
       </View>
     </TouchableOpacity>

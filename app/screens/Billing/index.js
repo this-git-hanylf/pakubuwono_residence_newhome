@@ -82,12 +82,17 @@ const Billing = ({
         `http://34.87.121.155:2121/apiwebpbi/api/getDataDue/IFCAPB/${user.user}`,
       );
       setDataCurrent(res.data.Data);
-      console.log('data', data);
+      console.log('datasss', data);
     } catch (error) {
       setErrors(error.ressponse.data);
       alert(hasError.toString());
     }
   }
+
+  const sum = dataCurrent.reduceRight((max, bills) => {
+    return (max += parseInt(bills.mbal_amt));
+  }, 0);
+  console.log('sum', sum);
 
   async function fetchDataCurrent() {
     try {

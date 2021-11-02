@@ -11,7 +11,9 @@ const CardReport01 = ({
   title = '',
   price = '',
   icon = '',
+  images = '',
   subtitle = '',
+  date = '',
   style = {},
   onPress = () => {},
   disabled = false,
@@ -47,6 +49,9 @@ const CardReport01 = ({
         </View>
         <Text subhead light style={{marginTop: 8}}>
           {subtitle}
+        </Text>
+        <Text subhead light style={{marginTop: 8}}>
+          {date}
         </Text>
       </View>
     </TouchableOpacity>

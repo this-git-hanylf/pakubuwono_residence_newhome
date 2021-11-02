@@ -60,7 +60,22 @@ const SignIn = props => {
     <SafeAreaView
       style={BaseStyle.safeAreaView}
       edges={['right', 'top', 'left']}>
-      <Header title={t('sign_in')} />
+      <Header title={t('sign_in')} style={{marginVertical: 50}} />
+      <View>
+        <Image
+          source={require('../../assets/images/pakubuwono.png')}
+          style={{
+            height: 60,
+            width: 180,
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginHorizontal: 100,
+            marginBottom: 15,
+            marginTop: -15,
+            flexDirection: 'row',
+          }}
+        />
+      </View>
 
       <KeyboardAvoidingView
         behavior={Platform.OS == 'ios' ? 'padding' : 'height'}

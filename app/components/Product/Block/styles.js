@@ -28,7 +28,7 @@ export default StyleSheet.create({
   },
   costPrice: {paddingHorizontal: 8, textDecorationLine: 'line-through'},
   content: {
-    // flex: 1,
+    flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
   },
@@ -45,5 +45,17 @@ export default StyleSheet.create({
   right: {
     alignItems: 'flex-end',
     justifyContent: 'center',
+  },
+  contentRight: {
+    flex: 2,
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+  },
+  viewIcon: {
+    width: 40,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 20,
   },
 });

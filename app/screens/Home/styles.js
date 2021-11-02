@@ -1,7 +1,35 @@
 import {StyleSheet} from 'react-native';
+import * as Utils from '@utils';
 import {BaseColor} from '@config';
 
 export default StyleSheet.create({
+  imageBackground: {
+    height: ((Utils.getWidthDevice() - 30) * 3) / 6,
+    width: '100%',
+    borderRadius: 25,
+  },
+  viewBackground: {
+    flex: 1,
+    alignItems: 'flex-start',
+    justifyContent: 'flex-end',
+    padding: 10,
+  },
+  viewItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 1,
+  },
+  thumb: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    marginRight: 5,
+  },
+
+  styleThumb: {
+    borderWidth: 1,
+    borderColor: BaseColor.whiteColor,
+  },
   paddingSrollView: {padding: 20},
   paddingFlatList: {
     paddingTop: 24,
@@ -23,11 +51,11 @@ export default StyleSheet.create({
     paddingTop: 0,
   },
   header: {
-    paddingTop: 30,
+    paddingTop: 15,
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 15,
-    paddingHorizontal: 25,
+    // marginBottom: 10,
+    paddingHorizontal: 20,
   },
   contentHeader: {paddingLeft: 8, flex: 1},
   notyHeader: {

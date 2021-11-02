@@ -26,6 +26,7 @@ import {
 } from 'react-native';
 import styles from './styles';
 import {PlaceholderLine, Placeholder} from '@components';
+import moment from 'moment';
 
 const AnnouceDetail = props => {
   const {navigation, route} = props;
@@ -37,25 +38,31 @@ const AnnouceDetail = props => {
   const [list, setList] = useState(HomeListData);
   const [heightHeader, setHeightHeader] = useState(Utils.heightHeader());
   const scrollY = useRef(new Animated.Value(0)).current;
+  const productData = {...item};
+
   const {
     style,
     onPress,
-    image,
+    images,
     news_descs,
     facility_descs,
     title,
     subtitle,
+    announce_title,
     url_image,
     announce_descs,
     announce_file,
     date,
-  } = item;
+  } = productData;
 
   useEffect(() => {
+    console.log('liattt', annoe);
     setTimeout(() => {
       setLoading(false);
     }, 1000);
   }, []);
+
+  const annoe = [...images];
 
   const goPostDetail = item => () => {
     navigation.push('PostDetail', {item: item});
@@ -64,7 +71,9 @@ const AnnouceDetail = props => {
   const onShare = async () => {
     try {
       const result = await Share.share({
-        message: 'http://pakubuwonoview.com/',
+        message: item.announce_descs,
+        // title: item.news_title,
+        url: item.images,
       });
 
       if (result.action === Share.sharedAction) {
@@ -84,7 +93,7 @@ const AnnouceDetail = props => {
   //For header background color from transparent to header color
   const headerBackgroundColor = scrollY.interpolate({
     inputRange: [0, 140],
-    outputRange: [BaseColor.whiteColor, colors.primary],
+    outputRange: [BaseColor.greyColor, colors.primary],
     extrapolate: 'clamp',
     useNativeDriver: true,
   });
@@ -99,7 +108,7 @@ const AnnouceDetail = props => {
 
   //artist profile image position from top
   const heightViewImg = scrollY.interpolate({
-    inputRange: [0, 250 - heightHeader],
+    inputRange: [0, 450 - heightHeader],
     outputRange: [250, heightHeader],
     // extrapolate: "clamp",
     useNativeDriver: true,
@@ -123,16 +132,56 @@ const AnnouceDetail = props => {
     return (
       <Fragment>
         <View style={styles.contentDescription}>
-          <Text
-            body2
+          <View>
+            {annoe.map((item, key) => {
+              return (
+                <TouchableOpacity
+                  key={key}
+                  style={{flex: 1}}
+                  activeOpacity={1}
+                  onPress={() =>
+                    navigation.navigate('PreviewImage', {images: images})
+                  }>
+                  <Image
+                    key={key}
+                    style={{
+                      flex: 1,
+                      width: '100%',
+                      height: 400,
+                      marginTop: 20,
+                    }}
+                    source={{uri: `${item.pict}`}}
+                  />
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+          <View
             style={{
-              lineHeight: 20,
-              paddingTop: 10,
-              paddingBottom: 20,
-            }}
-            numberOfLines={100}>
-            {announce_descs}
-          </Text>
+              marginVertical: 10,
+            }}>
+            <Text subhead light style={{marginTop: 15}}>
+              {moment(item.date).startOf('hour').fromNow()}
+            </Text>
+          </View>
+          <View
+            style={{
+              marginVertical: 10,
+            }}>
+            <Text bold style={{marginTop: 15, fontSize: 20}}>
+              Information
+            </Text>
+            <Text
+              body2
+              style={{
+                lineHeight: 20,
+                paddingTop: 10,
+                paddingBottom: 20,
+              }}
+              numberOfLines={100}>
+              {announce_descs}
+            </Text>
+          </View>
         </View>
       </Fragment>
     );
@@ -143,7 +192,23 @@ const AnnouceDetail = props => {
       <SafeAreaView
         style={[BaseStyle.safeAreaView]}
         forceInset={{top: 'always', bottom: 'always'}}>
-        <Header title={subtitle} />
+        <Header
+          title={t('Announce')}
+          renderLeft={() => {
+            return (
+              <Icon
+                name="angle-left"
+                size={20}
+                color={colors.primary}
+                enableRTL={true}
+              />
+            );
+          }}
+          onPressLeft={() => {
+            navigation.goBack();
+          }}
+          title={announce_title}
+        />
         <ScrollView
           onContentSizeChange={() => {
             setHeightHeader(Utils.heightHeader());
@@ -165,36 +230,10 @@ const AnnouceDetail = props => {
               useNativeDriver: false,
             },
           )}>
-          <View style={{height: 230 - heightHeader}} />
-          <View
-            style={{
-              marginVertical: 10,
-              paddingHorizontal: 20,
-            }}>
-            <Text medium caption1 grayColor>
-              {date}
-            </Text>
-            <Text title1 semibold style={{marginVertical: 10}}>
-              {item.announce_descs}
-            </Text>
-          </View>
-
           {loading ? renderPlaceholder() : renderContent()}
         </ScrollView>
       </SafeAreaView>
-      <Animated.View
-        style={[
-          styles.headerImageStyle,
-          {
-            opacity: headerImageOpacity,
-            height: heightViewImg,
-          },
-        ]}>
-        <Image
-          source={{uri: `${announce_file}`}}
-          style={{height: '100%', width: '100%'}}
-        />
-      </Animated.View>
+
       <Animated.View style={[styles.headerStyle, {position: 'absolute'}]}>
         <SafeAreaView
           style={{width: '100%'}}

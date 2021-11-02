@@ -212,7 +212,7 @@ const Profile = props => {
                 enableRTL={true}
               />
             </TouchableOpacity> */}
-            <TouchableOpacity
+            {/* <TouchableOpacity
               style={styleItem}
               onPress={() => {
                 navigation.navigate('ContactUs');
@@ -225,13 +225,27 @@ const Profile = props => {
                 style={{marginLeft: 5}}
                 enableRTL={true}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <TouchableOpacity
               style={styleItem}
               onPress={() => {
                 navigation.navigate('AboutUs');
               }}>
               <Text body1>{t('about_us')}</Text>
+              <Icon
+                name="angle-right"
+                size={18}
+                color={colors.primary}
+                style={{marginLeft: 5}}
+                enableRTL={true}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styleItem}
+              onPress={() => {
+                navigation.navigate('Privacy');
+              }}>
+              <Text body1>{t('Privacy Police')}</Text>
               <Icon
                 name="angle-right"
                 size={18}

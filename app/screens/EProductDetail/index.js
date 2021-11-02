@@ -23,6 +23,8 @@ import {
   Share,
   TouchableOpacity,
   View,
+  Linking,
+  Alert,
 } from 'react-native';
 import ModalProduct from './ModalProduct';
 import styles from './styles';
@@ -30,6 +32,7 @@ import Swiper from 'react-native-swiper';
 import {PlaceholderLine, Placeholder} from '@components';
 import moment from 'moment';
 import numFormat from '../../components/numFormat';
+import Mailer from 'react-native-mail';
 
 const itemInit = {
   price: 60,
@@ -86,6 +89,9 @@ const EProductDetail = props => {
     bed_room,
     subject,
     floor,
+    email,
+    advID,
+    hp_wa,
     land_area,
     publish_date,
     build_area,
@@ -111,6 +117,68 @@ const EProductDetail = props => {
     }, 1000);
   }, []);
 
+  const newLine = `<br>`;
+
+  const message =
+    '\n Advertising ID : ' +
+    productData.advID +
+    '\n Name : ' +
+    productData.agent_name +
+    '\n Email : ' +
+    productData.email +
+    '\n Phone Number : ' +
+    productData.hp_wa +
+    '\n Contact me for the details information.';
+
+  // const sendEmail = () => {
+  //   const datas = {
+  //     dataEmail: productData.email,
+  //     dataProject: productData.subject,
+  //     name: productData.agent_name,
+  //     emailUser: productData.email,
+  //     handphone: productData.hp_wa,
+  //   };
+  //   console.log('datas', datas);
+  //   const message =
+  //     "<!DOCTYPE html> <meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'> <body> <div>  Name : " +
+  //     datas.name +
+  //     '<br> Email : ' +
+  //     datas.dataEmail +
+  //     '<br> Phone Number : ' +
+  //     datas.handphone +
+  //     '<br><br> Contact me for the details information. </div> </body> </html>';
+
+  //   console.log('datas', datas);
+  //   console.log('cek messages', message);
+
+  //   Mailer.mail(
+  //     {
+  //       subject: "I'm interested about reservation " + datas.dataProject,
+  //       recipients: [`${datas.dataEmail}`],
+  //       ccRecipients: [''],
+  //       bccRecipients: [''],
+  //       body: message,
+  //       isHTML: true,
+  //     },
+  //     (error, event) => {
+  //       Alert.alert(
+  //         error,
+  //         event,
+  //         [
+  //           {
+  //             text: 'Ok',
+  //             onPress: () => console.log('OK: Email Error Response'),
+  //           },
+  //           {
+  //             text: 'Cancel',
+  //             onPress: () => console.log('CANCEL: Email Error Response'),
+  //           },
+  //         ],
+  //         {cancelable: true},
+  //       );
+  //     },
+  //   );
+  // };
   const galery = [...images];
 
   const goPostDetail = item => () => {
@@ -379,8 +447,34 @@ const EProductDetail = props => {
             paddingHorizontal: 20,
             paddingVertical: 10,
           }}>
-          <Button full style={{flex: 1}} onPress={() => setModalVisible(true)}>
+          {/* <Button full style={{flex: 1}} onPress={() => setModalVisible(true)}>
             {t('I am Interested')}
+          </Button> */}
+          <Button
+            full
+            style={{
+              marginTop: 10,
+              marginBottom: 20,
+              width: '45%',
+              marginRight: 10,
+            }}
+            onPress={() =>
+              Linking.openURL(
+                `mailto:${email}?subject=${subject}&body=${message}`,
+              )
+            }>
+            {t('Send Email')}
+          </Button>
+          <Button
+            full
+            style={{marginTop: 10, marginBottom: 20, width: '65%', flex: 1}}
+            onPress={() =>
+              Linking.openURL(
+                // `mailto:${email}?subject=${subject}&body=Description`,
+                `whatsapp://send?text=${subject}\n${message}&phone=${hp_wa}`,
+              )
+            }>
+            {t('Send Whatsapp')}
           </Button>
         </View>
       </SafeAreaView>
@@ -423,26 +517,6 @@ const EProductDetail = props => {
             );
           })}
         </Swiper>
-
-        {/* <TouchableOpacity
-          style={[
-            styles.viewIcon,
-            {
-              backgroundColor: isFavourite
-                ? BaseColor.whiteColor
-                : colors.primaryLight,
-              borderColor: BaseColor.whiteColor,
-            },
-          ]}
-          onPress={() => setIsFavourtie(!isFavourite)}>
-          <Icon
-            solid
-            name="heart"
-            size={20}
-            color={isFavourite ? colors.primaryLight : BaseColor.whiteColor}
-          />
-          <Text semibold>{market_type}</Text>
-        </TouchableOpacity> */}
       </Animated.View>
       <Animated.View style={[styles.headerStyle, {position: 'absolute'}]}>
         <SafeAreaView
@@ -490,17 +564,14 @@ const EProductDetail = props => {
           />
         </SafeAreaView>
       </Animated.View>
-      <ModalProduct
-        colorChoosedInit={colorChoosed}
-        sizeChoosedInit={sizeChoosed}
-        item={productData}
+      {/* <ModalProduct
         isVisible={modalVisible}
         onSwipeComplete={() => setModalVisible(false)}
         onApply={() => {
           setModalVisible(false);
-          navigation.navigate('ECart');
+          sendEmail();
         }}
-      />
+      /> */}
     </View>
   );
 };
