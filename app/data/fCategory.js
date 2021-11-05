@@ -3,10 +3,10 @@ import {BaseColor} from '@config';
 export const FCategoryData = [
   {
     id: '4',
-    screen: 'News',
+    screen: 'HouseRoles',
     icon: 'book',
-    title: 'News',
-    subtitle: 'Display data with News',
+    title: 'HouserRoles',
+    subtitle: 'Display data with HouserRoles',
   },
   {
     id: '6',

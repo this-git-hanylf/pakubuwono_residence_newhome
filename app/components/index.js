@@ -162,3 +162,4 @@ export {default as TextInput} from './TextInput';
 export {default as TextInputMoney} from './TextInput/Money';
 
 export {default as NotFound} from './NotFound';
+export {default as ListThumbCircleNotif} from './List/ThumbCircleNotif';

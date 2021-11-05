@@ -28,12 +28,11 @@ import {
 import {useSelector} from 'react-redux';
 import getUser from '../../selectors/UserSelectors';
 import axios from 'axios';
-import {API_URL} from '@env';
+import client from '../../controllers/HttpClient';
 import styles from './styles';
 
 import {RadioButton} from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import client from '../../controllers/HttpClient';
 
 export default function CategoryHelp({route}) {
   const {t, i18n} = useTranslation();
@@ -158,9 +157,13 @@ export default function CategoryHelp({route}) {
     };
 
     await axios
-      .post(urlApi + '/csentry-getCategoryHelp', params, {
-        config,
-      })
+      .post(
+        'http://34.87.121.155:8181/apiwebpbi/api/csentry-getCategoryHelp',
+        params,
+        {
+          config,
+        },
+      )
       .then(res => {
         const datas = res.data;
         const dataCategorys = datas.Data;

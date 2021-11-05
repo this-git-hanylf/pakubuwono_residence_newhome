@@ -1,75 +1,39 @@
 import {
-  CardChannelGrid,
-  CardSlide,
-  CategoryList,
-  News43,
-  ListFacility,
-  SafeAreaView,
-  Text,
-  NewsList,
+  Card,
   Header,
   Icon,
-  Tag,
-  colors,
-  PlaceItem,
+  Image,
+  ProfileDescription,
+  SafeAreaView,
+  Text,
+  ProductBlock,
 } from '@components';
-import {BaseStyle, useTheme} from '@config';
-import {
-  HomeChannelData,
-  HomeListData,
-  HomePopularData,
-  HomeTopicData,
-  PostListData,
-} from '@data';
-import {useRoute} from '@react-navigation/core';
+import {BaseColor, BaseStyle, useTheme} from '@config';
+import {Images} from '@config';
+import {AboutUsData} from '@data';
+import * as Utils from '@utils';
+import React, {useState, useEffect} from 'react';
+import {ScrollView, View, FlatList} from 'react-native';
+import styles from './styles';
+import {useTranslation} from 'react-i18next';
 import axios from 'axios';
 import moment from 'moment';
-import React, {useEffect, useState} from 'react';
-import {useTranslation} from 'react-i18next';
-import {FlatList, ScrollView, View, ActivityIndicator} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import {ProductBlock} from '../../components';
-import numFormat from '../../components/numFormat';
-import List from '../../components/Product/List';
-import styles from './styles';
-import {enableExperimental} from '@utils';
+// import {ProductBlock} from '../../components';
 
-const Rent = props => {
+const Skip = props => {
   const {navigation} = props;
-  const {t} = useTranslation();
   const {colors} = useTheme();
-  const route = useRoute();
-  const [data, setData] = useState([]);
-  const [rent, setRent] = useState([]);
+  const {t} = useTranslation();
   const [loading, setLoading] = useState(true);
-  const [hasError, setErrors] = useState(false);
-  const TABS = [
-    {
-      id: 1,
-      title: t('Rent'),
-    },
-    {
-      id: 2,
-      title: t('Sale'),
-    },
-  ];
-  const [tab, setTab] = useState(TABS[0]);
-
-  useEffect(() => {
-    const id = route?.params?.id;
-    if (id) {
-      TABS.forEach(tab => {
-        tab.id == id && setTab(tab);
-      });
-    }
-  }, [route?.params?.id]);
+  const [rent, setRent] = useState([]);
+  const [data, setData] = useState([]);
 
   useEffect(() => {
     axios
-      .get('http://34.87.121.155:2121/apiwebpbi/api/rsentryMobileSale/')
+      .get('http://34.87.121.155:8000/ifcaprop-api/api/about/01/01')
       .then(({data}) => {
-        console.log('defaultApp -> data', data);
-        setData(data);
+        console.log('data', data);
+        setData(data[0]);
       })
       .catch(error => console.error(error))
       .finally(() => setLoading(false));
@@ -86,134 +50,113 @@ const Rent = props => {
       .finally(() => setLoading(false));
   }, []);
 
+  const goProductDetail = item => {
+    navigation.navigate('EProductDetail', {item: item});
+  };
+
   useEffect(() => {
+    console.log('datauser', data);
     setTimeout(() => {
       setLoading(false);
     }, 1000);
   }, []);
 
-  const goPost = item => () => {
-    navigation.navigate('Post', {item: item});
-  };
-  const goProductDetail = item => {
-    navigation.navigate('EProductDetail', {item: item});
-  };
-  const goPostDetail = item => () => {
-    navigation.navigate('PostDetail', {item: item});
-  };
+  return (
+    <SafeAreaView
+      style={BaseStyle.safeAreaView}
+      edges={['right', 'top', 'left']}>
+      <Header
+        title={t('about_us')}
+        renderLeft={() => {
+          return (
+            <Icon
+              name="angle-left"
+              size={20}
+              color={colors.primary}
+              enableRTL={true}
+            />
+          );
+        }}
+        onPressLeft={() => {
+          navigation.goBack();
+        }}
+      />
+      <ScrollView>
+        <View>
+          {/* <Image source={Images.trip4} style={{width: '100%', height: 135}} /> */}
+          <Image
+            source={require('../../assets/images/pakubuwono.png')}
+            style={{
+              height: 60,
+              width: 180,
+              alignItems: 'center',
+              marginHorizontal: 100,
+              flexDirection: 'row',
+            }}
+          />
+          <View style={styles.titleAbout}>
+            {/* <Text title1 semibold whiteColor>
+              {t('about_us')}
+            </Text> */}
+            <Text subhead greyColor style={{marginTop: 70}}>
+              {/* {t('slogan_about_us')} */}
+              {data.about_title}
+            </Text>
+          </View>
+        </View>
+        <View style={{padding: 20}}>
+          <Text headline semibold>
+            {/* {t('who_we_are')} */}
+            {data.about_title}
+          </Text>
+          <View>
+            <Text
+              body2
+              style={{
+                paddingTop: 10,
+                paddingBottom: 10,
+              }}
+              numberOfLines={100}>
+              {data.about_us?.replace(/<\/?[^>]+(>|$;)/gi, '')}
+            </Text>
+          </View>
+          <View style={styles.address}>
+            <Text
+              semibold
+              style={{
+                fontSize: 18,
+                paddingBottom: 15,
+              }}>
+              Contact Us
+            </Text>
+            <Text body>{data.address}</Text>
+            <Text
+              semibold
+              style={{
+                paddingTop: 20,
+                paddingBottom: 10,
+                fontSize: 15,
+              }}>
+              {data.contact_name}
+            </Text>
+            <View
+              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              <Icon name="mobile" size={20} />
+              <Text> {data.contact_no}</Text>
+            </View>
+            <View
+              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              <Icon name="envelope" size={20} />
+              <Text> {data.contact_email}</Text>
+            </View>
+          </View>
+        </View>
 
-  const goToCategory = () => {
-    navigation.navigate('Category');
-  };
-
-  const renderContent = () => {
-    const mainNews = PostListData[0];
-    return (
-      <SafeAreaView edges={['right', 'top', 'left']}>
-        <Header
-          title={t('Rent or Sale')}
-          renderLeft={() => {
-            return (
-              <Icon
-                name="angle-left"
-                size={20}
-                color={colors.primary}
-                enableRTL={true}
-              />
-            );
-          }}
-          onPressLeft={() => {
-            navigation.goBack();
-          }}
-        />
-        <ScrollView contentContainerStyle={styles.paddingSrollView}>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            {TABS.map((item, index) => (
-              <View key={index} style={{flex: 1, paddingHorizontal: 20}}>
-                <Tag
-                  primary
-                  style={{
-                    backgroundColor:
-                      tab.id == item.id ? colors.primary : colors.background,
-                  }}
-                  onPress={() => {
-                    enableExperimental();
-                    setTab(item);
-                  }}>
-                  <Text
-                    body1={tab.id != item.id}
-                    light={tab.id != item.id}
-                    whiteColor={tab.id == item.id}>
-                    {item.title}
-                  </Text>
-                </Tag>
-              </View>
-            ))}
-          </View>
-          <View style={{flex: 1}}>
-            {tab.id == 1 && (
-              <FlatList
-                scrollEnabled={false}
-                contentContainerStyle={styles.paddingFlatList}
-                data={rent}
-                renderItem={({item, index}) => (
-                  <ProductBlock
-                    loading={loading}
-                    description={item.description}
-                    subject={item.subject}
-                    style={{marginVertical: 8}}
-                    images={item.images[0].pict}
-                    avatar={item.avatar}
-                    email={item.email}
-                    bath_room={item.bath_room}
-                    bed_room={item.bed_room}
-                    land_area={item.land_area}
-                    build_area={item.build_area}
-                    agent_name={item.agent_name}
-                    publish_date={moment(item.publish_date).format('H:mm:ss')}
-                    price_descs={item.price_descs}
-                    onPress={() => goProductDetail(item)}
-                    isFavorite={item.isFavorite}
-                    salePercent={item.salePercent}
-                  />
-                )}
-              />
-            )}
-          </View>
-          <View style={{flex: 1}}>
-            {tab.id == 2 && (
-              <FlatList
-                scrollEnabled={false}
-                contentContainerStyle={styles.paddingFlatList}
-                data={data}
-                renderItem={({item, index}) => (
-                  <ProductBlock
-                    loading={loading}
-                    description={item.description}
-                    subject={item.subject}
-                    style={{marginVertical: 8}}
-                    images={item.images[0].pict}
-                    avatar={item.avatar}
-                    email={item.email}
-                    bath_room={item.bath_room}
-                    bed_room={item.bed_room}
-                    land_area={item.land_area}
-                    build_area={item.build_area}
-                    agent_name={item.agent_name}
-                    publish_date={moment(item.publish_date).format('H:mm:ss')}
-                    price_descs={item.price_descs}
-                    onPress={() => goProductDetail(item)}
-                    isFavorite={item.isFavorite}
-                    salePercent={item.salePercent}
-                  />
-                )}
-              />
-            )}
-          </View>
-          {/* <FlatList
+        <View style={{flex: 1}}>
+          <FlatList
             scrollEnabled={false}
             contentContainerStyle={styles.paddingFlatList}
-            data={data}
+            data={rent}
             renderItem={({item, index}) => (
               <ProductBlock
                 loading={loading}
@@ -235,21 +178,11 @@ const Rent = props => {
                 salePercent={item.salePercent}
               />
             )}
-          /> */}
-        </ScrollView>
-      </SafeAreaView>
-    );
-  };
-
-  return (
-    <View style={{flex: 1}}>
-      <SafeAreaView
-        style={BaseStyle.safeAreaView}
-        edges={['right', 'top', 'left']}>
-        {renderContent()}
-      </SafeAreaView>
-    </View>
+          />
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
-export default Rent;
+export default Skip;

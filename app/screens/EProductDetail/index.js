@@ -33,29 +33,8 @@ import {PlaceholderLine, Placeholder} from '@components';
 import moment from 'moment';
 import numFormat from '../../components/numFormat';
 import Mailer from 'react-native-mail';
-
-const itemInit = {
-  price: 60,
-  image: Images.eProduct,
-  category: 'Burberry',
-  rating: 4.5,
-  review: 1,
-  status: 'In Stock',
-  salePrice: '',
-  costPrice: '$70.00',
-  taxStatus: 'Tax included',
-  sku: 'AV01-D-32',
-  style: 'High-neck',
-  measurement: 'Wearing Size: 24',
-  washCare: 'Machine Wash',
-  fabricComposition: 'Lightweight',
-  menOrWomen: 'For Men',
-  season: 'Summer, Spring',
-  returnsPolicy:
-    "Returns and exchanges don't need to be a dreaded part of ecommerce. Here's how to write a return policy that creates a win-win situation.",
-  shipping:
-    'A Shipping Policy is where you let your customers know important details about how you ship your goods if your business sells goods that get shipped to your customers',
-};
+import getUser from '../../selectors/UserSelectors';
+import {useSelector} from 'react-redux';
 
 const EProductDetail = props => {
   const {navigation, route} = props;
@@ -70,6 +49,8 @@ const EProductDetail = props => {
   const [colorChoosed, setColorChoosed] = useState(EFilterColors[0]);
   const [sizeChoosed, setSizeChoosed] = useState(EFilterSizes[0]);
   const [isFavourite, setIsFavourtie] = useState(false);
+  const user = useSelector(state => getUser(state));
+
   const scrollY = useRef(new Animated.Value(0)).current;
   const productData = {...item};
   const {
@@ -117,17 +98,15 @@ const EProductDetail = props => {
     }, 1000);
   }, []);
 
-  const newLine = `<br>`;
-
   const message =
     '\n Advertising ID : ' +
     productData.advID +
     '\n Name : ' +
-    productData.agent_name +
+    user.name +
     '\n Email : ' +
-    productData.email +
+    user.user +
     '\n Phone Number : ' +
-    productData.hp_wa +
+    user.handphone +
     '\n Contact me for the details information.';
 
   // const sendEmail = () => {
@@ -450,6 +429,7 @@ const EProductDetail = props => {
           {/* <Button full style={{flex: 1}} onPress={() => setModalVisible(true)}>
             {t('I am Interested')}
           </Button> */}
+
           <Button
             full
             style={{
@@ -459,20 +439,25 @@ const EProductDetail = props => {
               marginRight: 10,
             }}
             onPress={() =>
-              Linking.openURL(
-                `mailto:${email}?subject=${subject}&body=${message}`,
-              )
+              user !== null
+                ? Linking.openURL(
+                    `mailto:${email}?subject=${subject}&body=${message}`,
+                  )
+                : navigation.navigate('SignIn')
             }>
             {t('Send Email')}
           </Button>
+
           <Button
             full
             style={{marginTop: 10, marginBottom: 20, width: '65%', flex: 1}}
             onPress={() =>
-              Linking.openURL(
-                // `mailto:${email}?subject=${subject}&body=Description`,
-                `whatsapp://send?text=${subject}\n${message}&phone=${hp_wa}`,
-              )
+              user !== null
+                ? Linking.openURL(
+                    // `mailto:${email}?subject=${subject}&body=Description`,
+                    `whatsapp://send?text=${subject}\n${message}&phone=${hp_wa}`,
+                  )
+                : navigation.navigate('SignIn')
             }>
             {t('Send Whatsapp')}
           </Button>

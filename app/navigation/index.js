@@ -23,6 +23,8 @@ const RootStack = createStackNavigator();
 import {StackActions} from '@react-navigation/native';
 import MainStack from './MainStack';
 import getUser from '../selectors/UserSelectors';
+import Skip from '../screens/Skip';
+import EProductDetail from '../screens/EProductDetail';
 
 const Navigator = props => {
   const {theme, colors} = useTheme();
@@ -81,6 +83,11 @@ const Navigator = props => {
             ) : (
               <RootStack.Screen name="MainStack" component={MainStack} />
             )}
+            <RootStack.Screen name="Skip" component={Skip} />
+            <RootStack.Screen
+              name="EProductDetail"
+              component={EProductDetail}
+            />
           </RootStack.Navigator>
         </NavigationContainer>
       </DarkModeProvider>

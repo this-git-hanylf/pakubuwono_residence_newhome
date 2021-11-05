@@ -118,9 +118,9 @@ const SignIn = props => {
               </Text>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
+            <TouchableOpacity onPress={() => navigation.navigate('Skip')}>
               <Text body2 primaryColor>
-                {t('not_have_account')}
+                {t('Skip Login')}
               </Text>
             </TouchableOpacity>
           </View>

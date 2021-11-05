@@ -139,7 +139,7 @@ const Block = ({
             <Image source={{uri: `${avatar}`}} style={styles.thumb} />
           </View>
           <View>
-            <Text title4 semibold style={{marginRight: 210, marginTop: 5}}>
+            <Text title4 semibold style={{marginTop: 5}}>
               {agent_name}
             </Text>
             <Text title4 light style={styles.contentRight}>

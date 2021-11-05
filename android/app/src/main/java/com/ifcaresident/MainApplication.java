@@ -1,4 +1,4 @@
-package com.ifcaresident;
+package com.ifcaresident.bagus;
 
 import android.app.Application;
 import android.content.Context;

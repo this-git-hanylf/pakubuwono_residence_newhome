@@ -27,9 +27,8 @@ import {SceneMap} from 'react-native-tab-view';
 import {useSelector} from 'react-redux';
 import getUser from '../../selectors/UserSelectors';
 import axios from 'axios';
-import {API_URL} from '@env';
-import styles from './styles';
 import client from '../../controllers/HttpClient';
+import styles from './styles';
 
 import ModalDropdown_debtor from '@components/ModalDropdown_debtor';
 import ModalDropdown_lotno from '@components/ModalDropdown_lotno';

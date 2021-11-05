@@ -15,8 +15,6 @@ import Review from '@screens/Review';
 import SelectFontOption from '@screens/SelectFontOption';
 import FCategory from '@screens/FCategory';
 
-import Notification from '@screens/Notification';
-
 import {BottomTabNavigatorMazi, tabBarIcon} from './components';
 import Billing from '../screens/Billing';
 import Facility from '../screens/Facility';
@@ -32,15 +30,27 @@ import PreviewImage from '../screens/PreviewImage';
 
 import SelectDarkOption from '../screens/SelectDarkOption';
 import EProductPageNotFound from '../screens/EProductPageNotFound';
-import Helpdesk from '../screens/Helpdesk';
-import SpecHelpDesk from '../screens/Helpdesk/SpecHelpDesk';
-import SelectCategory from '../screens/Helpdesk/SelectCategory';
-import CategoryHelp from '../screens/Helpdesk/CategoryHelp';
+
 import ModalLocation from '../screens/Helpdesk/ModalLocation';
 import Package from '../screens/Package';
 import Privacy from '../screens/Privacy';
 import Skip from '../screens/Skip';
 import Emergency from '../screens/Emergency';
+
+import Helpdesk from '@screens/Helpdesk';
+import SpecHelpDesk from '@screens/Helpdesk/SpecHelpDesk';
+import CategoryHelp from '@screens/Helpdesk/CategoryHelp';
+import SelectCategory from '@screens/Helpdesk/SelectCategory';
+import SubmitHelpdesk from '../screens/Helpdesk/Submit';
+import StatusHelp from '../screens/Helpdesk/StatusHelp';
+import ViewHistoryStatus from '../screens/Helpdesk/ViewHistoryStatus';
+import ViewHistoryDetail from '../screens/Helpdesk/ViewHistoryDetail';
+import PreviewImageHelpdesk from '../screens/Helpdesk/PreviewImageHelpdesk';
+
+import HouseRoles from '../screens/HouseRoles';
+
+import Notification from '@screens/Notification';
+import NotificationDetail from '../screens/Notification/notifDetail';
 
 const Stack = createStackNavigator();
 
@@ -142,11 +152,6 @@ function MainStack() {
         options={{headerShown: false}}
       />
       <Stack.Screen
-        name="Notification"
-        component={Notification}
-        options={{headerShown: false}}
-      />
-      <Stack.Screen
         name="SelectFontOption"
         component={SelectFontOption}
         options={{headerShown: false}}
@@ -186,7 +191,31 @@ function MainStack() {
         component={CategoryHelp}
         options={{headerShown: false}}
       />
-
+      <Stack.Screen
+        name="SubmitHelpdesk"
+        component={SubmitHelpdesk}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="StatusHelp"
+        component={StatusHelp}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="ViewHistoryStatus"
+        component={ViewHistoryStatus}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="ViewHistoryDetail"
+        component={ViewHistoryDetail}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="PreviewImageHelpdesk"
+        component={PreviewImageHelpdesk}
+        options={{headerShown: false}}
+      />
       <Stack.Screen
         name="MeterInfo"
         component={MeterInfo}
@@ -240,6 +269,21 @@ function MainStack() {
       <Stack.Screen
         name="SelectDarkOption"
         component={SelectDarkOption}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="HouseRoles"
+        component={HouseRoles}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Notification"
+        component={Notification}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="NotificationDetail"
+        component={NotificationDetail}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

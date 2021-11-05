@@ -29,9 +29,7 @@ import {
 import {useSelector} from 'react-redux';
 import getUser from '../../selectors/UserSelectors';
 import axios from 'axios';
-import {API_URL} from '@env';
 import client from '../../controllers/HttpClient';
-
 import styles from './styles';
 
 import {RadioButton} from 'react-native-paper';
@@ -162,9 +160,13 @@ export default function SelectCategory({route}) {
     // console.log('urlparams', urlApi + '/csentry-getCategoryDetail' + urlparams);
 
     await axios
-      .post(urlApi + '/csentry-getCategoryDetail', params, {
-        config,
-      })
+      .post(
+        'http://34.87.121.155:8181/apiwebpbi/api/csentry-getCategoryDetail',
+        params,
+        {
+          config,
+        },
+      )
       .then(res => {
         // console.log('res detail', res);
         const datas = res.data;

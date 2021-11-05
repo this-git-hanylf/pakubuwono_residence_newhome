@@ -99,6 +99,7 @@ export default function SpecHelpDesk() {
         });
         // AsyncStorage.setItem('@DataTower', dataArr);
         setArrDataTowerUser(arrDataTower);
+
         setSpinner(false);
         // return res.data;
       })
@@ -123,6 +124,8 @@ export default function SpecHelpDesk() {
       'email=' +
       email;
 
+    console.log('data for', params);
+
     const config = {
       headers: {
         accept: 'application/json',
@@ -131,11 +134,14 @@ export default function SpecHelpDesk() {
       },
     };
     await axios
-      .post(urlApi + '/csentry-getDebtor' + params, {
-        config,
-      })
+      .post(
+        'http://34.87.121.155:8181/apiwebpbi/api/csentry-getDebtor' + params,
+        {
+          config,
+        },
+      )
       .then(res => {
-        // console.log('res', res);
+        console.log('res', res);
         const datas = res.data;
         const dataDebtors = datas.Data;
         setDataDebtor(dataDebtors);
@@ -192,9 +198,13 @@ export default function SpecHelpDesk() {
     };
 
     await axios
-      .post(urlApi + '/csentry-getLotno', params, {
-        config,
-      })
+      .post(
+        'http://34.87.121.155:8181/apiwebpbi/api/csentry-getLotno',
+        params,
+        {
+          config,
+        },
+      )
       .then(res => {
         const datas = res.data;
         const dataLotno = datas.Data;
@@ -232,9 +242,13 @@ export default function SpecHelpDesk() {
     };
 
     await axios
-      .post(urlApi + '/csentry-getFloor', params, {
-        config,
-      })
+      .post(
+        'http://34.87.121.155:8181/apiwebpbi/api/csentry-getFloor',
+        params,
+        {
+          config,
+        },
+      )
       .then(res => {
         // console.log('res floor', res);
         const datas = res.data;

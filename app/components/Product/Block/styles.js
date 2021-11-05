@@ -30,7 +30,7 @@ export default StyleSheet.create({
   content: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'center',
+    // justifyContent: 'center',
   },
   left: {
     flex: 1,

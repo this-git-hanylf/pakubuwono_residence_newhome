@@ -1,4 +1,4 @@
-package com.ifcaresident;
+package com.ifcaresident.bagus;
 
 import org.devio.rn.splashscreen.SplashScreen;
 import com.facebook.react.ReactActivity;

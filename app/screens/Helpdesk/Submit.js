@@ -1,7 +1,5 @@
 import {
   Text,
-
-  // CheckBox,
   PlaceholderLine,
   Placeholder,
   Button,
@@ -13,9 +11,7 @@ import {
 } from '@components';
 import {BaseColor, BaseStyle, useTheme} from '@config';
 import {CheckBox} from 'react-native-elements';
-
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
-
 import React, {
   useCallback,
   useEffect,
@@ -34,19 +30,17 @@ import {
   Alert,
   Image,
 } from 'react-native';
-
 import {useSelector} from 'react-redux';
 import getUser from '../../selectors/UserSelectors';
 import axios from 'axios';
 import {API_URL} from '@env';
 import styles from './styles';
-
 import {RadioButton} from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import moment from 'moment';
 import ImagePicker from 'react-native-image-crop-picker';
-
 import RNFetchBlob from 'rn-fetch-blob';
+import mime from 'mime';
 
 export default function SubmitHelpdesk({route, props}) {
   const {t, i18n} = useTranslation();
@@ -75,12 +69,13 @@ export default function SubmitHelpdesk({route, props}) {
   const [textLocationCode, setTextLocationCode] = useState('');
   const [textContact, setTextContact] = useState('');
   const [textDescs, setTextDescs] = useState('');
-  const [image, setImage] = useState([]);
+  const [image, setImage] = useState('');
   const [groupCd, setGroupCd] = useState('');
   const [reportDate, setReportDate] = useState('');
   const [_isMount, set_isMount] = useState(false);
   const [dataLocation, setLocation] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
+  const [singleFile, setSingleFile] = useState(null);
 
   const styleItem = {
     ...styles.profileItem,
@@ -190,6 +185,9 @@ export default function SubmitHelpdesk({route, props}) {
       const group_cd = users.Group;
       const reportdate = moment(new Date()).format('DD MMMM YYYY h:mm');
       console.log('group_cd', group_cd);
+
+      console.log('porprs', submitTicket);
+
       setTitles(titles);
       setGroupCd(group_cd);
       setReportDate(reportdate);
@@ -239,16 +237,14 @@ export default function SubmitHelpdesk({route, props}) {
       .then(image => {
         console.log('received image', image);
 
-        setImage({
-          image: [
-            {
-              uri: image.path,
-              width: image.width,
-              height: image.height,
-              mime: image.mime,
-            },
-          ],
-        });
+        setImage([
+          {
+            uri: image.path,
+            width: image.width,
+            height: image.height,
+            mime: image.mime,
+          },
+        ]);
         // setImage(prevState => ({
         //   image: [
         //     ...prevState.image,
@@ -284,30 +280,7 @@ export default function SubmitHelpdesk({route, props}) {
               },
             ],
           });
-          //    this.setState(prevState => ({
-          //      image: [
-          //        ...prevState.image,
-          //        {
-          //          uri: image[i].path,
-          //          width: image[i].width,
-          //          height: image[i].height,
-          //          mime: image[i].mime,
-          //        },
-          //      ],
-          //    }));
         }
-
-        // setImage(prevState => ({
-        //   image: [
-        //     ...prevState.image,
-        //     {
-        //       uri: image.path,
-        //       width: image.width,
-        //       height: image.height,
-        //       mime: image.mime,
-        //     },
-        //   ],
-        // }));
       })
       .catch(e => console.log('tag', e));
   };
@@ -316,270 +289,497 @@ export default function SubmitHelpdesk({route, props}) {
     navigation.navigate('ModalLocation');
   };
 
-  const handleClick = (data, index) => {
-    // console.log('category_grop_cd', data.category_group_cd);
-    // console.log('loc_type', data.location_type);
-    // const passProp = {
-    //   category_group_cd: data.category_group_cd,
-    //   location_type: data.location_type,
-    // };
-    // // navigation.navigate('SelectCategory', passProp);
-    // navigation.navigate('SelectCategory', {
-    //   // screen: 'Settings',
-    //   params: passProp,
-    // });
-  };
-
-  const onSubmit = async () => {
+  function submitTicket() {
     console.log('getdata storage,', passPropStorage);
-    //  this.setState({isLoading: true, loadingText: 'Saving data ...'});
     const passProps = passProp;
     console.log('passprops', passProps);
+    const body = passPropStorage;
 
-    const prevProps = passPropStorage;
+    // const fileImg = image.uri.replace('file://', '');
 
-    let savePhoto = [];
-
-    image.image.map((images, index) => {
-      let fileName =
-        userName.replace(' ', '_') +
-        '_' +
-        moment(new Date()).format('MMDDYYYY') +
-        '_ticket_' +
-        (index + 1) +
-        '.jpg';
-      // let fileImg = RNFetchBlob.wrap(images.uri.replace('file://', ''));
-      let fileImg = images.uri.replace('file://', '');
-
-      const formData_pict = {
-        // data: data,
-        seq_no_pict: index,
-        filename: fileName,
-        userfile: fileImg,
-      };
-
-      console.log('dataSaveAll', formData_pict);
-      savePhoto.push(formData_pict);
+    const fileUpload = singleFile;
+    const bodyData = new FormData();
+    bodyData.append('email', passProp.dataDebtor.email);
+    bodyData.append('entity_cd', passProp.entity_cd);
+    bodyData.append('project_no', passProp.project_no);
+    bodyData.append('reportdate', '04 Nov 2021 08:47');
+    bodyData.append('takenby', 'Bagus');
+    bodyData.append('lotno', passProp.lot_no.lot_no);
+    bodyData.append('debtoracct', passProp.dataDebtor.debtor_acct);
+    bodyData.append('category', passProp.data.category_cd);
+    bodyData.append('floor', passProp.floor);
+    bodyData.append('location', '059');
+    bodyData.append('reqtype', passProp.location_type);
+    bodyData.append('workreq', textDescs);
+    bodyData.append('reqby', passProp.reportName);
+    bodyData.append('contactno', passProp.contactNo);
+    bodyData.append('audit_user', passProp.data.audit_user);
+    bodyData.append('responddate', '04 Nov 2021 08:47');
+    bodyData.append('userfile', {
+      uri: image[0].uri,
+      name: 'image.jpg',
+      type: 'image/jpeg',
     });
-
-    console.log('ssavefoto', savePhoto);
-
-    const formData = {
-      email: email, //-email
-      project_no: prevProps.project_no, //-project_no
-      entity_cd: prevProps.entity_cd, //-entity_cd
-      reportdate: reportDate,
-      takenby: prevProps.data.audit_user, //ini siapa?? ini diambil darimana?
-
-      //   rowID: prevProps.data.rowID,
-
-      debtoracct: prevProps.dataDebtor.debtor_acct, //-debtoracct
-      lotno: prevProps.lot_no.lot_no, //-lotno
-      // ticket_no: prevProps.ticketNo,
-      category: prevProps.data.category_cd, //-category
-      floor: prevProps.floor, //-level_no / floor
-      location: textLocationCode,
-      //   reqtype: prevProps.data.complain_type, //complain type ? atau request yype?
-      reqtype: prevProps.location_type,
-      workreq: textDescs,
-      reqby: prevProps.reportName, //reported_by
-
-      contactno: prevProps.contactNo, //-contact_no
-      audit_user: prevProps.data.audit_user, //-
-      //   request_by: userName, //-username
-      responddate: reportDate, //gatau ini diambil darimana
-    };
-
-    console.log('fordata submit', formData);
-
-    if (_isMount) {
-      setSpinner(false);
-
-      let config = {
+    console.log('liatbody', bodyData);
+    return fetch(
+      'http://34.87.121.155:2121/apiwebpbi/api/csentry-saveTicketWithImage',
+      {
+        method: 'post',
         headers: {
-          Accept: 'application/json',
           'Content-Type': 'multipart/form-data',
         },
-      };
-      console.log(config);
-      console.log(urlApi + '/csentry-saveTicket');
-
-      return await axios
-        .post(urlApi + '/csentry-saveTicket', formData, {config})
-        //   .post(urlApi + '/csentry-saveTicket', formData, {config}) //kalo untuk save form input pake nya 'data'
-        .then(res => {
-          console.log('res urlapi', res);
-          console.log('res urlapi', res.data.Pesan);
-          console.log('ticket_no', res.data.Ticket_No);
-          // return result.response.data;
-
-          //
-
-          uploadPhoto(res.data.Ticket_No);
-        })
-        .catch(error => {
-          console.log('err', error.response);
-          alert('error nih');
+        body: bodyData,
+      },
+    )
+      .then(res => {
+        return res.json().then(resJson => {
+          alert(resJson.Pesan);
         });
-    }
-  };
-
-  const uploadPhoto2222 = async dataTicketNo => {
-    setSpinner(true);
-    console.log('dataReportno', dataTicketNo);
-    //   this.setState({isLoading: true, loadingText: 'Uploading image ...'});
-    const passProps = passProp;
-    const x = passProps;
-    const prevProps = passPropStorage;
-    console.log('x uplaod foto', x);
-
-    const data = {
-      // cons: 'IFCAPB',
-      report_no: dataTicketNo,
-      entity: x.entity_cd,
-      project: x.project_no,
-      request_by: x.reportName,
-      audit_user: x.data.audit_user,
-      //   seqNo: x.seqNo,
-    };
-    console.log('data save foto', data);
-    let saveFoto = [];
-    image.image.map(async (images, index) => {
-      let fileName =
-        x.reportName.replace(' ', '_') +
-        '_' +
-        moment(new Date()).format('MMDDYYYY') +
-        '_ticket_' +
-        (index + 1) +
-        '.jpg';
-      let fileImg = images.uri.replace('file://', '');
-
-      const frmData = {
-        // data: data,
-        // seq_no_pict: index,
-        report_no: dataTicketNo,
-        entity: x.entity_cd,
-        project: x.project_no,
-        request_by: x.reportName,
-        audit_user: x.data.audit_user,
-        name: 'image',
-        // data: data,
-        seq_no_pict: index,
-        filename: fileName,
-        image: fileImg,
-      };
-
-      console.log('form data image save', frmData);
-      saveFoto.push(frmData);
-    });
-
-    const config = {
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'multipart/form-data',
-      },
-    };
-    console.log('save foto', saveFoto);
-
-    await axios
-      .post(
-        'http://34.87.121.155:2121/apiwebpbi/api/csentry-uploadImgTicket',
-        saveFoto,
-        {config},
-        // {'Content-Type': 'multipart/form-data'},
-      ) //kalo untuk save form input pake nya 'data'
-      .then(res => {
-        console.log('res upload foto res', res);
-        console.log('res upload foto', res.data);
-        // console.log('res upload', res.data.Pesan);///
-        // return result.response.data;
-        return res.data;
       })
-      .catch(error => {
-        console.log('err', error.response.data);
-        alert('error nih');
+      .catch(err => {
+        console.log(err);
       });
-  };
+  }
 
-  const uploadPhoto = async dataTicketNo => {
-    console.log('dataReportno', dataTicketNo);
-    //   this.setState({isLoading: true, loadingText: 'Uploading image ...'});
-    const passProps = passProp;
-    const x = passProps;
-    const prevProps = passPropStorage;
-    console.log('x uplaod foto', x);
+  //     entity_cd: x.entity_cd,
+  //       project_no: x.project_no,
+  //       // request_by: x.reportName,
+  //       reportdate: '04 Nov 2021 08:47',
+  //       takenby: 'MGR',
+  //       debtoracct: '10180',
+  //       lotno: 'R27A',
+  //       category: 'EE01',
+  //       floor: x.floor,
+  //       location: '059',
+  //       reqtype: 'U',
+  //       workreq: 'Test API With Image',
+  //       reqby: 'RIKI',
+  //       contactno: x.contactNo,
+  //       audit_user: x.data.audit_user,
+  //       responddate: '04 Nov 2021 08:47',
+  //       userfile: fileImg,
 
-    const data = {
-      // cons: 'IFCAPB',
-      report_no: dataTicketNo,
-      entity: x.entity_cd,
-      project: x.project_no,
-      request_by: x.reportName,
-      audit_user: x.data.audit_user,
-      //   seqNo: x.seqNo,
-    };
-    let dataSaveAll = [];
-    image.image.map(async (images, index) => {
-      let fileName =
-        x.reportName.replace(' ', '_') +
-        '_' +
-        moment(new Date()).format('MMDDYYYY') +
-        '_ticket_' +
-        (index + 1) +
-        '.jpg';
-      //   let fileImg = RNFetchBlob.wrap(images.uri.replace('file://', ''));
-      let fileImg = images.uri.replace('file://', '');
-      console.log('fileimg', fileImg);
+  //     email: email, //-email
 
-      const formData_pict = {
-        name: 'image',
-        // data: data,
-        // report_no: dataTicketNo,
-        // entity_cd: x.entity_cd,
-        // project_no: x.project_no,
-        // request_by: x.reportName,
-        // audit_user: x.data.audit_user,
-        seq_no_pict: index,
-        filename: fileName,
-        image: fileImg,
-        // image: 'halo',
-      };
+  //     // report_no: dataTicketNo,
+  //     entity_cd: x.entity_cd,
+  //     project_no: x.project_no,
+  //     // request_by: x.reportName,
+  //     reportdate: '04 Nov 2021 08:47',
+  //     takenby: 'RIKKI',
+  //     lot_no: x.lot_no,
+  //     audit_user: x.data.audit_user,
+  //     category_cd: 'EE01',
+  //     floor: x.floor,
+  //     reqtype: x.location_type,
+  //     workreq: 'Test API With Image',
+  //     reqby: x.reqby,
+  //     contactNo: x.contactNo,
+  //     // filename: fileName,
+  //     // userfile: fileImg,
+  // const onSubmit = async () => {
+  //   console.log('getdata storage,', passPropStorage);
+  //   //  this.setState({isLoading: true, loadingText: 'Saving data ...'});
+  //   const passProps = passProp;
+  //   console.log('passprops', passProps);
 
-      console.log('dataSaveAll', formData_pict);
+  //   const prevProps = passPropStorage;
 
-      dataSaveAll.push(formData_pict);
-    });
+  //   let savePhoto = [];
 
-    const config = {
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'multipart/form-data',
-      },
-    };
+  //   image.map((images, index) => {
+  //     let fileName =
+  //       userName.replace(' ', '_') +
+  //       '_' +
+  //       moment(new Date()).format('MMDDYYYY') +
+  //       '_ticket_' +
+  //       (index + 1) +
+  //       '.jpg';
+  //     // let fileImg = RNFetchBlob.wrap(images.uri.replace('file://', ''));
+  //     let fileImg = images.uri.replace('file://', '');
 
-    await axios
-      .post(
-        `http://34.87.121.155:8181/apiwebpbi/api/csentry-uploadImgTicket`,
+  //     const formData_pict = {
+  //       // data: data,
+  //       seq_no_pict: index,
+  //       filename: fileName,
+  //       userfile: fileImg,
+  //     };
 
-        data,
-        {config},
-      ) //kalo untuk save form input pake nya 'data'
-      .then(res => {
-        console.log('res upload foto', res);
-        // console.log('res upload', res.data.Pesan);///
-        // return result.response.data;
-        return res.data;
-      })
-      .catch(error => {
-        console.log('err', error.response.data);
-        alert('error nih');
-      });
-  };
+  //     console.log('dataSaveAll', formData_pict);
+  //     savePhoto.push(formData_pict);
+  //   });
+
+  //   console.log('ssavefoto', savePhoto);
+
+  //   const formData = {
+  //     email: email, //-email
+  //     project_no: prevProps.project_no, //-project_no
+  //     entity_cd: prevProps.entity_cd, //-entity_cd
+  //     reportdate: reportDate,
+  //     takenby: prevProps.data.audit_user, //ini siapa?? ini diambil darimana?
+
+  //     //   rowID: prevProps.data.rowID,
+
+  //     debtoracct: prevProps.dataDebtor.debtor_acct, //-debtoracct
+  //     lotno: prevProps.lot_no.lot_no, //-lotno
+  //     // ticket_no: prevProps.ticketNo,
+  //     category: prevProps.data.category_cd, //-category
+  //     floor: prevProps.floor, //-level_no / floor
+  //     location: textLocationCode,
+  //     //   reqtype: prevProps.data.complain_type, //complain type ? atau request yype?
+  //     reqtype: prevProps.location_type,
+  //     workreq: textDescs,
+  //     reqby: prevProps.reportName, //reported_by
+
+  //     contactno: prevProps.contactNo, //-contact_no
+  //     audit_user: prevProps.data.audit_user, //-
+  //     //   request_by: userName, //-username
+  //     responddate: reportDate, //gatau ini diambil darimana
+  //   };
+
+  //   console.log('fordata submit', formData);
+
+  //   if (_isMount) {
+  //     setSpinner(false);
+
+  //     let config = {
+  //       headers: {
+  //         Accept: 'application/json',
+  //         'Content-Type': 'multipart/form-data',
+  //       },
+  //     };
+  //     console.log(config);
+  //     // console.log(urlApi + '/csentry-saveTicket');
+
+  //     await axios
+  //       .post(
+  //         'http://34.87.121.155:2121/apiwebpbi/api/csentry-saveTicketWithImage',
+  //         formData,
+  //         {
+  //           headers: {
+  //             Accept: 'application/json',
+  //             'Content-Type': 'multipart/form-data',
+  //           },
+  //         },
+  //       )
+  //       .then(res => {
+  //         console.log('res urlapi', res);
+  //         console.log('res urlapi', res.data.Pesan);
+  //         console.log('ticket_no', res.data.Ticket_No);
+  //         // return result.response.data;
+
+  //         //
+  //         alert(res.Pesan);
+  //       })
+  //       .catch(error => {
+  //         console.log('err', error.response);
+  //         alert('error nih');
+  //       });
+  //   }
+  // };
+
+  // const uploadPhoto = async dataTicketNo => {
+  //   console.log('dataReportno', dataTicketNo);
+  //   //   this.setState({isLoading: true, loadingText: 'Uploading image ...'});
+  //   const passProps = passProp;
+  //   const x = passProps;
+  //   const prevProps = passPropStorage;
+  //   console.log('x uplaod foto', x);
+
+  //   const data = {
+  //     email: email, //-email
+
+  //     // report_no: dataTicketNo,
+  //     entity_cd: x.entity_cd,
+  //     project_no: x.project_no,
+  //     // request_by: x.reportName,
+  //     reportdate: '04 Nov 2021 08:47',
+  //     takenby: 'RIKKI',
+  //     lot_no: x.lot_no,
+  //     audit_user: x.data.audit_user,
+  //     category_cd: 'EE01',
+  //     floor: x.floor,
+  //     reqtype: x.location_type,
+  //     workreq: 'Test API With Image',
+  //     reqby: x.reqby,
+  //     contactNo: x.contactNo,
+  //     // filename: fileName,
+  //     // userfile: fileImg,
+  //   };
+
+  //   console.log('coba liat', data);
+
+  //   let dataSaveAll = [];
+  //   image.map(async (images, index) => {
+  //     let fileName =
+  //       x.reportName.replace(' ', '_') +
+  //       '_' +
+  //       moment(new Date()).format('MMDDYYYY') +
+  //       '_ticket_' +
+  //       (index + 1) +
+  //       '.jpg';
+  //     //   let fileImg = RNFetchBlob.wrap(images.uri.replace('file://', ''));
+  //     let fileImg = images.uri.replace('file://', '');
+  //     console.log('fileimg', fileImg);
+
+  //     // const file =  [...fileImg],
+
+  //     const formData_pict = {
+  //       // name: 'image',
+  //       // data: data,
+  //       email: email, //-email
+
+  //       // report_no: dataTicketNo,
+  //       entity_cd: x.entity_cd,
+  //       project_no: x.project_no,
+  //       // request_by: x.reportName,
+  //       reportdate: '04 Nov 2021 08:47',
+  //       takenby: 'MGR',
+  //       debtoracct: '10180',
+  //       lotno: 'R27A',
+  //       category: 'EE01',
+  //       floor: x.floor,
+  //       location: '059',
+  //       reqtype: 'U',
+  //       workreq: 'Test API With Image',
+  //       reqby: 'RIKI',
+  //       contactno: x.contactNo,
+  //       audit_user: x.data.audit_user,
+  //       responddate: '04 Nov 2021 08:47',
+  //       userfile: fileImg,
+
+  //       // lotno: 'R27A',
+  //       // audit_user: x.data.audit_user,
+  //       // category_cd: 'EE01',
+  //       // floor: x.floor,
+  //       // reqtype: x.location_type,
+  //       // workreq: 'Test API With Image',
+  //       // reqby: 'Bayu Adhyatmaja',
+  //       // contactNo: x.contactNo,
+  //       // // filename: fileName,
+  //       // userfile: fileImg,
+  //       // // image: 'halo',
+  //     };
+
+  //     console.log('dataSaveAll', formData_pict);
+
+  //     var photo = {
+  //       uri: formData_pict.userfile,
+  //       type: 'image/jpeg',
+  //       name: 'photo.jpg',
+  //     };
+  //     console.log('dataPict', photo);
+
+  //     dataSaveAll.push(formData_pict);
+
+  //     const formData = new FormData();
+  //     formData.append('email', formData_pict.email);
+  //     formData.append('entity_cd', formData_pict.entity_cd);
+  //     formData.append('project_no', formData_pict.project_no);
+  //     formData.append('reportdate', formData_pict.reportdate);
+  //     formData.append('takenby', formData_pict.takenby);
+  //     formData.append('lotno', formData_pict.lotno),
+  //       formData.append('category', formData_pict.category),
+  //       formData.append('floor', formData_pict.floor),
+  //       formData.append('location', formData_pict.location),
+  //       formData.append('reqtype', formData_pict.reqtype),
+  //       formData.append('workreq', formData_pict.workreq),
+  //       formData.append('reqby', formData_pict.reqby),
+  //       formData.append('contactno', formData_pict.contactno),
+  //       formData.append('audit_user', formData_pict.audit_user),
+  //       formData.append('responddate', formData_pict.reportdate),
+  //       formData.append('userfile', formData_pict.userfile),
+  //       // images.forEach((image, i) => {
+  //       //   formData.append('userfile', {
+  //       //     ...image,
+  //       //     uri:
+  //       //       Platform.OS === 'android'
+  //       //         ? image.uri
+  //       //         : image.uri.replace('file://', ''),
+  //       //     name: `image-${i}`,
+  //       //     type: 'image/jpeg',
+  //       //   });
+  //       // });
+
+  //       console.log('dataSave', formData);
+
+  //     await axios
+  //       .post(
+  //         'http://34.87.121.155:2121/apiwebpbi/api/csentry-saveTicketWithImage',
+
+  //         formData,
+  //         {
+  //           headers: {
+  //             Accept: 'application/json',
+  //             'Content-Type': 'multipart/form-data',
+  //           },
+  //         },
+  //       ) //kalo untuk save form input pake nya 'data'
+  //       .then(res => {
+  //         console.log('res upload foto', res.data);
+  //         console.log('res upload', res.data.Pesan); ///
+  //         // return result.response.data;
+  //         alert(res.Pesan);
+  //       })
+  //       .catch(error => {
+  //         // console.log('err', error.res.data);
+  //         alert('error nih', error);
+  //       });
+  //   });
+  // };
+
+  // const upload = () => {
+  //   const passProps = passProp;
+  //   const x = passProps;
+  //   const prevProps = passPropStorage;
+  //   console.log('data upload', x);
+  //   const data = {
+  //     email: email, //-email
+
+  //     // report_no: dataTicketNo,
+  //     entity_cd: x.entity_cd,
+  //     project_no: x.project_no,
+  //     // request_by: x.reportName,
+  //     reportdate: '04 Nov 2021 08:47',
+  //     takenby: 'RIKKI',
+  //     lot_no: x.lot_no,
+  //     audit_user: x.data.audit_user,
+  //     category_cd: 'EE01',
+  //     floor: x.floor,
+  //     reqtype: x.location_type,
+  //     workreq: 'Test API With Image',
+  //     reqby: x.reqby,
+  //     contactNo: x.contactNo,
+  //     // filename: fileName,
+  //     // userfile: fileImg,
+  //   };
+  //   let dataSaveAll = [];
+  //   image.map(async (images, index) => {
+  //     let fileName =
+  //       x.reportName.replace(' ', '_') +
+  //       '_' +
+  //       moment(new Date()).format('MMDDYYYY') +
+  //       '_ticket_' +
+  //       (index + 1) +
+  //       '.jpg';
+  //     //   let fileImg = RNFetchBlob.wrap(images.uri.replace('file://', ''));
+  //     let fileImg = RNFetchBlob.wrap(images.uri.replace('file:/', ''));
+  //     console.log('fileimg', fileImg);
+
+  //     // const file =  [...fileImg],
+
+  //     const formData_pict = {
+  //       // name: 'image',
+  //       // data: data,
+  //       email: email, //-email
+
+  //       // report_no: dataTicketNo,
+  //       entity_cd: x.entity_cd,
+  //       project_no: x.project_no,
+  //       // request_by: x.reportName,
+  //       reportdate: '04 Nov 2021 08:47',
+  //       takenby: 'MGR',
+  //       debtoracct: '10180',
+  //       lotno: 'R27A',
+  //       category: 'EE01',
+  //       floor: x.floor,
+  //       location: '059',
+  //       reqtype: 'U',
+  //       workreq: 'Test API With Image',
+  //       reqby: 'RIKI',
+  //       contactno: x.contactNo,
+  //       audit_user: x.data.audit_user,
+  //       responddate: '04 Nov 2021 08:47',
+  //       userfile: fileImg,
+
+  //       // lotno: 'R27A',
+  //       // audit_user: x.data.audit_user,
+  //       // category_cd: 'EE01',
+  //       // floor: x.floor,
+  //       // reqtype: x.location_type,
+  //       // workreq: 'Test API With Image',
+  //       // reqby: 'Bayu Adhyatmaja',
+  //       // contactNo: x.contactNo,
+  //       // // filename: fileName,
+  //       // userfile: fileImg,
+  //       // // image: 'halo',
+  //     };
+
+  //     console.log('dataSaveAll', formData_pict);
+
+  //     dataSaveAll.push(formData_pict);
+
+  //     const formData = new FormData();
+  //     formData.append('email', formData_pict.email);
+  //     formData.append('entity_cd', formData_pict.entity_cd);
+  //     formData.append('project_no', formData_pict.project_no);
+  //     formData.append('reportdate', formData_pict.reportdate);
+  //     formData.append('takenby', formData_pict.takenby);
+  //     formData.append('lotno', formData_pict.lotno),
+  //       formData.append('category', formData_pict.category),
+  //       formData.append('floor', formData_pict.floor),
+  //       formData.append('location', formData_pict.location),
+  //       formData.append('reqtype', formData_pict.reqtype),
+  //       formData.append('workreq', formData_pict.workreq),
+  //       formData.append('reqby', formData_pict.reqby),
+  //       formData.append('contactno', formData_pict.contactno),
+  //       formData.append('audit_user', formData_pict.audit_user),
+  //       formData.append('responddate', formData_pict.reportdate),
+  //       formData.append('userfile', formData_pict.userfile),
+  //       // formData.append('image', {
+  //       //   uri: formData_pict.userfile,
+  //       //   type: 'image/jpeg',
+  //       //   mime: 'image/jpeg',
+  //       //   name: formData_pict.userfile,
+  //       // });
+
+  //       console.log('dataSave', formData);
+  //     RNFetchBlob.fetch(
+  //       'POST',
+  //       'http://34.87.121.155:2121/apiwebpbi/api/csentry-saveTicketWithImage',
+  //       {
+  //         'Content-Type': 'multipart/form-data',
+  //       },
+  //       [
+  //         {
+  //           name: 'userfile',
+  //           filename: 'contsh.jpg',
+  //           type: 'image/jpg',
+  //           data: formData_pict.userfile,
+  //         },
+
+  //         {name: 'email', data: formData_pict.email},
+  //         {name: 'entity_cd', data: formData_pict.entity_cd},
+  //         {name: 'project_no', data: formData_pict.project_no},
+  //         {name: 'reportdate', data: formData_pict.reportdate},
+  //         {name: 'takenby', data: formData_pict.takenby},
+  //         {name: 'lotno', data: formData_pict.lotno},
+  //         {name: 'category', data: formData_pict.category},
+  //         {name: 'floor', data: formData_pict.floor},
+  //         {name: 'location', data: formData_pict.location},
+  //         {name: 'reqtype', data: formData_pict.reqtype},
+
+  //         {name: 'workreq', data: formData_pict.workreq},
+
+  //         {name: 'reqby', data: formData_pict.reqby},
+
+  //         {name: 'contactno', data: formData_pict.contactno},
+  //         {name: 'audit_user', data: formData_pict.audit_user},
+
+  //         {name: 'responddate', data: formData_pict.responddate},
+  //       ],
+  //     ).then(resp => {
+  //       // console.log(resp.data);
+  //       alert(resp.Pesan);
+  //     });
+  //   });
+  // };
+
   const removePhoto = async key => {
     console.log('key remove', key);
-    let imageArray = [...image.image];
+    let imageArray = [...image];
     imageArray.splice(key, 1);
-    setImage({image: imageArray});
+    setImage(imageArray);
     //    let imageArray = [...this.state.image];
     //    imageArray.splice(key, 1);
     //    this.setState({image: imageArray});
@@ -664,7 +864,7 @@ export default function SubmitHelpdesk({route, props}) {
       </View>
       <View style={styles.pickerWrap}>
         <Text>Attachment</Text>
-        {image.image.length === 0 ? (
+        {image.length === 0 ? (
           <TouchableOpacity
             onPress={() => handlePhotoPick()}
             style={[styles.sel, {marginBottom: 20, alignSelf: 'center'}]}>
@@ -672,13 +872,13 @@ export default function SubmitHelpdesk({route, props}) {
           </TouchableOpacity>
         ) : (
           <View>
-            {image.image.map((data, key) => (
+            {image.map((data, key) => (
               <TouchableOpacity
                 key={key}
                 style={styles.avatarContainer}
                 onPress={() => console.log('Photo Tapped')}>
                 <View>
-                  <Image style={styles.avatar} source={image.image[key]} />
+                  <Image style={styles.avatar} source={image[key]} />
 
                   <Icon
                     onPress={() => removePhoto(key)}
@@ -695,7 +895,7 @@ export default function SubmitHelpdesk({route, props}) {
           </View>
         )}
       </View>
-      <Button onPress={() => onSubmit()}>
+      <Button onPress={() => submitTicket()}>
         <Text>Submit</Text>
       </Button>
       <Text>submitasas</Text>

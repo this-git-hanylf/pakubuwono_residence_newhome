@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "521996564157",
+    "project_id": "ifca-master",
+    "storage_bucket": "ifca-master.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:521996564157:android:e5e9e9fce5b93f955a29d4",
+        "android_client_info": {
+          "package_name": "com.ifcaresident.bagus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "521996564157-3kbadmosfsichfvo02tmq2s1cvkfvk33.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBrM70h5iINg5zVkHL8FOOEiEG3bdFmLWE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "521996564157-3kbadmosfsichfvo02tmq2s1cvkfvk33.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
