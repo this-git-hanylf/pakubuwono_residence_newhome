@@ -1,6 +1,6 @@
 import {Icon, Image, Text} from '@components';
 import {BaseColor, Images, useTheme} from '@config';
-import React, {Fragment} from 'react';
+import React, {Fragment, useState} from 'react';
 import {View, TouchableOpacity} from 'react-native';
 import styles from './styles';
 import {useNavigation} from '@react-navigation/core';
@@ -9,13 +9,13 @@ import getUser from '../../selectors/UserSelectors';
 import {useSelector} from 'react-redux';
 
 const HeaderHome = props => {
+  console.log('propsnotif', props);
   const {t} = useTranslation();
   const navigation = useNavigation();
 
   const {colors} = useTheme();
   const {onPressRight = () => {}, style = {}, ComponentRight} = props;
   const user = useSelector(state => getUser(state));
-
   return (
     <Fragment>
       <View style={[styles.header, style]}>
@@ -38,6 +38,8 @@ const HeaderHome = props => {
             style={{position: 'relative'}}
             onPress={() => navigation.navigate('Notification')}>
             <Icon name={'bell'} solid size={20} color={BaseColor.grayColor} />
+            {/* <Text>{badgeCount}</Text> */}
+
             <View
               style={[
                 styles.notyHeader,
@@ -45,8 +47,7 @@ const HeaderHome = props => {
                   borderColor: BaseColor.whiteColor,
                   backgroundColor: colors.primary,
                 },
-              ]}
-            />
+              ]}></View>
           </TouchableOpacity>
         )}
       </View>

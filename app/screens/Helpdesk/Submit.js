@@ -898,8 +898,6 @@ export default function SubmitHelpdesk({route, props}) {
       <Button onPress={() => submitTicket()}>
         <Text>Submit</Text>
       </Button>
-      <Text>submitasas</Text>
-      <Text>{titles}</Text>
     </SafeAreaView>
   );
 }

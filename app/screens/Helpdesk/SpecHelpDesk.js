@@ -390,7 +390,7 @@ export default function SpecHelpDesk() {
                   marginTop: 0,
                   paddingTop: 0,
                 }}>
-                Report No
+                Taken By
               </Text>
               <TextInput
                 placeholder="Reported By"

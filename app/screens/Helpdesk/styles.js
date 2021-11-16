@@ -1,7 +1,9 @@
 import {StyleSheet, Dimensions, PixelRatio} from 'react-native';
-import {BaseColor} from '@config';
+import {BaseColor, useTheme} from '@config';
 const deviceHeight = Dimensions.get('window').height;
 const deviceWidth = Dimensions.get('window').width;
+const colors = useTheme;
+
 export default StyleSheet.create({
   textInput: {
     height: 46,
@@ -181,18 +183,18 @@ export default StyleSheet.create({
     color: '#F9A233',
     textAlign: 'center',
   },
-  activeTabStyle: {backgroundColor: BaseColor.coklat_pkbw},
+  activeTabStyle: {backgroundColor: BaseColor.hijau_pkbw},
   activeTabTextStyle: {
     color: '#000',
     fontFamily: 'Montserrat-SemiBold',
   },
   tabStyle: {
-    borderColor: BaseColor.coklat_pkbw,
+    borderColor: BaseColor.hijau_pkbw,
     backgroundColor: '#F6F9FC',
     paddingVertical: 10,
   },
   tabTextStyle: {
-    color: BaseColor.coklat_pkbw,
+    color: BaseColor.hijau_pkbw,
     fontFamily: 'Montserrat-SemiBold',
   },
 });

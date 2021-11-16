@@ -40,7 +40,7 @@ export default StyleSheet.create({
   title: {marginBottom: 5},
   notyHeader: {
     position: 'absolute',
-    width: 10,
+    width: '100%',
     height: 10,
     borderWidth: 1,
     borderRadius: 5,

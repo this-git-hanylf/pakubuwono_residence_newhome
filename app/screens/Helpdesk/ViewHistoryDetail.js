@@ -10,6 +10,7 @@ import {
   Header,
   Icon,
   Image,
+  Tag,
   CategoryIconSoft,
 } from '@components';
 import {BaseColor, BaseStyle, useTheme, Images} from '@config';
@@ -17,7 +18,7 @@ import {CheckBox, Badge} from 'react-native-elements';
 // import {Image} from 'react-native';
 import StarRating from 'react-native-star-rating';
 import {useNavigation} from '@react-navigation/native';
-
+import {enableExperimental} from '@utils';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {
@@ -104,6 +105,26 @@ export default function ViewHistoryDetail({route}) {
     {id: '7', image: Images.location6},
     {id: '8', image: Images.location7},
   ];
+
+  // ---- create tabs
+  const TABS = [
+    {
+      id: 1,
+      title: t('detail'),
+    },
+    {
+      id: 2,
+      title: t('feedback'),
+    },
+  ];
+  const [tab, setTab] = useState(TABS[0]);
+
+  useEffect(() => {
+    const id = route?.params?.id;
+    TABS.forEach(tab => {
+      tab.id == id && setTab(tab);
+    });
+  }, [route?.params?.id]);
 
   //   console.log('images dummy', imagesDummy[0].image);
   //-----FOR GET ENTITY & PROJJECT
@@ -307,6 +328,29 @@ export default function ViewHistoryDetail({route}) {
         <Text headline style={{fontWeight: 'normal'}}>
           View History Ticket Detail
         </Text>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          {TABS.map((item, index) => (
+            <View key={index} style={{flex: 1, paddingHorizontal: 20}}>
+              <Tag
+                primary
+                style={{
+                  backgroundColor:
+                    tab.id == item.id ? colors.primary : colors.background,
+                }}
+                onPress={() => {
+                  enableExperimental();
+                  setTab(item);
+                }}>
+                <Text
+                  body1={tab.id != item.id}
+                  light={tab.id != item.id}
+                  whiteColor={tab.id == item.id}>
+                  {item.title}
+                </Text>
+              </Tag>
+            </View>
+          ))}
+        </View>
 
         {spinner ? (
           <View>
@@ -315,21 +359,10 @@ export default function ViewHistoryDetail({route}) {
               <PlaceholderLine width={100} noMargin style={{height: 40}} />
             </Placeholder>
           </View>
-        ) : dataTiketMulti.length !== 0 ? (
+        ) : (
           <View>
-            <SegmentedControlTab
-              values={['Detail', 'Feedback']}
-              selectedIndex={selectedIndex}
-              //   selectedIndex={1}
-              onTabPress={index => handleIndexChange(index)}
-              //   onTabPress={index => setSelectedIndex(index)}
-              activeTabStyle={styles.activeTabStyle}
-              activeTabTextStyle={styles.activeTabTextStyle}
-              tabStyle={styles.tabStyle}
-              tabTextStyle={styles.tabTextStyle}
-            />
-            <ScrollView>
-              {selectedIndex === 0 && (
+            {tab.id == 1 && (
+              <ScrollView>
                 <View style={{margin: 5, paddingRight: 10}}>
                   <View
                     style={{
@@ -630,11 +663,10 @@ export default function ViewHistoryDetail({route}) {
                   </View> */}
                   {/* //contoh image slider view */}
                 </View>
-              )}
-            </ScrollView>
-
-            <ScrollView>
-              {selectedIndex === 1 && (
+              </ScrollView>
+            )}
+            {tab.id == 2 && (
+              <ScrollView>
                 <View>
                   {dataTiketMulti.status != 'R' ? (
                     <View style={{marginHorizontal: 10, marginTop: 20}}>
@@ -752,12 +784,8 @@ export default function ViewHistoryDetail({route}) {
                     </View>
                   )}
                 </View>
-              )}
-            </ScrollView>
-          </View>
-        ) : (
-          <View>
-            <Text>no data</Text>
+              </ScrollView>
+            )}
           </View>
         )}
       </View>

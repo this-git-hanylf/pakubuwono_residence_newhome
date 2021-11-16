@@ -6,6 +6,7 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
+    "build-android-release": "cd ./android && ./gradlew clean && ./gradlew app:assembleRelease",
     "test": "jest",
     "lint": "eslint .",
     "postinstall": "npx jetify"
@@ -51,6 +52,7 @@
     "react-native-onesignal": "^4.3.1",
     "react-native-pager-view": "^5.0.12",
     "react-native-paper": "^4.9.2",
+    "react-native-push-notification": "^8.1.1",
     "react-native-reanimated": "~2.1.0",
     "react-native-render-html": "^6.2.0",
     "react-native-restart": "0.0.22",

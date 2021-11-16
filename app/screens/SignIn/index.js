@@ -60,7 +60,7 @@ const SignIn = props => {
     <SafeAreaView
       style={BaseStyle.safeAreaView}
       edges={['right', 'top', 'left']}>
-      <Header title={t('sign_in')} style={{marginVertical: 50}} />
+      <View style={{marginVertical: 50}} />
       <View>
         <Image
           source={require('../../assets/images/pakubuwono.png')}

@@ -4,6 +4,8 @@ import {
   ListTextButton,
   SafeAreaView,
   Tag,
+  PlaceholderLine,
+  Placeholder,
   Text,
   Button,
   CategoryGrid,
@@ -21,7 +23,9 @@ import {
   TouchableOpacity,
   View,
   TextInput,
+  RefreshControl,
   ActivityIndicator,
+  TouchableHighlight,
 } from 'react-native';
 import {SceneMap} from 'react-native-tab-view';
 import {useSelector} from 'react-redux';
@@ -45,8 +49,9 @@ export default function ModalLocation(props) {
 
   const [arrayholder, setArrayHolder] = useState([]);
   const [getLocationFilter, setLocationFilter] = useState([]);
-  const [spinner, setSpinner] = useState(false);
+  const [spinner, setSpinner] = useState(true);
   const [itemBank, setItemBank] = useState('');
+  const [refreshing, setRefreshing] = useState(false);
 
   const [propsparams, setPropsParams] = useState(props);
 
@@ -65,20 +70,22 @@ export default function ModalLocation(props) {
         // token: "",
       },
     };
+    console.log('url api', urlApi);
 
     await axios
-      .get(urlApi + '/csentry-getLocation', {
+      .get('http://34.87.121.155:8181/apiwebpbi/api/csentry-getLocation', {
         config,
       })
       .then(res => {
-        if (!res.Error) {
+        console.log(res.data.Error);
+        if (res.data.Error == false) {
           const datas = res.data;
           const arrLocation = datas.Data;
 
-          //   console.log('bank arrLocation', arrLocation);
+          console.log('bank arrLocationsdsa', arrLocation);
 
-          setSpinner(false);
           setLocationFilter(arrLocation);
+          setSpinner(false);
           // this.setState({isLoaded: !this.state.isLoaded}, () => {
           //   // alert(res.Pesan)
           //   this.setState({getbank: resData});
@@ -157,26 +164,41 @@ export default function ModalLocation(props) {
         onChangeText={text => searchFilterFunction(text)}
         autoCorrect={false}
       />
-      {getLocationFilter == 0 ? (
-        <ActivityIndicator color="#fff" style={{paddingTop: 10}} />
-      ) : (
-        <View containerStyle={{borderTopWidth: 0, borderBottomWidth: 0}}>
-          <FlatList
-            data={getLocationFilter}
-            keyExtractor={item => item.location_cd}
-            renderItem={({item}) => (
-              <View>
-                <TouchableOpacity
-                  onPress={() => selectedItem(item)}
-                  style={{width: '100%'}}>
-                  <View>
-                    <Text style={{color: '#fff'}}>{item.descs}</Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
-            )}
-          />
+
+      {spinner ? (
+        <View>
+          {/* <Spinner visible={this.state.spinner} /> */}
+          <Placeholder style={{marginVertical: 4, paddingHorizontal: 10}}>
+            <PlaceholderLine width={100} noMargin style={{height: 40}} />
+          </Placeholder>
         </View>
+      ) : (
+        <FlatList
+          contentContainerStyle={{paddingHorizontal: 20}}
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={true}
+          refreshControl={
+            <RefreshControl
+              colors={[colors.primary]}
+              tintColor={colors.primary}
+              refreshing={refreshing}
+              onRefresh={() => {}}
+            />
+          }
+          data={getLocationFilter}
+          keyExtractor={(item, index) => index}
+          renderItem={({item, index, separators}) => (
+            <TouchableHighlight
+              key={item.location_cd}
+              onPress={() => selectedItem(item)}
+              onShowUnderlay={separators.highlight}
+              onHideUnderlay={separators.unhighlight}>
+              <View style={{backgroundColor: 'white'}}>
+                <Text>{item.descs}</Text>
+              </View>
+            </TouchableHighlight>
+          )}
+        />
       )}
     </SafeAreaView>
   );

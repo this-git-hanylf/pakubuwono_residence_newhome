@@ -38,6 +38,7 @@ const Block = ({
   isFavorite = false,
   salePercent,
   advID,
+  user,
   hp_wa,
   loading = false,
 }) => {
@@ -135,17 +136,17 @@ const Block = ({
         </Text>
 
         <View style={styles.content}>
-          <View style={styles.right}>
+          {/* <View style={styles.right}>
             <Image source={{uri: `${avatar}`}} style={styles.thumb} />
-          </View>
-          <View>
+          </View> */}
+          {/* <View>
             <Text title4 semibold style={{marginTop: 5}}>
               {agent_name}
             </Text>
             <Text title4 light style={styles.contentRight}>
               {email}
             </Text>
-          </View>
+          </View> */}
 
           {/* <TouchableOpacity onPress={() =>
               Linking.openURL(
@@ -222,6 +223,7 @@ Block.defaultProps = {
   style: {},
   pict: '',
   avatar: '',
+  user: {},
   publish_date: '',
   image: Images.home,
   costPrice: '',

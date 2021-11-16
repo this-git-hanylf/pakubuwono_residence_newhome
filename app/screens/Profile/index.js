@@ -245,7 +245,7 @@ const Profile = props => {
               onPress={() => {
                 navigation.navigate('Privacy');
               }}>
-              <Text body1>{t('Privacy Police')}</Text>
+              <Text body1>{t('Privacy Policy')}</Text>
               <Icon
                 name="angle-right"
                 size={18}

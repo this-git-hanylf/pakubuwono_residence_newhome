@@ -35,8 +35,8 @@ const Skip = props => {
         console.log('data', data);
         setData(data[0]);
       })
-      .catch(error => console.error(error))
-      .finally(() => setLoading(false));
+      .catch(error => console.error(error));
+    // .finally(() => setLoading(false));
   }, []);
 
   useEffect(() => {
@@ -46,8 +46,8 @@ const Skip = props => {
         console.log('defaultApp -> data', rent);
         setRent(data);
       })
-      .catch(error => console.error(error))
-      .finally(() => setLoading(false));
+      .catch(error => console.error(error));
+    // .finally(() => setLoading(false));
   }, []);
 
   const goProductDetail = item => {

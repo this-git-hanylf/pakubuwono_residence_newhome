@@ -205,7 +205,7 @@
   "choose_a_currency": "Choose A Currency",
   "enter_a_currency": "Enter a currency",
   "name_username_or_email": "Name, username or email",
-  "transfer_amount" : "Transfer Amount",
+  "transfer_amount": "Transfer Amount",
   "transfer_confirmation": "Transfer Confirmation",
   "transaction_completed": "Transaction Completed",
   "transfer_history": "Transfer History",
@@ -279,9 +279,14 @@
   "product_not_found": "Product Not Found",
   "store": "Store",
   "search_barcode": "Search Barcode",
-  "post_detail" : "Post detail",
+  "post_detail": "Post detail",
   "gallery_image": "Gallery Image",
   "dark_and_light_mode": "Dark and Light Mode",
   "loading": "Loading",
-  "not_found": "Not Found"
+  "not_found": "Not Found",
+  "helpdesk": "Helpdesk",
+  "ticket": "Ticket",
+  "category_help": "Category Helpdesk",
+  "select_category": "Select Category",
+  "status": "Status"
 }

@@ -174,7 +174,7 @@ export default function SelectCategory({route}) {
         // console.log('data kategori', dataCategoryDetails);
 
         setDataCategoryDetail(dataCategoryDetails);
-        // setSpinner(false);
+        setSpinner(false);
         // return res.data;
       })
       .catch(error => {
@@ -235,10 +235,16 @@ export default function SelectCategory({route}) {
         <View style={styles.wrap}>
           <Text title2>Ticket</Text>
           <Text headline style={{fontWeight: 'normal'}}>
-            Select Category Detail
+            Select Category Details
           </Text>
-
-          {dataCategoryDetail ? (
+          {spinner ? (
+            <View>
+              {/* <Spinner visible={this.state.spinner} /> */}
+              <Placeholder style={{marginVertical: 4, paddingHorizontal: 10}}>
+                <PlaceholderLine width={100} noMargin style={{height: 40}} />
+              </Placeholder>
+            </View>
+          ) : dataCategoryDetail ? (
             dataCategoryDetail.map((data, index) => (
               <View key={index} style={{marginHorizontal: 10}}>
                 <TouchableOpacity
@@ -256,7 +262,7 @@ export default function SelectCategory({route}) {
               </View>
             ))
           ) : (
-            <Text>Can't load data</Text>
+            <Text>No Data</Text>
           )}
         </View>
       </ScrollView>

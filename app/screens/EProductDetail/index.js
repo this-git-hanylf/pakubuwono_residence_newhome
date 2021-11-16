@@ -35,6 +35,7 @@ import numFormat from '../../components/numFormat';
 import Mailer from 'react-native-mail';
 import getUser from '../../selectors/UserSelectors';
 import {useSelector} from 'react-redux';
+import {ListThumbCircle} from '../../components';
 
 const EProductDetail = props => {
   const {navigation, route} = props;
@@ -90,8 +91,8 @@ const EProductDetail = props => {
   } = productData;
 
   useEffect(() => {
-    console.log('texttdsadas', productData);
-    console.log('liatttt', galery);
+    // console.log('texttdsadas', productData);
+    // console.log('liatttt', galery);
 
     setTimeout(() => {
       setLoading(false);
@@ -376,6 +377,20 @@ const EProductDetail = props => {
             title={parking}
           />
         </View>
+        <View>
+          {/* <ListThumbCircle source={avatar} /> */}
+          <ListThumbCircle
+            image={{uri: `${avatar}`}}
+            txtLeftTitle={agent_name}
+            txtContent={email}
+          />
+          {/* <Text title4 semibold style={{marginTop: 5}}>
+            {agent_name}
+          </Text>
+          <Text title4 light style={styles.contentRight}>
+            {email}
+          </Text> */}
+        </View>
       </View>
     );
   };
@@ -424,19 +439,18 @@ const EProductDetail = props => {
           style={{
             flexDirection: 'row',
             paddingHorizontal: 20,
-            paddingVertical: 10,
           }}>
           {/* <Button full style={{flex: 1}} onPress={() => setModalVisible(true)}>
             {t('I am Interested')}
           </Button> */}
 
-          <Button
-            full
+          <TouchableOpacity
             style={{
               marginTop: 10,
               marginBottom: 20,
-              width: '45%',
-              marginRight: 10,
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
             }}
             onPress={() =>
               user !== null
@@ -445,12 +459,46 @@ const EProductDetail = props => {
                   )
                 : navigation.navigate('SignIn')
             }>
-            {t('Send Email')}
-          </Button>
+            <Icon
+              name="envelope"
+              size={24}
+              style={{
+                color: BaseColor.blueColor,
+              }}
+            />
+            <Text subheadline>{t('Send Email')}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              marginTop: 10,
+              marginBottom: 20,
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={() =>
+              user !== null
+                ? Linking.openURL(`tel:${hp_wa}`)
+                : navigation.navigate('SignIn')
+            }>
+            <Icon
+              name="phone"
+              size={24}
+              style={{
+                color: BaseColor.blueColor,
+              }}
+            />
+            <Text subheadline>{t('Call Me')}</Text>
+          </TouchableOpacity>
 
-          <Button
-            full
-            style={{marginTop: 10, marginBottom: 20, width: '65%', flex: 1}}
+          <TouchableOpacity
+            style={{
+              marginTop: 10,
+              marginBottom: 20,
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
             onPress={() =>
               user !== null
                 ? Linking.openURL(
@@ -459,8 +507,15 @@ const EProductDetail = props => {
                   )
                 : navigation.navigate('SignIn')
             }>
-            {t('Send Whatsapp')}
-          </Button>
+            <Icon
+              name="whatsapp"
+              size={24}
+              style={{
+                color: BaseColor.blueColor,
+              }}
+            />
+            <Text subheadline>{t('Send Whatsapp')}</Text>
+          </TouchableOpacity>
         </View>
       </SafeAreaView>
       <Animated.View

@@ -82,18 +82,6 @@ const Home = props => {
       .finally(() => setLoading(false));
   }, []);
 
-  // async function fetchAbout() {
-  //   try {
-  //     const res = await axios.get(
-  //       'http://34.87.121.155:8000/ifcaprop-api/api/about/01/01',
-  //     );
-  //     setData(res.data[0].images);
-  //   } catch (error) {
-  //     setErrors(error.ressponse.data);
-  //     alert(hasError.toString());
-  //   }
-  // }
-
   async function fetchDataDue() {
     try {
       const res = await axios.get(
