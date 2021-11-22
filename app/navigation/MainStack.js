@@ -51,6 +51,7 @@ import HouseRoles from '../screens/HouseRoles';
 
 import Notification from '@screens/Notification';
 import NotificationDetail from '../screens/Notification/notifDetail';
+import DetailFacility from '../screens/Facility/DetailFacility';
 
 const Stack = createStackNavigator();
 
@@ -224,6 +225,11 @@ function MainStack() {
       <Stack.Screen
         name="Facility"
         component={Facility}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="DetailFacility"
+        component={DetailFacility}
         options={{headerShown: false}}
       />
       <Stack.Screen

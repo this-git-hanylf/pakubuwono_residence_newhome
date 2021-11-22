@@ -25,6 +25,8 @@ import {FlatList, ScrollView, View, ActivityIndicator} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import List from '../../components/Product/List';
 import styles from './styles';
+import ProductGrid1 from './Grid1';
+import {Button} from '../../components';
 
 const Facility = props => {
   const {navigation} = props;
@@ -35,21 +37,26 @@ const Facility = props => {
   const [hasError, setErrors] = useState(false);
 
   useEffect(() => {
-    axios
-      .get('http://34.87.121.155:2121/apiwebpbi/api/facility/')
-      .then(({data}) => {
-        console.log('defaultApp -> data', data);
-        setData(data.data);
-      })
-      .catch(error => console.error(error))
-      .finally(() => setLoading(false));
+    const getData = async () => {
+      const response = await axios('http://10.0.2.2:3000/check');
+      console.log('response: ', response);
+      setData(response.data);
+    };
+    getData();
   }, []);
 
   useEffect(() => {
+    // getdata();
     setTimeout(() => {
       setLoading(false);
     }, 1000);
   }, []);
+
+  // const getdata = () => {
+  //   axios.get('http://10.0.2.2:3000/check').then(res => {
+  //     console.log('ress :', res);
+  //   });
+  // };
 
   const goPost = item => () => {
     navigation.navigate('Post', {item: item});
@@ -86,25 +93,39 @@ const Facility = props => {
           }}
         />
         <ScrollView contentContainerStyle={styles.paddingSrollView}>
-          <FlatList
-            scrollEnabled={false}
-            contentContainerStyle={styles.paddingFlatList}
-            data={data}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={({item, index}) => (
-              <CategoryList
-                loading={loading}
-                image={{uri: `${item.facility_icon}`}}
-                subtitle={item.facility_descs}
-                title={item.facility_name}
-                date={item.date}
-                style={{
-                  marginBottom: index == data.length - 1 ? 0 : 15,
-                }}
-                onPress={goPostDetail(item)}
-              />
-            )}
-          />
+          <View>
+            <Text bold headline>
+              Choose Facility
+            </Text>
+            <Text subtitle>Reserve Facility for Your Activity</Text>
+          </View>
+          <View style={{flex: 1, padding: 15, paddingTop: 10}}>
+            <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+              {/* <View>
+                <Text>{data.title}</Text>
+              </View> */}
+              {data?.map((item, index) => {
+                return (
+                  <View key={index} style={{width: '50%'}}>
+                    <ProductGrid1
+                      style={{
+                        width: '100%',
+                        paddingRight: index % 2 == 0 ? 10 : 0,
+                        paddingLeft: index % 2 != 0 ? 10 : 0,
+                      }}
+                      description={item.availabel}
+                      title={item.title}
+                      image={item.image}
+                      // costPrice={item.costPrice}
+                      // salePrice={item.salePrice}
+                      // isFavorite={item.isFavorite}
+                      onPress={() => navigation.navigate('DetailFacility')}
+                    />
+                  </View>
+                );
+              })}
+            </View>
+          </View>
         </ScrollView>
       </SafeAreaView>
     );

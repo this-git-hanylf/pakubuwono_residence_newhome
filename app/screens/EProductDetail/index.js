@@ -91,7 +91,7 @@ const EProductDetail = props => {
   } = productData;
 
   useEffect(() => {
-    // console.log('texttdsadas', productData);
+    console.log('texttdsadas', productData);
     // console.log('liatttt', galery);
 
     setTimeout(() => {

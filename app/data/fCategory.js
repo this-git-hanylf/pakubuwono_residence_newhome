@@ -15,13 +15,13 @@ export const FCategoryData = [
     title: 'Announce',
     subtitle: 'Display data with Announce ',
   },
-  //   {
-  //     id: '1',
-  //     screen: 'Facility',
-  //     icon: 'bath',
-  //     title: 'Facility',
-  //     subtitle: 'Display data with Facility ',
-  //   },
+  {
+    id: '1',
+    screen: 'Facility',
+    icon: 'bath',
+    title: 'Facility',
+    subtitle: 'Display data with Facility ',
+  },
   //   {
   //     id: '2',
   //     screen: 'FTopUp',
