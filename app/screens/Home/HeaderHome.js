@@ -37,8 +37,9 @@ const HeaderHome = props => {
           <TouchableOpacity
             style={{position: 'relative'}}
             onPress={() => navigation.navigate('Notification')}>
-            <Icon name={'bell'} solid size={20} color={BaseColor.grayColor} />
-            {/* <Text>{badgeCount}</Text> */}
+            <Icon name={'bell'} solid size={20} color={BaseColor.grayColor}>
+              <Text>0</Text>
+            </Icon>
 
             <View
               style={[

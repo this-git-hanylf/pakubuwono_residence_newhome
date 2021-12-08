@@ -52,6 +52,10 @@ import HouseRoles from '../screens/HouseRoles';
 import Notification from '@screens/Notification';
 import NotificationDetail from '../screens/Notification/notifDetail';
 import DetailFacility from '../screens/Facility/DetailFacility';
+import BookingFacility from '../screens/Facility/BookingFacility';
+import BookingDetail from '../screens/Facility/BookingDetail';
+import FSendMoney from '../screens/FSendMoney';
+import ModalProduct from '../screens/Facility/ModalProduct';
 
 const Stack = createStackNavigator();
 
@@ -228,8 +232,28 @@ function MainStack() {
         options={{headerShown: false}}
       />
       <Stack.Screen
+        name="ModalProduct"
+        component={ModalProduct}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="FSendMoney"
+        component={FSendMoney}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
         name="DetailFacility"
         component={DetailFacility}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="BookingFacility"
+        component={BookingFacility}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="BookingDetail"
+        component={BookingDetail}
         options={{headerShown: false}}
       />
       <Stack.Screen

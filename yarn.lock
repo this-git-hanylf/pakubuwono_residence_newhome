@@ -6109,6 +6109,11 @@ react-native-draggable@^3.3.0:
   dependencies:
     prop-types "^15.7.2"
 
+react-native-dynamic-tab-view@^1.0.7-0:
+  version "1.0.7-0"
+  resolved "https://registry.yarnpkg.com/react-native-dynamic-tab-view/-/react-native-dynamic-tab-view-1.0.7-0.tgz#32b518f48af55d01a7102ec6cc6dccd9f7712e79"
+  integrity sha512-4W2LBFPUFFqUT6S0aJUpOblLJdEXV4TksUZhpf607eIyzzBksQJL6bk4eS0YV9LMTqnoo0NvjhbdtnihSDV70A==
+
 react-native-elements@^3.4.2:
   version "3.4.2"
   resolved "https://registry.yarnpkg.com/react-native-elements/-/react-native-elements-3.4.2.tgz#66602be9c5e0e0a2a831913adec80ff6518d1ee2"
@@ -6319,6 +6324,11 @@ react-native-segmented-control-tab@^4.0.0:
   resolved "https://registry.yarnpkg.com/react-native-segmented-control-tab/-/react-native-segmented-control-tab-4.0.0.tgz#e52a5638dda1a217e1f2308dcb8a935a7812edc2"
   integrity sha512-Iyxabn5T7HGFGjLAvOWUL6K/o0r+UglAUDDQzMgqlHcz3tCnK9C6QUgZaAkzMTSgB/2JO9yLgk3XROPmb8064A==
 
+react-native-select-dropdown@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/react-native-select-dropdown/-/react-native-select-dropdown-1.4.0.tgz#34cc2d305950e3dd26a5bc761db5f439ee0b6b17"
+  integrity sha512-CeiFQ8F3lI7SAB9l/uMbGUeJmslUkyz9Vv8DHutOjO1bJpP1/Kfu9lH6QYjJ41DXFGQzT1bw8EGHe8rz/eTC/A==
+
 react-native-size-matters@^0.3.1:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/react-native-size-matters/-/react-native-size-matters-0.3.1.tgz#24d0cfc335a2c730f6d58bd7b43ea5a41be4b49f"
@@ -6367,7 +6377,7 @@ react-native-swiper@^1.6.0:
   dependencies:
     prop-types "^15.5.10"
 
-react-native-tab-view@^3.0.1:
+react-native-tab-view@^3.1.1:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-3.1.1.tgz#1f8d7a835ab4f5b1b1407ec8dddc1053b53fa3c6"
   integrity sha512-M5pRN6utQfytKWoKlKVzg5NbkYu308qNoW1khGTtEOTs1k14p2dHJ/BWOJoJYHKbPVUyZldbG9MFT7gUl4YHnw==

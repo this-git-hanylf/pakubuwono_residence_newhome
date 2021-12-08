@@ -185,7 +185,8 @@ const DetailFacility = props => {
             padding: 10,
             backgroundColor: colors.primary,
           }}>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('BookingFacility')}>
             <Text headline>View Schedule</Text>
           </TouchableOpacity>
         </View>

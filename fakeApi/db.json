@@ -1,11 +1,5 @@
 {
-    "posts": [
-      { "id": 1, "title": "json-server", "author": "typicode" }
-    ],
-    "comments": [
-      { "id": 1, "body": "some comment", "postId": 1 }
-    ],
-    "profile": { "name": "typicode" },
+   
     "check" : [
         {
             "id": 1,
@@ -29,6 +23,24 @@
         }
     ],
     "detail": [
+        {
+            "images": [{
+                "pict" : "http://pakubuwonoview.com/app/webroot/upload/gallery/picindoor_13.jpg",
+                "pict" : "http://pakubuwonoview.com/app/webroot/upload/gallery/picindoor_13.jpg"
+            }],
+            "title": "Badminton",
+            "status": "open",
+            "openjam": "06.00-08.00",
+            "vaneu": [{
+                "1": "badminton1",
+                "2": "badminton2"
+            }],
+            "phone": "021-202122",
+            "location": "GF",
+            "description": "Booking Apps rules and reguler"
+        }
+    ],
+    "schudule": [
         {
             "images": [{
                 "pict" : "http://pakubuwonoview.com/app/webroot/upload/gallery/picindoor_13.jpg",

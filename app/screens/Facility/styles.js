@@ -8,10 +8,13 @@ export default StyleSheet.create({
   topicsView: {
     marginVertical: 24,
   },
-  title: {marginBottom: 5},
+  title: {marginBottom: 5, color: 'black'},
   specifications: {
     marginVertical: 20,
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  container: {
+    flex: 1,
   },
 });

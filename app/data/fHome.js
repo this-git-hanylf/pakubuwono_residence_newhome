@@ -56,21 +56,25 @@ export const FRecentTransactions = [
     id: 1,
     name: 'Naomí Yepes',
     image: Images.profile4,
+    desc: 'Ball Boy',
   },
   {
     id: 2,
     name: 'Steave Garret',
     image: Images.profile2,
+    desc: 'Coach',
   },
   {
     id: 3,
     name: 'Kari Granleese',
     image: Images.profile1,
+    desc: 'Hiting Partner',
   },
   {
     id: 4,
     name: 'Victor Pacheco',
     image: Images.profile3,
+    desc: 'Ball Boy',
   },
 ];
 
