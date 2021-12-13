@@ -5,6 +5,8 @@ import {
   News43,
   ListFacility,
   SafeAreaView,
+  PlaceholderLine,
+  Placeholder,
   Text,
   Header,
   Icon,
@@ -28,6 +30,20 @@ import styles from './styles';
 import ProductGrid1 from './Grid1';
 import {Button} from '../../components';
 
+import {useSelector} from 'react-redux';
+import getUser from '../../selectors/UserSelectors';
+import * as Utils from '@utils';
+
+import {
+  // Placeholder,
+  PlaceholderMedia,
+  // PlaceholderLine,
+  // Fade,
+  Loader,
+  Shine,
+  ShineOverlay,
+} from 'rn-placeholder';
+
 const Facility = props => {
   const {navigation} = props;
   const {t} = useTranslation();
@@ -35,28 +51,92 @@ const Facility = props => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [hasError, setErrors] = useState(false);
+  const users = useSelector(state => getUser(state));
+  const [email, setEmail] = useState(users.user);
+  const [dataTowerUser, setdataTowerUser] = useState([]);
+  const [arrDataTowerUser, setArrDataTowerUser] = useState([]);
+  const [spinner, setSpinner] = useState(true);
 
   useEffect(() => {
-    const getData = async () => {
-      const response = await axios('http://10.0.2.2:3000/check');
-      console.log('response: ', response);
-      setData(response.data);
-    };
-    getData();
+    // const getData = async () => {
+    //   // const response = await axios('http://10.0.2.2:3000/check');
+    //   console.log('response: ', response);
+    //   setData(response.data);
+    // };
+    // getData();
+    // getTower();
   }, []);
 
+  //-----FOR GET ENTITY & PROJJECT
+  const getTower = async () => {
+    const data = {
+      email: email,
+      app: 'O',
+    };
+
+    const config = {
+      headers: {
+        accept: 'application/json',
+        'Content-Type': 'application/json',
+        // token: "",
+      },
+    };
+
+    await axios
+      .get(
+        `http://34.87.121.155:2121/apiwebpbi/api/getData/mysql/${data.email}/${data.app}`,
+        {
+          config,
+        },
+      )
+      .then(res => {
+        const datas = res.data;
+        // console.log('tower entity projek', datas);
+        const arrDataTower = datas.Data;
+        arrDataTower.map(dat => {
+          if (dat) {
+            setdataTowerUser(dat);
+            getdata(dat);
+          }
+        });
+        setArrDataTowerUser(arrDataTower);
+
+        setSpinner(false);
+
+        // return res.data;
+      })
+      .catch(error => {
+        console.log('error get tower api', error);
+        alert('error get');
+      });
+  };
+
   useEffect(() => {
+    // getTower();
     // getdata();
+
     setTimeout(() => {
       setLoading(false);
-    }, 1000);
+      getTower();
+    }, 3000);
   }, []);
 
-  // const getdata = () => {
-  //   axios.get('http://10.0.2.2:3000/check').then(res => {
-  //     console.log('ress :', res);
-  //   });
-  // };
+  const getdata = data => {
+    const entity_cd = data.entity_cd;
+    console.log('next abis tower', entity_cd);
+    const project_no = data.project_no;
+    axios
+      .get(
+        'http://34.87.121.155:2121/apiwebpbi/api/fb-facilitylist/' +
+          entity_cd +
+          '/' +
+          project_no,
+      )
+      .then(res => {
+        console.log('ress fcacility:', res.data);
+        setData(res.data);
+      });
+  };
 
   const goPost = item => () => {
     navigation.navigate('Post', {item: item});
@@ -92,41 +172,66 @@ const Facility = props => {
             navigation.goBack();
           }}
         />
-        <ScrollView contentContainerStyle={styles.paddingSrollView}>
+        {spinner ? (
           <View>
-            <Text bold headline>
-              Choose Facility
-            </Text>
-            <Text subtitle>Reserve Facility for Your Activity</Text>
-          </View>
-          <View style={{flex: 1, padding: 15, paddingTop: 10}}>
-            <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
-              {/* <View>
-                <Text>{data.title}</Text>
-              </View> */}
-              {data?.map((item, index) => {
-                return (
-                  <View key={index} style={{width: '50%'}}>
-                    <ProductGrid1
-                      style={{
-                        width: '100%',
-                        paddingRight: index % 2 == 0 ? 10 : 0,
-                        paddingLeft: index % 2 != 0 ? 10 : 0,
-                      }}
-                      description={item.availabel}
-                      title={item.title}
-                      image={item.image}
-                      // costPrice={item.costPrice}
-                      // salePrice={item.salePrice}
-                      // isFavorite={item.isFavorite}
-                      onPress={() => navigation.navigate('DetailFacility')}
-                    />
-                  </View>
-                );
-              })}
+            <View>
+              {/* <Spinner visible={this.state.spinner} /> */}
+              <Placeholder style={{marginVertical: 4, paddingHorizontal: 10}}>
+                <PlaceholderLine width={100} noMargin style={{height: 40}} />
+              </Placeholder>
             </View>
           </View>
-        </ScrollView>
+        ) : (
+          <ScrollView contentContainerStyle={styles.paddingSrollView}>
+            <View
+              style={{
+                flexDirection: 'row',
+                width: '100%',
+                justifyContent: 'space-between',
+              }}>
+              <View>
+                <Text bold headline>
+                  Choose Facility
+                </Text>
+                <Text subtitle>Reserve Facility for Your Activity</Text>
+              </View>
+              <TouchableOpacity onPress={() => alert('ke menu bookinglist')}>
+                <View>
+                  <Text subtitle> Booking List</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+
+            <View style={{flex: 1, padding: 15, paddingTop: 10}}>
+              <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+                {/* <View>
+                <Text>{data.title}</Text>
+              </View> */}
+                {data?.map((item, index) => {
+                  return (
+                    <View key={index} style={{width: '50%'}}>
+                      <ProductGrid1
+                        key={index}
+                        style={{
+                          width: '100%',
+                          paddingRight: index % 2 == 0 ? 10 : 0,
+                          paddingLeft: index % 2 != 0 ? 10 : 0,
+                        }}
+                        description={item.availabel}
+                        title={item.title}
+                        image={item.image}
+                        // costPrice={item.costPrice}
+                        // salePrice={item.salePrice}
+                        // isFavorite={item.isFavorite}
+                        onPress={() => navigation.navigate('DetailFacility')}
+                      />
+                    </View>
+                  );
+                })}
+              </View>
+            </View>
+          </ScrollView>
+        )}
       </SafeAreaView>
     );
   };

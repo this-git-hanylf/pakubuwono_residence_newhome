@@ -107,7 +107,7 @@ export default function StatusHelp({route}) {
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-      getTower(users);
+      getTower();
 
       // getCategoryHelp;
       // setSpinner(false);
