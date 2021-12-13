@@ -93,7 +93,7 @@ const EProductDetail = props => {
   useEffect(() => {
     console.log('texttdsadas', productData);
     // console.log('liatttt', galery);
-
+    console.log('user for rent sell', user);
     setTimeout(() => {
       setLoading(false);
     }, 1000);

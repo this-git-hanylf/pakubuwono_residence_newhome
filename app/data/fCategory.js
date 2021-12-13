@@ -7,6 +7,7 @@ export const FCategoryData = [
     icon: 'book',
     title: 'HouserRoles',
     subtitle: 'Display data with HouserRoles',
+    user_facility: 'Y',
   },
   {
     id: '6',
@@ -14,14 +15,17 @@ export const FCategoryData = [
     icon: 'info',
     title: 'Announce',
     subtitle: 'Display data with Announce ',
+    user_facility: 'Y',
   },
   {
     id: '1',
-    screen: 'Facility',
-    icon: 'bath',
-    title: 'Facility',
-    subtitle: 'Display data with Facility ',
+    screen: 'MeterInfo', //jadi meter info
+    icon: 'bolt',
+    title: 'Meter Info',
+    subtitle: 'Display data with Meter Info ',
+    user_facility: 'Y',
   },
+
   //   {
   //     id: '2',
   //     screen: 'FTopUp',
