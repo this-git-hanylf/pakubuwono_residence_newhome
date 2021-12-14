@@ -223,7 +223,9 @@ const Facility = props => {
                         // costPrice={item.costPrice}
                         // salePrice={item.salePrice}
                         // isFavorite={item.isFavorite}
-                        onPress={() => navigation.navigate('DetailFacility')}
+                        onPress={() =>
+                          navigation.navigate('DetailFacility', item)
+                        }
                       />
                     </View>
                   );

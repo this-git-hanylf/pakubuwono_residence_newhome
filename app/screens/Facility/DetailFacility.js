@@ -32,7 +32,9 @@ import RNPickerSelect from '@react-native-picker/picker';
 import {Button} from '../../components';
 
 const DetailFacility = props => {
-  const {navigation} = props;
+  const {navigation, route} = props;
+  // const {params} = props;
+  console.log('routes from facility menu', route.params);
   const {t} = useTranslation();
   const {colors} = useTheme();
   const [heightHeader, setHeightHeader] = useState(Utils.heightHeader());
@@ -186,7 +188,9 @@ const DetailFacility = props => {
             backgroundColor: colors.primary,
           }}>
           <TouchableOpacity
-            onPress={() => navigation.navigate('BookingFacility')}>
+            onPress={() =>
+              navigation.navigate('BookingFacility', route.params)
+            }>
             <Text headline>View Schedule</Text>
           </TouchableOpacity>
         </View>

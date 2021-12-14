@@ -28,6 +28,8 @@ import {
   Icon,
   Tag,
   colors,
+  ListOptionSelected,
+  VenueSelectOption,
 } from '@components';
 import moment from 'moment';
 import {enableExperimental} from '@utils';
@@ -39,8 +41,15 @@ import {ListTransactionExpand} from '../../components';
 import {TabView, SceneMap} from 'react-native-tab-view';
 import ModalProduct from './ModalProduct';
 
+import {useSelector} from 'react-redux';
+import getUser from '../../selectors/UserSelectors';
+
+import {FTypes} from '@data';
+
 function BookingFacility({route}) {
+  // console.log('route in booking facility', route.params);
   const [data, setData] = useState([]);
+  const [params, setParams] = useState(route?.params);
   const [timedate, setTimeDate] = useState([]);
   const navigation = useNavigation();
   const [loading, setLoading] = useState(true);
@@ -52,8 +61,18 @@ function BookingFacility({route}) {
   const [tabsDate, setTabDate] = useState([]);
   const [days, setDays] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisible_2, setModalVisible_2] = useState(false);
 
   const [spinner, setSpinner] = useState(true);
+
+  const users = useSelector(state => getUser(state));
+  const [email, setEmail] = useState(users.user);
+  const [dataTowerUser, setdataTowerUser] = useState([]);
+  const [arrDataTowerUser, setArrDataTowerUser] = useState([]);
+
+  const [venueChoosed, setVenueChoosed] = useState({dataVenue});
+  const [dataVenue, setDataVenue] = useState([]);
+  const [titlenull, setTitle] = useState(false);
 
   useEffect(() => {
     axios
@@ -194,6 +213,88 @@ function BookingFacility({route}) {
     );
   };
 
+  useEffect(() => {
+    const data = {
+      email: email,
+      app: 'O',
+    };
+
+    const config = {
+      headers: {
+        accept: 'application/json',
+        'Content-Type': 'application/json',
+        // token: "",
+      },
+    };
+    axios
+      .get(
+        `http://34.87.121.155:2121/apiwebpbi/api/getData/mysql/${data.email}/${data.app}`,
+        {
+          config,
+        },
+      )
+      .then(res => {
+        const datas = res.data;
+        console.log('tower entity projek', datas);
+        const arrDataTower = datas.Data;
+        arrDataTower.map(dat => {
+          if (dat) {
+            setdataTowerUser(dat);
+            getdata(dat);
+          }
+        });
+        setArrDataTowerUser(arrDataTower);
+
+        setSpinner(false);
+      })
+      .catch(error => console.error(error))
+      .finally(() => setLoading(false));
+  }, []);
+
+  const getdata = datas => {
+    const entity_cd = datas.entity_cd;
+    // console.log('next abis tower', entity_cd);
+    const project_no = datas.project_no;
+    const obj_data = params;
+    //ini bentuknya array, hany ambil yang array 0 aja, krn kayaknya sama semua deh facility_cd nya
+    // console.log('obj data', obj_data);
+    const params_api =
+      '?' +
+      'entity_cd=' +
+      entity_cd +
+      '&' +
+      'project_no=' +
+      project_no +
+      '&' +
+      'facility_cd=' +
+      obj_data.facility_cd;
+    // 'SB';
+    console.log(
+      'params daata',
+      'http://34.87.121.155:2121/apiwebpbi/api/facility/book/venue' +
+        params_api,
+    );
+    axios
+      .get(
+        'http://34.87.121.155:2121/apiwebpbi/api/facility/book/venue' +
+          params_api,
+      )
+      .then(res => {
+        console.log('ress facility book venue:', res.data);
+        // setData(res.data);
+        setDataVenue(res.data.data);
+        console.log('datavenue', res.data.data);
+      });
+  };
+
+  const onChangeOption = option => {
+    setVenueChoosed(option);
+    setTitle(true);
+    setTimeout(() => {
+      setModalVisible_2(false);
+    }, 200);
+  };
+
   return (
     <SafeAreaView
       style={[BaseStyle.safeAreaView, {flex: 1}]}
@@ -229,7 +330,29 @@ function BookingFacility({route}) {
           </Text>
           {/* <Text>{datatime.timeget}</Text> */}
         </View>
-        <View style={{marginVertical: 32}}>
+        <View style={{marginTop: 20, paddingHorizontal: 10}}>
+          <Text subheadline bold>
+            Choose Venue
+          </Text>
+          <ListOptionSelected
+            style={{marginTop: 10}}
+            textLeft={
+              titlenull == false ? 'Choose Venue' : venueChoosed?.venue_name
+            }
+            // textRight={venueChoosed?.venue_name}
+            onPress={() => setModalVisible_2(true)}
+          />
+
+          <VenueSelectOption
+            isVisible={modalVisible_2}
+            options={dataVenue}
+            onChange={onChangeOption}
+            venueChoosed={venueChoosed}
+            onSwipeComplete={() => setModalVisible_2(false)}
+          />
+        </View>
+
+        <View style={{marginTop: 30, paddingHorizontal: 10}}>
           <Text subheadline bold>
             Today
           </Text>
@@ -244,6 +367,7 @@ function BookingFacility({route}) {
             borderBottomWidth: 1,
             padding: 10,
             marginBottom: 15,
+            marginTop: 10,
           }}>
           {/* <Text headline whiteColor>
             Tennis
@@ -258,6 +382,7 @@ function BookingFacility({route}) {
             enableRTL={true}
           />
         </View>
+
         <ScrollView
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}>

@@ -14,7 +14,8 @@ const SelectOptionIcon = props => {
   const {colors} = useTheme();
   const {t} = useTranslation();
   const cardColor = colors.card;
-  const {optionChoosed, options, onChange, ...attrs} = props;
+  const {venueChoosed, options, onChange, ...attrs} = props;
+  console.log('venuechoosed di selcted,', venueChoosed);
 
   return (
     <Modal swipeDirection={['down']} style={styles.bottomModal} {...attrs}>
@@ -50,10 +51,10 @@ const SelectOptionIcon = props => {
                 />
               )}
               <Text body2 primaryColor={item.checked}>
-                {t(item.text)}
+                {t(item.venue_name)}
               </Text>
             </View>
-            {optionChoosed.id == item.id && (
+            {venueChoosed.venue_cd == item.venue_cd && (
               <Icon name="check" size={14} color={colors.primary} />
             )}
           </TouchableOpacity>
@@ -64,14 +65,14 @@ const SelectOptionIcon = props => {
 };
 
 SelectOptionIcon.defaultProps = {
-  optionChoosed: {},
+  venueChoosed: {},
   options: [],
   onPress: () => {},
   onChange: () => {},
 };
 
 SelectOptionIcon.propTypes = {
-  optionChoosed: PropTypes.object,
+  venueChoosed: PropTypes.object,
   options: PropTypes.array,
   onPress: PropTypes.func,
 };
