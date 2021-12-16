@@ -15,7 +15,7 @@ const SelectOptionIcon = props => {
   const {t} = useTranslation();
   const cardColor = colors.card;
   const {venueChoosed, options, onChange, ...attrs} = props;
-  console.log('venuechoosed di selcted,', venueChoosed);
+  // console.log('venuechoosed di selcted,', venueChoosed);
 
   return (
     <Modal swipeDirection={['down']} style={styles.bottomModal} {...attrs}>

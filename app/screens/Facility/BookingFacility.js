@@ -49,7 +49,9 @@ import {FTypes} from '@data';
 function BookingFacility({route}) {
   // console.log('route in booking facility', route.params);
   const [data, setData] = useState([]);
+  const [databookdate, setDatabookDate] = useState([]);
   const [params, setParams] = useState(route?.params);
+  // console.log('params for venue code ?', params);
   const [timedate, setTimeDate] = useState([]);
   const navigation = useNavigation();
   const [loading, setLoading] = useState(true);
@@ -64,6 +66,7 @@ function BookingFacility({route}) {
   const [modalVisible_2, setModalVisible_2] = useState(false);
 
   const [spinner, setSpinner] = useState(true);
+  const [spinnerHour, setSpinnerHours] = useState(true);
 
   const users = useSelector(state => getUser(state));
   const [email, setEmail] = useState(users.user);
@@ -73,12 +76,16 @@ function BookingFacility({route}) {
   const [venueChoosed, setVenueChoosed] = useState({dataVenue});
   const [dataVenue, setDataVenue] = useState([]);
   const [titlenull, setTitle] = useState(false);
+  const [dataBooked1, setDataBooked1] = useState([]);
+  const [dataBooked2, setDataBooked2] = useState([]);
+  const [dataBooked3, setDataBooked3] = useState([]);
+  const [dataBooked4, setDataBooked4] = useState([]);
 
   useEffect(() => {
     axios
       .get('http://34.87.121.155:2121/apiwebpbi/api/facility/book/time')
       .then(time => {
-        console.log('time', time.data);
+        console.log('time from server?', time.data);
         setTime(time.data);
       })
       .catch(error => console.error(error))
@@ -89,10 +96,10 @@ function BookingFacility({route}) {
     timeget: time.tanggal,
     daily: time.jam,
   };
-  console.log('timeee', datatime);
+  // console.log('timeee', datatime);
 
   const d = datatime.daily;
-  console.log('daily', d);
+  // console.log('daily', d);
 
   const setBody = {
     entity_cd: '01',
@@ -101,19 +108,20 @@ function BookingFacility({route}) {
     book_date: datatime.timeget,
   };
 
-  useEffect(() => {
-    axios
-      .get(
-        `http://34.87.121.155:2121/apiwebpbi/api/facility/book/hours?entity_cd=01&project_no=01&facility_cd=CA`,
-      )
-      .then(res => {
-        console.log('data', res.data[0]);
-        setData(res.data);
-        setSpinner(false);
-      })
-      .catch(error => console.error(error))
-      .finally(() => setLoading(false));
-  }, []);
+  // useEffect(() => {
+  //   axios
+  //     .get(
+  //       `http://34.87.121.155:2121/apiwebpbi/api/facility/book/hours?entity_cd=01&project_no=01&facility_cd=CA`,
+  //     )
+  //     .then(res => {
+  //       console.log('data date book', res.data[0]);
+  //       setData(res.data);
+  //       setDatabookDate(res.data[0]);
+  //       setSpinner(false);
+  //     })
+  //     .catch(error => console.error(error))
+  //     .finally(() => setLoading(false));
+  // }, []);
 
   useEffect(() => {
     axios
@@ -130,21 +138,21 @@ function BookingFacility({route}) {
       .finally(() => setLoading(false));
   }, []);
 
-  const fetchDataDays = async () => {
-    try {
-      const res = await axios.get(
-        'http://34.87.121.155:2121/apiwebpbi/api/facility/book/hours_id?entity_cd=01&project_no=01&facility_cd=CA&book_date=2021-12-08&id=2',
-      );
-      setDays(res.data);
-      console.log('dayss', res.data);
-    } catch (error) {
-      setErrors(error.ressponse.data);
-      alert(hasError.toString());
-    }
-  };
+  // const fetchDataDays = async () => {
+  //   try {
+  //     const res = await axios.get(
+  //       'http://34.87.121.155:2121/apiwebpbi/api/facility/book/hours_id?entity_cd=01&project_no=01&facility_cd=CA&book_date=2021-12-08&id=2',
+  //     );
+  //     setDays(res.data);
+  //     console.log('dayss', res.data);
+  //   } catch (error) {
+  //     setErrors(error.ressponse.data);
+  //     alert(hasError.toString());
+  //   }
+  // };
 
   useEffect(() => {
-    fetchDataDays();
+    // fetchDataDays();
   }, []);
 
   const TABS = [
@@ -182,7 +190,7 @@ function BookingFacility({route}) {
   }, [route?.params?.id]);
   const obj = [{...data}];
 
-  console.log('losdsa', obj);
+  // console.log('losdsa', obj);
 
   const ItemView = ({item}) => {
     return (
@@ -214,10 +222,16 @@ function BookingFacility({route}) {
   };
 
   useEffect(() => {
-    const data = {
+    getTower();
+  }, []);
+
+  const getTower = () => {
+    const datas = {
       email: email,
       app: 'O',
     };
+
+    // console.log('for  data daate', datas);
 
     const config = {
       headers: {
@@ -226,35 +240,78 @@ function BookingFacility({route}) {
         // token: "",
       },
     };
+    console.log(
+      'url api tower',
+      `http://34.87.121.155:2121/apiwebpbi/api/getData/mysql/${datas.email}/${datas.app}`,
+    );
     axios
       .get(
-        `http://34.87.121.155:2121/apiwebpbi/api/getData/mysql/${data.email}/${data.app}`,
+        `http://34.87.121.155:2121/apiwebpbi/api/getData/mysql/${datas.email}/${datas.app}`,
         {
           config,
         },
       )
       .then(res => {
         const datas = res.data;
-        console.log('tower entity projek', datas);
+        // console.log('tower entity projek', datas);
         const arrDataTower = datas.Data;
-        arrDataTower.map(dat => {
-          if (dat) {
-            setdataTowerUser(dat);
-            getdata(dat);
-          }
-        });
+        console.log('tower entity arrDataTower', arrDataTower[0]);
+        setdataTowerUser(arrDataTower[0]);
+        // getDateBook(arrDataTower[0]);
+
+        // getBooked(arrDataTower[0], databookdate, '');
+        // arrDataTower.map(dat => {
+        //   if (dat) {
+        //     setdataTowerUser(dat);
+        //     getDateBook(dat);
+
+        //     getBooked(dat);
+        //   }
+        // });
         setArrDataTowerUser(arrDataTower);
 
         setSpinner(false);
       })
       .catch(error => console.error(error))
       .finally(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    getDateBook(dataTowerUser);
   }, []);
 
-  const getdata = datas => {
+  const getDateBook = datas => {
+    // console.log('tes save entioty,', dataTowerUser);
     const entity_cd = datas.entity_cd;
-    // console.log('next abis tower', entity_cd);
+    // console.log('next abis tower datebook', entity_cd);
     const project_no = datas.project_no;
+    const obj_data = params;
+
+    axios
+      .get(
+        `http://34.87.121.155:2121/apiwebpbi/api/facility/book/hours?entity_cd=` +
+          entity_cd +
+          `&project_no=` +
+          project_no +
+          `&facility_cd=` +
+          obj_data.facility_cd,
+      )
+      .then(res => {
+        console.log('data get date book', res.data[0]);
+        setData(res.data);
+        setDatabookDate(res.data[0]);
+        getdata();
+        getBooked(dataTowerUser, res.data[0], '');
+        setSpinner(false);
+      })
+      .catch(error => console.error(error))
+      .finally(() => setLoading(false));
+  };
+
+  const getdata = () => {
+    const entity_cd = dataTowerUser.entity_cd;
+    // console.log('next abis tower getdata', dataTowerUser);
+    const project_no = dataTowerUser.project_no;
     const obj_data = params;
     //ini bentuknya array, hany ambil yang array 0 aja, krn kayaknya sama semua deh facility_cd nya
     // console.log('obj data', obj_data);
@@ -269,30 +326,249 @@ function BookingFacility({route}) {
       'facility_cd=' +
       obj_data.facility_cd;
     // 'SB';
-    console.log(
-      'params daata',
-      'http://34.87.121.155:2121/apiwebpbi/api/facility/book/venue' +
-        params_api,
-    );
+    // console.log(
+    //   'params daata',
+    //   'http://34.87.121.155:2121/apiwebpbi/api/facility/book/venue' +
+    //     params_api,
+    // );
     axios
       .get(
         'http://34.87.121.155:2121/apiwebpbi/api/facility/book/venue' +
           params_api,
       )
       .then(res => {
-        console.log('ress facility book venue:', res.data);
+        // console.log('ress facility book venue:', res.data);
         // setData(res.data);
         setDataVenue(res.data.data);
-        console.log('datavenue', res.data.data);
+        // console.log('datavenue', res.data.data);
       });
   };
 
+  // useEffect(() => {
+  //   console.log('sblm dilempar params bookdate', databookdate);
+  //   getBooked(dataTowerUser, databookdate, '');
+  // }, []);
+
+  const getBooked = (dataTowerUser, databookdates, venue_klik) => {
+    console.log('option', venue_klik);
+    const entity_cd = dataTowerUser.entity_cd;
+    console.log('next abis tower', dataTowerUser);
+    const project_no = dataTowerUser.project_no;
+    const obj_data = params;
+    // const databookdates = databookdate;
+    // console.log('data obj_data', obj_data);
+    console.log('data book date atas', databookdates);
+
+    if (venue_klik == undefined || venue_klik == null || venue_klik == '') {
+      console.log('option if', venue_klik);
+      const entity_cd = dataTowerUser.entity_cd;
+      console.log('next abis tower if', entity_cd);
+      const project_no = dataTowerUser.project_no;
+      const obj_data = params;
+      // const databookdates = databookdate;
+      // console.log('data obj_data', obj_data);
+      console.log('data book date if', databookdates);
+
+      // alert('undefined');
+      const params_api =
+        '?' +
+        'entity_cd=' +
+        entity_cd +
+        '&' +
+        'project_no=' +
+        project_no +
+        '&' +
+        'facility_cd=' +
+        obj_data.facility_cd +
+        '&' +
+        'venue_cd=' +
+        obj_data.venue[0].venue_cd;
+      //  venue_klik;
+      // 'SB';
+
+      console.log(
+        'params booked',
+        params_api + '&' + 'book_date=' + databookdates.book_date + '&id=1',
+      );
+      console.log(
+        'url params',
+        'http://34.87.121.155:2121/apiwebpbi/api/facility/book/hours_venue' +
+          params_api +
+          '&' +
+          'book_date=' +
+          // '2021-12-15' +
+          databookdates.book_date +
+          '&id=1',
+      );
+      axios
+        .all([
+          axios.get(
+            `http://34.87.121.155:2121/apiwebpbi/api/facility/book/hours_venue` +
+              params_api +
+              '&' +
+              'book_date=' +
+              databookdates.book_date +
+              // '2021-12-15' +
+              `&id=1`,
+          ),
+          axios.get(
+            `http://34.87.121.155:2121/apiwebpbi/api/facility/book/hours_venue` +
+              params_api +
+              '&' +
+              'book_date=' +
+              databookdates.book_date +
+              // '2021-12-15' +
+              `&id=2`,
+          ),
+          axios.get(
+            `http://34.87.121.155:2121/apiwebpbi/api/facility/book/hours_venue` +
+              params_api +
+              '&' +
+              'book_date=' +
+              databookdates.book_date +
+              // '2021-12-15' +
+              `&id=3`,
+          ),
+          axios.get(
+            `http://34.87.121.155:2121/apiwebpbi/api/facility/book/hours_venue` +
+              params_api +
+              '&' +
+              'book_date=' +
+              databookdates.book_date + // '2021-12-15' + // data[3]?.book_date +
+              `&id=4`,
+          ),
+        ])
+        .then(
+          axios.spread((res1, res2, res3, res4) => {
+            // console.log('data', res.data[0])s
+            console.log('res1 created: ', res1.data);
+            // console.log('res2 created: ', res2.data);
+            // console.log('res3 created: ', res3.data);
+            // console.log('res4 created: ', res4.data);
+
+            // setData(res1.data);
+            setDataBooked1(res1.data);
+            setDataBooked2(res2.data);
+            setDataBooked3(res3.data);
+            setDataBooked4(res4.data);
+            setSpinnerHours(false);
+          }),
+        )
+        .catch(error => console.error(error))
+        .finally(() => setLoading(false));
+    } else {
+      console.log('option else', venue_klik);
+      const entity_cd = dataTowerUser.entity_cd;
+      console.log('next abis tower else', entity_cd);
+      const project_no = dataTowerUser.project_no;
+      const obj_data = params;
+      // const databookdates = databookdate;
+      // console.log('data obj_data', obj_data);
+      console.log('data book date else', databookdates);
+
+      const params_api =
+        '?' +
+        'entity_cd=' +
+        entity_cd +
+        '&' +
+        'project_no=' +
+        project_no +
+        '&' +
+        'facility_cd=' +
+        obj_data.facility_cd +
+        '&' +
+        'venue_cd=' +
+        // obj_data.venue[0].venue_cd;
+        venue_klik;
+      // 'SB';
+
+      // console.log('params booked', params_api);
+      // console.log(
+      //   'url params',
+      //   'http://34.87.121.155:2121/apiwebpbi/api/facility/book/hours_venue' +
+      //     params_api +
+      //     '&' +
+      //     'book_date=' +
+      //     data[0].book_date +
+      //     '&id=1',
+      // );
+      axios
+        .all([
+          axios.get(
+            `http://34.87.121.155:2121/apiwebpbi/api/facility/book/hours_venue` +
+              params_api +
+              '&' +
+              'book_date=' +
+              databookdates.book_date +
+              // '2021-12-15' +
+              `&id=1`,
+          ),
+          axios.get(
+            `http://34.87.121.155:2121/apiwebpbi/api/facility/book/hours_venue` +
+              params_api +
+              '&' +
+              'book_date=' +
+              databookdates.book_date +
+              `&id=2`,
+          ),
+          axios.get(
+            `http://34.87.121.155:2121/apiwebpbi/api/facility/book/hours_venue` +
+              params_api +
+              '&' +
+              'book_date=' +
+              databookdates.book_date +
+              `&id=3`,
+          ),
+          axios.get(
+            `http://34.87.121.155:2121/apiwebpbi/api/facility/book/hours_venue` +
+              params_api +
+              '&' +
+              'book_date=' +
+              databookdates.book_date +
+              // '2021-12-15' +
+              `&id=4`,
+          ),
+        ])
+        .then(
+          axios.spread((res1, res2, res3, res4) => {
+            // console.log('data', res.data[0])s
+            console.log('res1 created: ', res1.data);
+            // console.log('res2 created: ', res2.data);
+            // console.log('res3 created: ', res3.data);
+            // console.log('res4 created: ', res4.data);
+
+            // setData(res1.data);
+            setDataBooked1(res1.data);
+            setDataBooked2(res2.data);
+            setDataBooked3(res3.data);
+            setDataBooked4(res4.data);
+            setSpinnerHours(false);
+          }),
+        )
+        .catch(error => console.error(error))
+        .finally(() => setLoading(false));
+    }
+  };
+  // const tab_booked1 = dataBooked;
+  // const tab_booked2 = dataBooked.filter(x => x.id == '2');
+  // const tab_booked3 = dataBooked.filter(x => x.id == '3');
+  // const tab_booked4 = dataBooked.filter(x => x.id == '4');
+
+  // console.log('tab booked 1', tab_booked1);
+
   const onChangeOption = option => {
+    console.log('option klik', option.venue_cd);
+    const venue_klik = option.venue_cd;
     setVenueChoosed(option);
     setTitle(true);
+    getBooked(dataTowerUser, databookdate, venue_klik);
     setTimeout(() => {
       setModalVisible_2(false);
     }, 200);
+  };
+
+  const onBookingPress = () => {
+    setModalVisible(true);
   };
 
   return (
@@ -440,12 +716,21 @@ function BookingFacility({route}) {
                 ))}
               </View>
             )}
-            <View style={{flex: 1, paddingHorizontal: 20}}>
-              {tab.id == 1 &&
-                tab1.map(y =>
-                  y.slot_hours.map((item, index) => (
+
+            {/* ---coba ya */}
+            {spinnerHour ? (
+              <View>
+                {/* <Spinner visible={this.state.spinner} /> */}
+                <Placeholder style={{marginVertical: 4, paddingHorizontal: 10}}>
+                  <PlaceholderLine width={100} noMargin style={{height: 40}} />
+                </Placeholder>
+              </View>
+            ) : (
+              <View style={{flex: 1, paddingHorizontal: 20}}>
+                {tab.id == 1 &&
+                  dataBooked1.slot_hours.map((items, indexs) => (
                     <View
-                      key={index}
+                      key={indexs}
                       style={{
                         paddingVertical: 15,
                         flexDirection: 'row',
@@ -455,11 +740,22 @@ function BookingFacility({route}) {
                         borderColor: '#dbdbdb',
                         borderBottomWidth: 1,
                       }}>
-                      <Text key={item.id} bold>
-                        {item}
+                      <Text key={items.id} bold>
+                        {items.jam} - book 1
                       </Text>
+
+                      {items.databook != ''
+                        ? items.databook.map((itemdatabook, keys) => (
+                            <View key={keys}>
+                              <Text>{itemdatabook.remarks}</Text>
+                              <Text>{itemdatabook.name}</Text>
+                              <Text>{itemdatabook.reservation_no}</Text>
+                            </View>
+                          ))
+                        : null}
+
                       <TouchableOpacity
-                        onPress={() => setModalVisible(true)}
+                        onPress={() => onBookingPress()}
                         style={{
                           backgroundColor: colors.primary,
                           padding: 15,
@@ -470,15 +766,23 @@ function BookingFacility({route}) {
                         </Text>
                       </TouchableOpacity>
                     </View>
-                  )),
-                )}
-            </View>
-            <View style={{flex: 1, paddingHorizontal: 20}}>
-              {tab.id == 2 &&
-                tab2.map(y =>
-                  y.slot_hours.map((item, index) => (
+                  ))}
+              </View>
+            )}
+
+            {spinnerHour ? (
+              <View>
+                {/* <Spinner visible={this.state.spinner} /> */}
+                <Placeholder style={{marginVertical: 4, paddingHorizontal: 10}}>
+                  <PlaceholderLine width={100} noMargin style={{height: 40}} />
+                </Placeholder>
+              </View>
+            ) : (
+              <View style={{flex: 1, paddingHorizontal: 20}}>
+                {tab.id == 2 &&
+                  dataBooked2.slot_hours.map((items, indexs) => (
                     <View
-                      key={index}
+                      key={indexs}
                       style={{
                         paddingVertical: 15,
                         flexDirection: 'row',
@@ -488,11 +792,22 @@ function BookingFacility({route}) {
                         borderColor: '#dbdbdb',
                         borderBottomWidth: 1,
                       }}>
-                      <Text key={item.id} bold>
-                        {item}
+                      <Text key={items.id} bold>
+                        {items.jam} - book 2
                       </Text>
+
+                      {items.databook != ''
+                        ? items.databook.map((itemdatabook, keys) => (
+                            <View key={keys}>
+                              <Text>{itemdatabook.remarks}</Text>
+                              <Text>{itemdatabook.name}</Text>
+                              <Text>{itemdatabook.reservation_no}</Text>
+                            </View>
+                          ))
+                        : null}
+
                       <TouchableOpacity
-                        onPress={() => setModalVisible(true)}
+                        onPress={() => onBookingPress()}
                         style={{
                           backgroundColor: colors.primary,
                           padding: 15,
@@ -503,15 +818,23 @@ function BookingFacility({route}) {
                         </Text>
                       </TouchableOpacity>
                     </View>
-                  )),
-                )}
-            </View>
-            <View style={{flex: 1, paddingHorizontal: 20}}>
-              {tab.id == 3 &&
-                tab3.map(y =>
-                  y.slot_hours.map((item, index) => (
+                  ))}
+              </View>
+            )}
+
+            {spinnerHour ? (
+              <View>
+                {/* <Spinner visible={this.state.spinner} /> */}
+                <Placeholder style={{marginVertical: 4, paddingHorizontal: 10}}>
+                  <PlaceholderLine width={100} noMargin style={{height: 40}} />
+                </Placeholder>
+              </View>
+            ) : (
+              <View style={{flex: 1, paddingHorizontal: 20}}>
+                {tab.id == 3 &&
+                  dataBooked3.slot_hours.map((items, indexs) => (
                     <View
-                      key={index}
+                      key={indexs}
                       style={{
                         paddingVertical: 15,
                         flexDirection: 'row',
@@ -521,11 +844,22 @@ function BookingFacility({route}) {
                         borderColor: '#dbdbdb',
                         borderBottomWidth: 1,
                       }}>
-                      <Text key={item.id} bold>
-                        {item}
+                      <Text key={items.id} bold>
+                        {items.jam} - book 3
                       </Text>
+
+                      {items.databook != ''
+                        ? items.databook.map((itemdatabook, keys) => (
+                            <View key={keys}>
+                              <Text>{itemdatabook.remarks}</Text>
+                              <Text>{itemdatabook.name}</Text>
+                              <Text>{itemdatabook.reservation_no}</Text>
+                            </View>
+                          ))
+                        : null}
+
                       <TouchableOpacity
-                        onPress={() => setModalVisible(true)}
+                        onPress={() => onBookingPress()}
                         style={{
                           backgroundColor: colors.primary,
                           padding: 15,
@@ -536,15 +870,23 @@ function BookingFacility({route}) {
                         </Text>
                       </TouchableOpacity>
                     </View>
-                  )),
-                )}
-            </View>
-            <View style={{flex: 1, paddingHorizontal: 20}}>
-              {tab.id == 4 &&
-                tab4.map(y =>
-                  y.slot_hours.map((item, index) => (
+                  ))}
+              </View>
+            )}
+
+            {spinnerHour ? (
+              <View>
+                {/* <Spinner visible={this.state.spinner} /> */}
+                <Placeholder style={{marginVertical: 4, paddingHorizontal: 10}}>
+                  <PlaceholderLine width={100} noMargin style={{height: 40}} />
+                </Placeholder>
+              </View>
+            ) : (
+              <View style={{flex: 1, paddingHorizontal: 20}}>
+                {tab.id == 4 &&
+                  dataBooked4.slot_hours.map((items, indexs) => (
                     <View
-                      key={index}
+                      key={indexs}
                       style={{
                         paddingVertical: 15,
                         flexDirection: 'row',
@@ -554,11 +896,22 @@ function BookingFacility({route}) {
                         borderColor: '#dbdbdb',
                         borderBottomWidth: 1,
                       }}>
-                      <Text key={item.id} bold>
-                        {item}
+                      <Text key={items.id} bold>
+                        {items.jam} - book 4
                       </Text>
+
+                      {items.databook != ''
+                        ? items.databook.map((itemdatabook, keys) => (
+                            <View key={keys}>
+                              <Text>{itemdatabook.remarks}</Text>
+                              <Text>{itemdatabook.name}</Text>
+                              <Text>{itemdatabook.reservation_no}</Text>
+                            </View>
+                          ))
+                        : null}
+
                       <TouchableOpacity
-                        onPress={() => setModalVisible(true)}
+                        onPress={() => onBookingPress()}
                         style={{
                           backgroundColor: colors.primary,
                           padding: 15,
@@ -569,9 +922,9 @@ function BookingFacility({route}) {
                         </Text>
                       </TouchableOpacity>
                     </View>
-                  )),
-                )}
-            </View>
+                  ))}
+              </View>
+            )}
           </View>
         </ScrollView>
       </ScrollView>
