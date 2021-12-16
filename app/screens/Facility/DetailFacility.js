@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   Picker,
+  Text,
 } from 'react-native';
 import styles from './styles';
 import {
@@ -18,7 +19,7 @@ import {
   ListFacility,
   SafeAreaView,
   ProductSpecGrid,
-  Text,
+  // Text,
   Header,
   Image,
   Icon,
@@ -30,6 +31,9 @@ import {BaseColor, BaseStyle, Images, useTheme} from '@config';
 import * as Utils from '@utils';
 import RNPickerSelect from '@react-native-picker/picker';
 import {Button} from '../../components';
+
+import {useSelector} from 'react-redux';
+import getUser from '../../selectors/UserSelectors';
 
 const DetailFacility = props => {
   const {navigation, route} = props;
@@ -44,14 +48,93 @@ const DetailFacility = props => {
   const [hasError, setErrors] = useState(false);
   const [selectedValue, setSelectedValue] = useState('');
 
-  useEffect(() => {
-    const getData = async () => {
-      const response = await axios('http://10.0.2.2:3000/detail');
-      console.log('response: ', response);
-      setData(response.data);
+  const users = useSelector(state => getUser(state));
+  const [email, setEmail] = useState(users.user);
+  const [dataTowerUser, setdataTowerUser] = useState([]);
+  const [arrDataTowerUser, setArrDataTowerUser] = useState([]);
+
+  const [spinner, setSpinner] = useState(true);
+
+  // --- for get tower
+  const getTower = async () => {
+    const data = {
+      email: email,
+      app: 'O',
     };
-    getData();
+
+    const config = {
+      headers: {
+        accept: 'application/json',
+        'Content-Type': 'application/json',
+        // token: "",
+      },
+    };
+    axios
+      .get(
+        `http://34.87.121.155:2121/apiwebpbi/api/getData/mysql/${data.email}/${data.app}`,
+        {
+          config,
+        },
+      )
+      .then(res => {
+        const datas = res.data;
+        // console.log('tower entity projek', datas);
+        const arrDataTower = datas.Data;
+        arrDataTower.map(dat => {
+          if (dat) {
+            // console.log('map arrdatatower', dat);
+            setdataTowerUser(dat);
+          }
+        });
+        setArrDataTowerUser(arrDataTower);
+
+        setSpinner(false);
+      })
+      .catch(error => console.error(error))
+      .finally(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    getTower();
+    // getData();
   }, []);
+
+  // useEffect(() => {
+  //   console.log('arrdatatower', dataTowerUser);
+  // }, [dataTowerUser]);
+
+  useEffect(() => {
+    // getTower();
+    getData();
+  }, [dataTowerUser]);
+
+  useEffect(() => {}, []);
+
+  const getData = async () => {
+    console.log('dataTowerUser', dataTowerUser);
+    const entity_cd = dataTowerUser.entity_cd;
+    const project_no = dataTowerUser.project_no;
+    const facility_cd = route.params.facility_cd;
+    console.log(
+      'url data detail facility',
+      'http://34.87.121.155:2121/apiwebpbi/api/fb-facilitydetail/' +
+        entity_cd +
+        '/' +
+        project_no +
+        '/' +
+        facility_cd,
+    );
+    const response = await axios(
+      'http://34.87.121.155:2121/apiwebpbi/api/fb-facilitydetail/' +
+        entity_cd +
+        '/' +
+        project_no +
+        '/' +
+        facility_cd,
+    );
+    console.log('response fasility detail: ', response.data);
+    setData(response.data);
+  };
 
   const headerBackgroundColor = scrollY.interpolate({
     inputRange: [0, 140],
@@ -100,12 +183,16 @@ const DetailFacility = props => {
             title={post.phone}
           />
         </View>
-        <View style={styles.specifications}>
-          <ProductSpecGrid
-            style={{flex: 1}}
-            description={'Description'}
-            title={post.description}
-          />
+        <View style={{margin: 0, paddingBottom: 0}}>
+          <Text
+            style={{
+              fontSize: 12,
+              color: BaseColor.grayColor,
+              paddingBottom: 5,
+            }}>
+            Description
+          </Text>
+          <Text>{post.description.replace(/<\/?[^>]+(>|$;)/gi, '')}</Text>
         </View>
       </View>
     );
@@ -130,7 +217,9 @@ const DetailFacility = props => {
           navigation.goBack();
         }}
       />
-      <ScrollView contentContainerStyle={styles.paddingSrollView}>
+      <ScrollView
+        contentContainerStyle={styles.paddingSrollView}
+        height={'100%'}>
         <Animated.View
           style={[
             styles.headerImageStyle,
@@ -176,25 +265,20 @@ const DetailFacility = props => {
         </Animated.View>
         <View>{data && detail}</View>
       </ScrollView>
-      <SafeAreaView
-        style={[BaseStyle.safeAreaView]}
-        forceInset={{top: 'always', bottom: 'always'}}>
-        <View
-          style={{
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-            padding: 10,
-            backgroundColor: colors.primary,
-          }}>
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate('BookingFacility', route.params)
-            }>
-            <Text headline>View Schedule</Text>
-          </TouchableOpacity>
-        </View>
-      </SafeAreaView>
+      <View
+        style={{
+          // flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          padding: 10,
+          height: 70,
+          backgroundColor: colors.primary,
+        }}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('BookingFacility', route.params)}>
+          <Text style={{fontWeight: 'bold', fontSize: 16}}>View Schedule</Text>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 };
