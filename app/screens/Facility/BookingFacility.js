@@ -88,7 +88,8 @@ function BookingFacility({route}) {
         console.log('time from server?', time.data);
         setTime(time.data);
       })
-      .catch(error => console.error(error))
+      // .catch(error => console.error(error))
+      .catch(error => console.error(error.response.data))
       .finally(() => setLoading(false));
   }, []);
 
@@ -134,7 +135,8 @@ function BookingFacility({route}) {
 
         setSpinner(false);
       })
-      .catch(error => console.error(error))
+      // .catch(error => console.error(error))
+      .catch(error => console.error(error.response.data))
       .finally(() => setLoading(false));
   }, []);
 
@@ -272,7 +274,8 @@ function BookingFacility({route}) {
           setSpinner(false);
         }, 1000);
       })
-      .catch(error => console.error(error))
+      // .catch(error => console.error(error))
+      .catch(error => console.error(error.response.data))
       .finally(() => setLoading(false));
     // };
   }, []);
@@ -299,14 +302,15 @@ function BookingFacility({route}) {
       )
       .then(res => {
         // console.log('data get date book', res.data[0]);
-        console.log('datas nih dipake buat entity projek', datas);
+        // console.log('datas nih dipake buat entity projek', datas);
         setData(res.data);
         setDatabookDate(res.data);
         getdata();
         getBooked(datas, res.data, '');
         setSpinner(false);
       })
-      .catch(error => console.error(error))
+      // .catch(error => console.error(error))
+      .catch(error => console.error(error.response.data))
       .finally(() => setLoading(false));
   };
 
@@ -343,7 +347,8 @@ function BookingFacility({route}) {
         // setData(res.data);
         setDataVenue(res.data.data);
         // console.log('datavenue', res.data.data);
-      });
+      })
+      .catch(error => console.error(error.response.data));
   };
 
   // useEffect(() => {
@@ -459,7 +464,7 @@ function BookingFacility({route}) {
             }, 1000);
           }),
         )
-        .catch(error => console.error(error))
+        .catch(error => console.error(error.response.data))
         .finally(
           () => setLoading(false),
           // setSpinnerHours(false),
@@ -557,7 +562,8 @@ function BookingFacility({route}) {
             }, 1000);
           }),
         )
-        .catch(error => console.error(error))
+        .catch(error => console.error(error.response.data))
+
         .finally(() => setLoading(false));
     }
   };
@@ -753,8 +759,13 @@ function BookingFacility({route}) {
                         borderBottomWidth: 1,
                       }}>
                       <Text key={items.id} bold>
-                        {items.jam} - book 1
+                        {items.jam}
                       </Text>
+                      {/* <Text key={items.id} bold>
+                        {time.jam > items.jam
+                          ? 'lebih dari jam'
+                          : 'kurang dari jam'}
+                      </Text> */}
 
                       {items.databook != ''
                         ? items.databook.map((itemdatabook, keys) => (
@@ -767,7 +778,11 @@ function BookingFacility({route}) {
                         : null}
 
                       <TouchableOpacity
-                        disabled={items.status_avail != 'Y' ? true : false}
+                        disabled={
+                          items.status_avail != 'Y' || time.jam > items.jam
+                            ? true
+                            : false
+                        }
                         onPress={() => onBookingPress()}
                         style={{
                           backgroundColor:
@@ -809,7 +824,7 @@ function BookingFacility({route}) {
                         borderBottomWidth: 1,
                       }}>
                       <Text key={items.id} bold>
-                        {items.jam} - book 2
+                        {items.jam}
                       </Text>
 
                       {items.databook != ''
@@ -823,7 +838,11 @@ function BookingFacility({route}) {
                         : null}
 
                       <TouchableOpacity
-                        disabled={items.status_avail != 'Y' ? true : false}
+                        disabled={
+                          items.status_avail != 'Y' || time.jam > items.jam
+                            ? true
+                            : false
+                        }
                         onPress={() => onBookingPress()}
                         style={{
                           backgroundColor:
@@ -865,7 +884,7 @@ function BookingFacility({route}) {
                         borderBottomWidth: 1,
                       }}>
                       <Text key={items.id} bold>
-                        {items.jam} - book 3
+                        {items.jam}
                       </Text>
 
                       {items.databook != ''
@@ -879,7 +898,11 @@ function BookingFacility({route}) {
                         : null}
 
                       <TouchableOpacity
-                        disabled={items.status_avail != 'Y' ? true : false}
+                        disabled={
+                          items.status_avail != 'Y' || time.jam > items.jam
+                            ? true
+                            : false
+                        }
                         onPress={() => onBookingPress()}
                         style={{
                           backgroundColor:
@@ -921,7 +944,7 @@ function BookingFacility({route}) {
                         borderBottomWidth: 1,
                       }}>
                       <Text key={items.id} bold>
-                        {items.jam} - book 4
+                        {items.jam}
                       </Text>
 
                       {items.databook != ''
@@ -935,7 +958,11 @@ function BookingFacility({route}) {
                         : null}
 
                       <TouchableOpacity
-                        disabled={items.status_avail != 'Y' ? true : false}
+                        disabled={
+                          items.status_avail != 'Y' || time.jam > items.jam
+                            ? true
+                            : false
+                        }
                         onPress={() => onBookingPress()}
                         style={{
                           backgroundColor:
