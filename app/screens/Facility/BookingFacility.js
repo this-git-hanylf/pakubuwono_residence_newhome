@@ -222,10 +222,8 @@ function BookingFacility({route}) {
   };
 
   useEffect(() => {
-    getTower();
-  }, []);
-
-  const getTower = () => {
+    // getTower();
+    // const getTower = () => {
     const datas = {
       email: email,
       app: 'O',
@@ -270,15 +268,18 @@ function BookingFacility({route}) {
         // });
         setArrDataTowerUser(arrDataTower);
 
-        setSpinner(false);
+        setTimeout(() => {
+          setSpinner(false);
+        }, 1000);
       })
       .catch(error => console.error(error))
       .finally(() => setLoading(false));
-  };
+    // };
+  }, []);
 
   useEffect(() => {
     getDateBook(dataTowerUser);
-  }, []);
+  }, [dataTowerUser]);
 
   const getDateBook = datas => {
     // console.log('tes save entioty,', dataTowerUser);
@@ -297,11 +298,12 @@ function BookingFacility({route}) {
           obj_data.facility_cd,
       )
       .then(res => {
-        console.log('data get date book', res.data[0]);
+        // console.log('data get date book', res.data[0]);
+        console.log('datas nih dipake buat entity projek', datas);
         setData(res.data);
-        setDatabookDate(res.data[0]);
+        setDatabookDate(res.data);
         getdata();
-        getBooked(dataTowerUser, res.data[0], '');
+        getBooked(datas, res.data, '');
         setSpinner(false);
       })
       .catch(error => console.error(error))
@@ -347,13 +349,13 @@ function BookingFacility({route}) {
   // useEffect(() => {
   //   console.log('sblm dilempar params bookdate', databookdate);
   //   getBooked(dataTowerUser, databookdate, '');
-  // }, []);
+  // }, [dataTowerUser, databookdate]);
 
-  const getBooked = (dataTowerUser, databookdates, venue_klik) => {
+  const getBooked = (datas, databookdates, venue_klik) => {
     console.log('option', venue_klik);
-    const entity_cd = dataTowerUser.entity_cd;
-    console.log('next abis tower', dataTowerUser);
-    const project_no = dataTowerUser.project_no;
+    const entity_cd = datas.entity_cd;
+    console.log('next abis tower', datas);
+    const project_no = datas.project_no;
     const obj_data = params;
     // const databookdates = databookdate;
     // console.log('data obj_data', obj_data);
@@ -361,9 +363,9 @@ function BookingFacility({route}) {
 
     if (venue_klik == undefined || venue_klik == null || venue_klik == '') {
       console.log('option if', venue_klik);
-      const entity_cd = dataTowerUser.entity_cd;
+      const entity_cd = datas.entity_cd;
       console.log('next abis tower if', entity_cd);
-      const project_no = dataTowerUser.project_no;
+      const project_no = datas.project_no;
       const obj_data = params;
       // const databookdates = databookdate;
       // console.log('data obj_data', obj_data);
@@ -386,20 +388,20 @@ function BookingFacility({route}) {
       //  venue_klik;
       // 'SB';
 
-      console.log(
-        'params booked',
-        params_api + '&' + 'book_date=' + databookdates.book_date + '&id=1',
-      );
-      console.log(
-        'url params',
-        'http://34.87.121.155:2121/apiwebpbi/api/facility/book/hours_venue' +
-          params_api +
-          '&' +
-          'book_date=' +
-          // '2021-12-15' +
-          databookdates.book_date +
-          '&id=1',
-      );
+      // console.log(
+      //   'params booked',
+      //   params_api + '&' + 'book_date=' + databookdates.book_date + '&id=1',
+      // );
+      // console.log(
+      //   'url params',
+      //   'http://34.87.121.155:2121/apiwebpbi/api/facility/book/hours_venue' +
+      //     params_api +
+      //     '&' +
+      //     'book_date=' +
+      //     // '2021-12-15' +
+      //     databookdates[0].book_date +
+      //     '&id=1',
+      // );
       axios
         .all([
           axios.get(
@@ -407,7 +409,7 @@ function BookingFacility({route}) {
               params_api +
               '&' +
               'book_date=' +
-              databookdates.book_date +
+              databookdates[0].book_date +
               // '2021-12-15' +
               `&id=1`,
           ),
@@ -416,7 +418,7 @@ function BookingFacility({route}) {
               params_api +
               '&' +
               'book_date=' +
-              databookdates.book_date +
+              databookdates[1].book_date +
               // '2021-12-15' +
               `&id=2`,
           ),
@@ -425,7 +427,7 @@ function BookingFacility({route}) {
               params_api +
               '&' +
               'book_date=' +
-              databookdates.book_date +
+              databookdates[2].book_date +
               // '2021-12-15' +
               `&id=3`,
           ),
@@ -434,7 +436,7 @@ function BookingFacility({route}) {
               params_api +
               '&' +
               'book_date=' +
-              databookdates.book_date + // '2021-12-15' + // data[3]?.book_date +
+              databookdates[3].book_date + // '2021-12-15' + // data[3]?.book_date +
               `&id=4`,
           ),
         ])
@@ -451,16 +453,23 @@ function BookingFacility({route}) {
             setDataBooked2(res2.data);
             setDataBooked3(res3.data);
             setDataBooked4(res4.data);
-            setSpinnerHours(false);
+            setTimeout(() => {
+              setSpinnerHours(false);
+              // setSpinner(false);
+            }, 1000);
           }),
         )
         .catch(error => console.error(error))
-        .finally(() => setLoading(false));
+        .finally(
+          () => setLoading(false),
+          // setSpinnerHours(false),
+          // setSpinner(false),
+        );
     } else {
       console.log('option else', venue_klik);
-      const entity_cd = dataTowerUser.entity_cd;
+      const entity_cd = datas.entity_cd;
       console.log('next abis tower else', entity_cd);
-      const project_no = dataTowerUser.project_no;
+      const project_no = datas.project_no;
       const obj_data = params;
       // const databookdates = databookdate;
       // console.log('data obj_data', obj_data);
@@ -499,7 +508,7 @@ function BookingFacility({route}) {
               params_api +
               '&' +
               'book_date=' +
-              databookdates.book_date +
+              databookdates[0].book_date +
               // '2021-12-15' +
               `&id=1`,
           ),
@@ -508,7 +517,7 @@ function BookingFacility({route}) {
               params_api +
               '&' +
               'book_date=' +
-              databookdates.book_date +
+              databookdates[1].book_date +
               `&id=2`,
           ),
           axios.get(
@@ -516,7 +525,7 @@ function BookingFacility({route}) {
               params_api +
               '&' +
               'book_date=' +
-              databookdates.book_date +
+              databookdates[2].book_date +
               `&id=3`,
           ),
           axios.get(
@@ -524,7 +533,7 @@ function BookingFacility({route}) {
               params_api +
               '&' +
               'book_date=' +
-              databookdates.book_date +
+              databookdates[3].book_date +
               // '2021-12-15' +
               `&id=4`,
           ),
@@ -542,7 +551,10 @@ function BookingFacility({route}) {
             setDataBooked2(res2.data);
             setDataBooked3(res3.data);
             setDataBooked4(res4.data);
-            setSpinnerHours(false);
+            setTimeout(() => {
+              setSpinnerHours(false);
+              // setSpinner(false);
+            }, 1000);
           }),
         )
         .catch(error => console.error(error))
@@ -755,9 +767,13 @@ function BookingFacility({route}) {
                         : null}
 
                       <TouchableOpacity
+                        disabled={items.status_avail != 'Y' ? true : false}
                         onPress={() => onBookingPress()}
                         style={{
-                          backgroundColor: colors.primary,
+                          backgroundColor:
+                            items.status_avail == 'Y'
+                              ? colors.primary
+                              : BaseColor.redColor,
                           padding: 15,
                           borderRadius: 15,
                         }}>
@@ -807,9 +823,13 @@ function BookingFacility({route}) {
                         : null}
 
                       <TouchableOpacity
+                        disabled={items.status_avail != 'Y' ? true : false}
                         onPress={() => onBookingPress()}
                         style={{
-                          backgroundColor: colors.primary,
+                          backgroundColor:
+                            items.status_avail == 'Y'
+                              ? colors.primary
+                              : BaseColor.redColor,
                           padding: 15,
                           borderRadius: 15,
                         }}>
@@ -859,9 +879,13 @@ function BookingFacility({route}) {
                         : null}
 
                       <TouchableOpacity
+                        disabled={items.status_avail != 'Y' ? true : false}
                         onPress={() => onBookingPress()}
                         style={{
-                          backgroundColor: colors.primary,
+                          backgroundColor:
+                            items.status_avail == 'Y'
+                              ? colors.primary
+                              : BaseColor.redColor,
                           padding: 15,
                           borderRadius: 15,
                         }}>
@@ -911,9 +935,13 @@ function BookingFacility({route}) {
                         : null}
 
                       <TouchableOpacity
+                        disabled={items.status_avail != 'Y' ? true : false}
                         onPress={() => onBookingPress()}
                         style={{
-                          backgroundColor: colors.primary,
+                          backgroundColor:
+                            items.status_avail == 'Y'
+                              ? colors.primary
+                              : BaseColor.redColor,
                           padding: 15,
                           borderRadius: 15,
                         }}>

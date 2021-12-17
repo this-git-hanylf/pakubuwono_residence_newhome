@@ -19,6 +19,7 @@ export const BaseColor = {
   pinkLightColor: '#FF5E80',
   pinkDarkColor: '#F90030',
   accentColor: '#4A90A4',
+  redColor: 'red',
 };
 
 /**
