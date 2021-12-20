@@ -148,6 +148,7 @@ export {default as PieChart} from './Chart/PieChart';
 // ActionSheet
 export {default as ActionSheetSelectOptionIcon} from './ActionSheet/SelectOptionIcon';
 export {default as VenueSelectOption} from './ActionSheet/VenueOption';
+export {default as LotNoSelectOption} from './ActionSheet/LotNoOption';
 export {default as CalendarPicker} from './CalendarPicker';
 
 // Title

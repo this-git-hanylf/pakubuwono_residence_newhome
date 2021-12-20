@@ -585,8 +585,16 @@ function BookingFacility({route}) {
     }, 200);
   };
 
-  const onBookingPress = () => {
-    setModalVisible(true);
+  const onBookingPress = (items, jam_booking) => {
+    console.log('items for booking detail', items);
+    console.log('jam booking', jam_booking);
+    const item = {
+      items: items,
+      jam_booking: jam_booking,
+    };
+    console.log('items all', item);
+    // setModalVisible(true);
+    navigation.navigate('BookingDetail', item);
   };
 
   return (
@@ -783,10 +791,10 @@ function BookingFacility({route}) {
                             ? true
                             : false
                         }
-                        onPress={() => onBookingPress()}
+                        onPress={() => onBookingPress(dataBooked1, items.jam)}
                         style={{
                           backgroundColor:
-                            items.status_avail == 'Y'
+                            items.status_avail == 'Y' && time.jam < items.jam
                               ? colors.primary
                               : BaseColor.redColor,
                           padding: 15,
@@ -983,7 +991,7 @@ function BookingFacility({route}) {
           </View>
         </ScrollView>
       </ScrollView>
-      <ModalProduct
+      {/* <ModalProduct
         // colorChoosedInit={colorChoosed}
         // sizeChoosedInit={sizeChoosed}
         // item={productData}
@@ -993,7 +1001,7 @@ function BookingFacility({route}) {
           setModalVisible(false);
           navigation.navigate('BookingDetail');
         }}
-      />
+      /> */}
     </SafeAreaView>
   );
 }

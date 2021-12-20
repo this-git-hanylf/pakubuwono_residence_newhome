@@ -192,7 +192,10 @@ const DetailFacility = props => {
             }}>
             Description
           </Text>
-          <Text>{post.description.replace(/<\/?[^>]+(>|$;)/gi, '')}</Text>
+          <Text style={{textAlign: 'justify', width: '100%'}}>
+            {post.description.replace(/<\/?[^>]+(>|$;)/gi, '')}
+          </Text>
+          <Text style={{textAlign: 'justify'}}>{post.description}</Text>
         </View>
       </View>
     );
