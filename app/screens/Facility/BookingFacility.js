@@ -184,6 +184,7 @@ function BookingFacility({route}) {
 
   useEffect(() => {
     const id = route?.params?.id;
+    console.log('id akan di foreach', route?.params);
     if (id) {
       TABS.forEach(tab => {
         tab.id == id && setTab(tab);
@@ -397,16 +398,16 @@ function BookingFacility({route}) {
       //   'params booked',
       //   params_api + '&' + 'book_date=' + databookdates.book_date + '&id=1',
       // );
-      // console.log(
-      //   'url params',
-      //   'http://34.87.121.155:2121/apiwebpbi/api/facility/book/hours_venue' +
-      //     params_api +
-      //     '&' +
-      //     'book_date=' +
-      //     // '2021-12-15' +
-      //     databookdates[0].book_date +
-      //     '&id=1',
-      // );
+      console.log(
+        'url params',
+        'http://34.87.121.155:2121/apiwebpbi/api/facility/book/hours_venue' +
+          params_api +
+          '&' +
+          'book_date=' +
+          // '2021-12-15' +
+          databookdates[2].book_date +
+          '&id=1',
+      );
       axios
         .all([
           axios.get(
@@ -448,7 +449,7 @@ function BookingFacility({route}) {
         .then(
           axios.spread((res1, res2, res3, res4) => {
             // console.log('data', res.data[0])s
-            console.log('res1 created: ', res1.data);
+            console.log('res1 created if: ', res1.data);
             // console.log('res2 created: ', res2.data);
             // console.log('res3 created: ', res3.data);
             // console.log('res4 created: ', res4.data);
@@ -458,10 +459,11 @@ function BookingFacility({route}) {
             setDataBooked2(res2.data);
             setDataBooked3(res3.data);
             setDataBooked4(res4.data);
-            setTimeout(() => {
-              setSpinnerHours(false);
-              // setSpinner(false);
-            }, 1000);
+            // setTimeout(() => {
+
+            //   setSpinnerHours(false);
+            //   // setSpinner(false);
+            // }, 5000);
           }),
         )
         .catch(error => console.error(error.response.data))
@@ -546,7 +548,7 @@ function BookingFacility({route}) {
         .then(
           axios.spread((res1, res2, res3, res4) => {
             // console.log('data', res.data[0])s
-            console.log('res1 created: ', res1.data);
+            console.log('res1 created else: ', res1.data);
             // console.log('res2 created: ', res2.data);
             // console.log('res3 created: ', res3.data);
             // console.log('res4 created: ', res4.data);
@@ -556,10 +558,12 @@ function BookingFacility({route}) {
             setDataBooked2(res2.data);
             setDataBooked3(res3.data);
             setDataBooked4(res4.data);
-            setTimeout(() => {
-              setSpinnerHours(false);
-              // setSpinner(false);
-            }, 1000);
+
+            // setTimeout(() => {
+
+            //   setSpinnerHours(false);
+            //   // setSpinner(false);
+            // }, 5000);
           }),
         )
         .catch(error => console.error(error.response.data))
@@ -567,12 +571,12 @@ function BookingFacility({route}) {
         .finally(() => setLoading(false));
     }
   };
-  // const tab_booked1 = dataBooked;
-  // const tab_booked2 = dataBooked.filter(x => x.id == '2');
-  // const tab_booked3 = dataBooked.filter(x => x.id == '3');
-  // const tab_booked4 = dataBooked.filter(x => x.id == '4');
 
-  // console.log('tab booked 1', tab_booked1);
+  useEffect(() => {
+    setTimeout(() => {
+      setSpinnerHours(false);
+    }, 5000);
+  }, []);
 
   const onChangeOption = option => {
     console.log('option klik', option.venue_cd);

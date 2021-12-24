@@ -1002,6 +1002,11 @@
   dependencies:
     merge-options "^3.0.4"
 
+"@react-native-community/checkbox@^0.5.9":
+  version "0.5.9"
+  resolved "https://registry.yarnpkg.com/@react-native-community/checkbox/-/checkbox-0.5.9.tgz#73e1fa91b0cbb4d1eaaa75a57844435a51c22290"
+  integrity sha512-2y/MW8zwXgzRN6fApZbYov3xKkR4vyWSOPo69OWSfa5emTbtKpSl7BY9xlKgu2pzGlLg5EyE8yogp0U7vFk+sQ==
+
 "@react-native-community/cli-debugger-ui@^5.0.1":
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/@react-native-community/cli-debugger-ui/-/cli-debugger-ui-5.0.1.tgz#6b1f3367b8e5211e899983065ea2e72c1901d75f"
@@ -6229,6 +6234,13 @@ react-native-month-year-picker@^1.8.0:
   dependencies:
     invariant "^2.2.4"
     moment "^2.24.0"
+
+react-native-multiple-select@^0.5.7:
+  version "0.5.7"
+  resolved "https://registry.yarnpkg.com/react-native-multiple-select/-/react-native-multiple-select-0.5.7.tgz#4770b465b3d5a14e8120dc4fc8933039ba2a8644"
+  integrity sha512-scVCrOKwGacOYspWa8aINoe+cmMHc5yEMERThUXa04P9VNFWsq9NoQEwLKI+cCXPhe+VMg0+NsoLIhUGTn69fg==
+  dependencies:
+    prop-types "^15.7.2"
 
 react-native-onesignal@^4.3.1:
   version "4.3.1"

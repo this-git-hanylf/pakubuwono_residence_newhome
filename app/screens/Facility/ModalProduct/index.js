@@ -4,7 +4,7 @@ import {
   ProductList,
   ProductSize,
   FormCounterSelect,
-  Text,
+  // Text,
   CheckBox,
   ProfileGridSmall,
   Image,
@@ -14,7 +14,7 @@ import {EFilterColors, EFilterSizes, FRecentTransactions} from '@data';
 import PropTypes from 'prop-types';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {View} from 'react-native';
+import {View, Text, ScrollView} from 'react-native';
 import Modal from 'react-native-modal';
 import styles from './styles';
 import SelectDropdown from 'react-native-select-dropdown';
@@ -28,7 +28,9 @@ const ModalProduct = props => {
   const navigation = useNavigation();
 
   const cardColor = colors.card;
-  const {onApply, item, colorChoosedInit, sizeChoosedInit, ...attrs} = props;
+  const {onApply, onItems, item, colorChoosedInit, sizeChoosedInit, ...attrs} =
+    props;
+  console.log('item for partner detail', item.url_picture);
   const [eColors, setEcolors] = useState(EFilterColors);
   const [eSizes, setESizes] = useState(EFilterSizes);
   const [colorChoosed, setColorChoosed] = useState(colorChoosedInit);
@@ -51,101 +53,33 @@ const ModalProduct = props => {
   //   setTotal(item.price);
   // }, [item]);
 
-  // const {image, title, category, salePrice, costPrice, price} = item;
+  const {staff_first_name} = item;
+  const image = {uri: item.url_picture};
 
   return (
     <Modal swipeDirection={['down']} style={styles.bottomModal} {...attrs}>
-      <View style={[styles.contentFilterBottom, {backgroundColor: cardColor}]}>
-        <View style={styles.contentSwipeDown}>
-          <View style={styles.lineSwipeDown} />
-        </View>
-        <View style={{paddingVertical: 20}}>
-          <Text>Choose Unit</Text>
-        </View>
-        <View style={{paddingVertical: 5}}>
-          <SelectDropdown
-            data={countries}
-            // defaultValueByIndex={1}
-            // defaultValue={'Egypt'}
-            onSelect={(selectedItem, index) => {
-              console.log(selectedItem, index);
-            }}
-            defaultButtonText={'Select Unit'}
-            buttonTextAfterSelection={(selectedItem, index) => {
-              return selectedItem;
-            }}
-            rowTextForSelection={(item, index) => {
-              return item;
-            }}
-            buttonStyle={styles.dropdown1BtnStyle}
-            buttonTextStyle={styles.dropdown1BtnTxtStyle}
-            renderDropdownIcon={() => {
-              return (
-                <FontAwesome name="chevron-down" color={'#444'} size={18} />
-              );
-            }}
-            dropdownIconPosition={'right'}
-            dropdownStyle={styles.dropdown1DropdownStyle}
-            rowStyle={styles.dropdown1RowStyle}
-            rowTextStyle={styles.dropdown1RowTxtStyle}
-          />
-        </View>
-        {/* <View style={{paddingVertical: 20}}>
+      <ScrollView style={{width: '100%', backgroundColor: cardColor}}>
+        <View
+          style={[styles.contentFilterBottom, {backgroundColor: cardColor}]}>
+          {/* <View style={{paddingVertical: 20}}>
           <Text>Choose Partners</Text>
         </View>
-        <View style={{paddingVertical: 20}}>
-          <SelectDropdown
-            data={ballboy}
-            // defaultValueByIndex={1}
-            // defaultValue={'Egypt'}
-            onSelect={(selectedItem, index) => {
-              console.log(selectedItem, index);
-            }}
-            defaultButtonText={'Select Ball Boy'}
-            buttonTextAfterSelection={(selectedItem, index) => {
-              return selectedItem;
-            }}
-            rowTextForSelection={(item, index) => {
-              return item;
-            }}
-            buttonStyle={styles.dropdown1BtnStyle}
-            buttonTextStyle={styles.dropdown1BtnTxtStyle}
-            renderDropdownIcon={() => {
-              return (
-                <FontAwesome name="chevron-down" color={'#444'} size={18} />
-              );
-            }}
-            dropdownIconPosition={'right'}
-            dropdownStyle={styles.dropdown1DropdownStyle}
-            rowStyle={styles.dropdown1RowStyle}
-            rowTextStyle={styles.dropdown1RowTxtStyle}
+        <View
+          // key={index}
+          style={{
+            // flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <ProfileGridSmall
+            image={image}
+            name={item.staff_first_name}
+            desc={item.resume}
+            onPress={() => goToScreen('FSendMoney')}
           />
         </View> */}
-        {/* <View style={{paddingVertical: 20}}>
-          <Text>Choose Partners</Text>
-        </View>
-
-        <View>
-          <Image
-            source={Images.profile2}
-            style={{width: 60, height: 60, borderRadius: 50}}
-          />
-
-          <Text> Nama :Riki </Text>
-          <Text> Profile :Ball Bay </Text>
-
-          <CheckBox
-            value={isSelected}
-            onValueChange={setSelection}
-            style={styles.checkbox}
-          />
-        </View> */}
-        <View style={{paddingVertical: 20}}>
-          <Text>Choose Partners</Text>
-        </View>
-
-        <View style={{flexDirection: 'row', marginBottom: 10}}>
-          {FRecentTransactions.map((item, index) => (
+          {/* <View style={{flexDirection: 'row', marginBottom: 10}}>
+          {item.map((items, index) => (
             <View
               key={index}
               style={{
@@ -154,32 +88,74 @@ const ModalProduct = props => {
                 justifyContent: 'center',
               }}>
               <ProfileGridSmall
-                image={item.image}
-                name={item.name}
-                desc={item.desc}
+                image={items.url_picture}
+                name={items.staff_first_name}
+                desc={items.resume}
                 onPress={() => goToScreen('FSendMoney')}
               />
             </View>
           ))}
-        </View>
+        </View> */}
+          <View style={{paddingVertical: 20}}>
+            <Text>Detail Partners</Text>
+          </View>
 
-        <Button
-          full
-          style={{marginTop: 10, marginBottom: 20}}
-          onPress={onApply}>
-          {t('Booking')}
-        </Button>
-      </View>
+          <View key={item.rowID}>
+            <Image
+              source={{uri: item.url_picture}}
+              style={{width: 60, height: 60, borderRadius: 50}}
+            />
+
+            <Text>
+              Name : {item.staff_first_name} {item.staff_last_name}
+            </Text>
+            <Text>
+              Profile :{' '}
+              {item.ballboy == 1
+                ? 'Ballboy'
+                : null || item.coach == 1
+                ? 'Coach'
+                : null || item.hittingpartner == 1
+                ? 'Hitting Partner'
+                : null}
+            </Text>
+          </View>
+          <View>
+            {item.resume ? (
+              <Text>
+                {item.resume.replace(
+                  /<\/?\w(?:[^"'>]|"[^"]*"|'[^']*')*>/gim,
+                  '',
+                )}
+              </Text>
+            ) : (
+              <Text>{item.resume}</Text>
+            )}
+
+            {/* kalo dipakein  .replace, error. error undefined item.resume */}
+          </View>
+          <Button
+            full
+            style={{marginTop: 10, marginBottom: 20}}
+            onPress={onApply}
+            // onItems={item}
+          >
+            {t('Choose')}
+          </Button>
+        </View>
+      </ScrollView>
     </Modal>
   );
 };
 
 ModalProduct.defaultProps = {
   onApply: () => {},
+  // onItems: () => {},
 };
 
 ModalProduct.propTypes = {
   onApply: PropTypes.func,
+  // onItems: PropTypes.func,
 };
 
 export default ModalProduct;
