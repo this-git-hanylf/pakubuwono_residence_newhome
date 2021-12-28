@@ -24,6 +24,8 @@ import {
   Image,
   Icon,
   colors,
+  PlaceholderLine,
+  Placeholder,
 } from '@components';
 import axios from 'axios';
 import Swiper from 'react-native-swiper';
@@ -134,6 +136,7 @@ const DetailFacility = props => {
     );
     console.log('response fasility detail: ', response.data);
     setData(response.data);
+    setSpinner(false);
   };
 
   const headerBackgroundColor = scrollY.interpolate({
@@ -220,68 +223,77 @@ const DetailFacility = props => {
           navigation.goBack();
         }}
       />
-      <ScrollView
-        contentContainerStyle={styles.paddingSrollView}
-        height={'100%'}>
-        <Animated.View
-          style={[
-            styles.headerImageStyle,
-            {
-              opacity: headerImageOpacity,
-              height: heightViewImg,
-            },
-          ]}>
-          <Swiper
-            dotStyle={{
-              backgroundColor: BaseColor.dividerColor,
-              marginBottom: 8,
-            }}
-            activeDotStyle={{
-              marginBottom: 8,
-            }}
-            paginationStyle={{bottom: 0}}
-            loop={false}
-            activeDotColor={colors.primary}
-            removeClippedSubviews={false}
-            onIndexChanged={index => onSelect(index)}>
-            {data.map((item, key) => {
-              return (
-                <TouchableOpacity
-                  key={key}
-                  style={{flex: 1}}
-                  activeOpacity={1}
-                  onPress={() =>
-                    navigation.navigate('PreviewImage', {images: images})
-                  }>
-                  <Image
+      {spinner ? (
+        <View>
+          {/* <Spinner visible={this.state.spinner} /> */}
+          <Placeholder style={{marginVertical: 4, paddingHorizontal: 10}}>
+            <PlaceholderLine width={100} noMargin style={{height: 40}} />
+          </Placeholder>
+        </View>
+      ) : (
+        <ScrollView
+          contentContainerStyle={styles.paddingSrollView}
+          height={'100%'}>
+          <Animated.View
+            style={[
+              styles.headerImageStyle,
+              {
+                opacity: headerImageOpacity,
+                height: heightViewImg,
+              },
+            ]}>
+            <Swiper
+              dotStyle={{
+                backgroundColor: BaseColor.dividerColor,
+                marginBottom: 8,
+              }}
+              activeDotStyle={{
+                marginBottom: 8,
+              }}
+              paginationStyle={{bottom: 0}}
+              loop={false}
+              activeDotColor={colors.primary}
+              removeClippedSubviews={false}
+              onIndexChanged={index => onSelect(index)}>
+              {data.map((item, key) => {
+                return (
+                  <TouchableOpacity
                     key={key}
-                    style={{
-                      width: '100%',
-                      height: Utils.scaleWithPixel(150),
-                    }}
-                    source={{uri: `${item.images[0].pict}`}}
-                  />
-                </TouchableOpacity>
-              );
-            })}
-          </Swiper>
-        </Animated.View>
-        <View>{data && detail}</View>
-      </ScrollView>
-      <View
-        style={{
-          // flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-          padding: 10,
-          height: 70,
-          backgroundColor: colors.primary,
-        }}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('BookingFacility', route.params)}>
+                    style={{flex: 1}}
+                    activeOpacity={1}
+                    onPress={() =>
+                      navigation.navigate('PreviewImage', {images: images})
+                    }>
+                    <Image
+                      key={key}
+                      style={{
+                        width: '100%',
+                        height: Utils.scaleWithPixel(150),
+                      }}
+                      source={{uri: `${item.images[0].pict}`}}
+                    />
+                  </TouchableOpacity>
+                );
+              })}
+            </Swiper>
+          </Animated.View>
+          <View>{data && detail}</View>
+        </ScrollView>
+      )}
+      <TouchableOpacity
+        onPress={() => navigation.navigate('BookingFacility', route.params)}>
+        <View
+          style={{
+            // flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            padding: 10,
+            height: 70,
+            backgroundColor: colors.primary,
+          }}>
           <Text style={{fontWeight: 'bold', fontSize: 16}}>View Schedule</Text>
-        </TouchableOpacity>
-      </View>
+        </View>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
