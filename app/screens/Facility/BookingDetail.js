@@ -4,6 +4,8 @@ import {
   ListOptionSelected,
   LotNoSelectOption,
   ProfileGridSmall,
+  FilterESort,
+  Header,
 } from '@components';
 import Icon from '@components/Icon';
 import LabelUpper2Row from '@components/Label/Upper2Row';
@@ -36,6 +38,9 @@ import styles from './styles';
 import Modal from 'react-native-modal';
 import {useSelector} from 'react-redux';
 import getUser from '../../selectors/UserSelectors';
+
+import {EPostListData, ESortOption} from '@data';
+import * as Utils from '@utils';
 
 const dataProduk = [
   {id: 1, txt: 'first check', isChecked: false},
@@ -76,10 +81,13 @@ export default BookingDetail = props => {
   const [choosepartnerDetail, setChoosePartnerDetail] = useState([]);
   const [ceklis, setCeklis] = useState(false);
   const [modalSuccessVisible, showModalSuccess] = useState(false);
-  const [messageSuccess, setMessageSuccess] = useState({});
+  const [messageSuccess, setMessageSuccess] = useState();
+  const [errorSubmit, setErrorSubmit] = useState(false);
 
   const [modalAlertVisible, showModalAlert] = useState(false);
   const deviceWidth = Dimensions.get('window').width;
+
+  const [list, setList] = useState(EPostListData);
 
   const getLotNo = () => {
     // const entity_cd = route?.params.entity_cd;
@@ -195,14 +203,36 @@ export default BookingDetail = props => {
       setModalVisible_2(false);
     }, 200);
   };
-  const choosePartners = item => {
-    console.log('choose partner', item);
-    // setPartner(item);
-    arrayPartner = [];
-    console.log(item);
-    for (let i = 0; i < item.length; i++) {
-      arrayPartner += item[i];
-    }
+
+  const onChangeSort = sortOption => {
+    Utils.enableExperimental();
+    const {value} = sortOption;
+    console.log('value sort', value);
+    // switch (value) {
+    //   case 'all':
+    //     setList(EPostListData);
+    //     break;
+    //   case 'Coach':
+    //     setList(EPostListData.filter(product => product.isBestMatch));
+    //     break;
+    //   case 'Hitting Partner':
+    //     const products = [...EPostListData];
+    //     products.sort((a, b) => {
+    //       return a.price - b.price;
+    //     });
+    //     setList(products);
+    //     break;
+    //   case 'Ball boy':
+    //     const productHights = [...EPostListData];
+    //     productHights.sort((a, b) => {
+    //       return b.price - a.price;
+    //     });
+    //     setList(productHights);
+    //     break;
+    //   default:
+    //     setList(EPostListData);
+    //     break;
+    // }
   };
 
   // const choosePartnerDetail = item => {
@@ -314,7 +344,14 @@ export default BookingDetail = props => {
                 <TouchableOpacity onPress={() => chooseCoba(item)}>
                   <Image
                     source={{uri: item.url_picture}}
-                    style={{width: 60, height: 60, borderRadius: 50}}
+                    style={{
+                      width: 60,
+                      height: 100,
+                      borderRadius: 50,
+                      alignSelf: 'center',
+                      alignContent: 'center',
+                      alignItems: 'center',
+                    }}
                   />
                   <Text style={{textAlign: 'center'}}>
                     {item.staff_first_name} {item.staff_last_name}
@@ -337,6 +374,85 @@ export default BookingDetail = props => {
     );
   };
 
+  const renderFilterPartner = renderData => {
+    return (
+      <View style={{flexDirection: 'row'}}>
+        <TouchableOpacity onPress={() => onFilter('Coach')}>
+          <View
+            style={{
+              marginVertical: 10,
+              marginHorizontal: 10,
+              backgroundColor: colors.primary,
+              paddingHorizontal: 15,
+              paddingVertical: 10,
+              borderRadius: 8,
+            }}>
+            <Text style={{color: BaseColor.whiteColor}}>Coach</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => onFilter('Hitting Partner')}>
+          <View
+            style={{
+              marginVertical: 10,
+              marginHorizontal: 10,
+              backgroundColor: colors.primary,
+              paddingHorizontal: 15,
+              paddingVertical: 10,
+              borderRadius: 8,
+            }}>
+            <Text style={{color: BaseColor.whiteColor}}>Hitting Partner</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => onFilter('Ball Boy')}>
+          <View
+            style={{
+              marginVertical: 10,
+              marginHorizontal: 10,
+              backgroundColor: colors.primary,
+              // padding: 15,
+              paddingHorizontal: 15,
+              paddingVertical: 10,
+              borderRadius: 8,
+            }}>
+            <Text style={{color: BaseColor.whiteColor}}>Ballboy</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
+  const onFilter = statusPartner => {
+    console.log('sebagai', statusPartner);
+
+    const newArray = partners.filter(function (item) {
+      // console.log('item filter be', item);
+      // console.log('item filter', item.position);
+      console.log('item hittinh partner', item.hittingpartner);
+      let itemFilter = {};
+      if (item.coach == '1') {
+        itemFilter = 'Coach';
+        // console.log('item filter ya', itemFilter);
+      } else if (item.hittingpartner == '1') {
+        itemFilter = 'hitting';
+        // console.log('item filter ya', itemFilter);
+      }
+
+      // const itemFilter =
+      //   item.coach === 1
+      //     ? 'Coach'
+      //     : item.hittingpartner === 1
+      //     ? 'Hitting Partner'
+      //     : item.ballboy === 1
+      //     ? 'Ball Boy'
+      //     : item.coach == 1 && item.hittingpartner == 1
+      //     ? 'Hitting dan coach'
+      //     : null;
+      console.log('item filter ya', itemFilter);
+      return itemFilter === statusPartner;
+    });
+    console.log('new array', newArray);
+  };
+
   const goBackFacility = () => {
     const itemsForBack = {
       lotno: lotnoChoosed,
@@ -350,12 +466,13 @@ export default BookingDetail = props => {
     console.log('users isinya apa aja', users);
 
     //dipecah / difilter kolom/field mana yang mau di submit
+    const isChecked = true;
     const dataselected_partner = selectedpartner
       .filter(function (item) {
         return item.rowID;
       })
-      .map(function ({staff_first_name, staff_last_name, staff_id}) {
-        return {staff_first_name, staff_last_name, staff_id};
+      .map(function ({staff_first_name, staff_last_name, staff_id, isChecked}) {
+        return {staff_first_name, staff_last_name, staff_id, isChecked};
       });
     // console.log('dataselected_partner', dataselected_partner);
     if (lotnoChoosed == undefined) {
@@ -402,8 +519,11 @@ export default BookingDetail = props => {
         .then(res => {
           console.log('res', res);
           // return res.data;
+          console.log('res pesan', res.data.Pesan);
+          console.log('res error', res.data.Error);
+          setErrorSubmit(res.data.Error);
+          setMessageSuccess(res.data.Pesan);
           showModalSuccess(true);
-          setMessageSuccess(res.Pesan);
         })
         .catch(error => {
           console.log('error get tower api', error.response.data);
@@ -411,27 +531,34 @@ export default BookingDetail = props => {
         });
     }
   };
+
+  const onCloseModal = () => {
+    showModalSuccess(false);
+    navigation.navigate('Home');
+  };
   return (
     <View style={{flex: 1}}>
+      <Header
+        title={t('Booking Detail')}
+        // renderLeft={() => {
+        //   return (
+        //     <Icon
+        //       name="angle-left"
+        //       size={20}
+        //       color={colors.primary}
+        //       enableRTL={true}
+        //     />
+        //   );
+        // }}
+        onPressLeft={() => {
+          navigation.goBack();
+        }}
+      />
       <View style={{flex: 1}}>
         <ScrollView
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{paddingHorizontal: 20}}>
-          <View
-            style={{
-              marginTop: 10,
-              marginBottom: 15,
-              flexDirection: 'row',
-            }}>
-            <View style={{flex: 1}}>
-              <Text title1>Booking Detail</Text>
-              {/* <Text title3 style={{marginTop: 10}}>
-                A peer-to-peer electric cash system
-              </Text> */}
-            </View>
-            <Image source={Images.logo} style={{width: 40, height: 40}} />
-          </View>
           <View style={{marginTop: 20, paddingHorizontal: 10}}>
             <Text subheadline bold>
               Choose Lot No
@@ -453,9 +580,21 @@ export default BookingDetail = props => {
               onSwipeComplete={() => setModalVisible_2(false)}
             />
           </View>
-          <View style={{paddingVertical: 20}}>
+
+          {/* // ---- filter partner  */}
+          {/* <FilterESort
+            title={`${partners.length} ${t('partners')}`}
+            modeView={'list'}
+            sortOption={partners}
+            onChangeSort={onChangeSort}
+            // onChangeView={onChangeView}
+            // onFilter={onFilter}
+          /> */}
+
+          <View style={{paddingTop: 25, paddingLeft: 10}}>
             <Text>Choose Partners</Text>
           </View>
+          <View>{renderFilterPartner(partners)}</View>
           <ScrollView>
             <View style={{flex: 1, height: '100%'}}>
               {/* // coba dulu height nya 100%, kayak gimana */}
@@ -480,42 +619,41 @@ export default BookingDetail = props => {
               // navigation.navigate('BookingDetail');s
             }}
           />
-          <View
-            style={{
-              flexDirection: 'row',
-              width: '100%',
-              // flex: 1,
-            }}>
-            <Button
-              medium
-              style={{
-                marginTop: 10,
-                marginBottom: 20,
-                marginHorizontal: 5,
-                flex: 1,
-              }}
-              onPress={() => {
-                goBackFacility();
-              }}>
-              {t('Back To Schedule')}
-            </Button>
-
-            <Button
-              medium
-              style={{
-                marginTop: 10,
-                marginHorizontal: 5,
-                marginBottom: 20,
-                flex: 1,
-              }}
-              onPress={() => {
-                bookFacility();
-              }}>
-              <Text style={{textAlign: 'center'}}>{t('Book Facility')}</Text>
-            </Button>
-          </View>
         </ScrollView>
+        <View
+          style={{
+            flexDirection: 'row',
+            width: '100%',
+            // flex: 1,
+          }}>
+          <Button
+            medium
+            style={{
+              marginTop: 10,
+              marginBottom: 20,
+              marginHorizontal: 5,
+              flex: 1,
+            }}
+            onPress={() => {
+              goBackFacility();
+            }}>
+            {t('Back To Schedule')}
+          </Button>
 
+          <Button
+            medium
+            style={{
+              marginTop: 10,
+              marginHorizontal: 5,
+              marginBottom: 20,
+              flex: 1,
+            }}
+            onPress={() => {
+              bookFacility();
+            }}>
+            <Text style={{textAlign: 'center'}}>{t('Book Facility')}</Text>
+          </Button>
+        </View>
         <View>
           <Modal
             isVisible={modalAlertVisible}
@@ -567,7 +705,7 @@ export default BookingDetail = props => {
         <View>
           <Modal
             isVisible={modalSuccessVisible}
-            style={{height: '70%'}}
+            style={{height: '100%'}}
             onBackdropPress={() => showModalSuccess(false)}>
             <View
               style={{
@@ -576,7 +714,7 @@ export default BookingDetail = props => {
                 // alignContent: 'center',
                 padding: 10,
                 backgroundColor: '#fff',
-                height: 120,
+                // height: ,
                 borderRadius: 8,
               }}>
               <View style={{alignItems: 'center'}}>
@@ -587,7 +725,7 @@ export default BookingDetail = props => {
                     color: colors.primary,
                     marginBottom: 10,
                   }}>
-                  Success!
+                  {errorSubmit == false ? 'Success!' : 'Ups, Failed!'}
                 </Text>
                 <Text>{messageSuccess}</Text>
               </View>
@@ -599,12 +737,12 @@ export default BookingDetail = props => {
                 <Button
                   style={{
                     marginTop: 10,
-                    marginBottom: 10,
+                    // marginBottom: 10,
 
                     width: 70,
                     height: 40,
                   }}
-                  onPress={() => showModalSuccess(false)}>
+                  onPress={() => onCloseModal()}>
                   <Text style={{fontSize: 13}}>{t('OK')}</Text>
                 </Button>
               </View>

@@ -12,7 +12,7 @@ import {
   Icon,
   colors,
 } from '@components';
-import {BaseStyle, useTheme} from '@config';
+import {BaseStyle, useTheme, BaseColor} from '@config';
 import {
   HomeChannelData,
   HomeListData,
@@ -195,9 +195,21 @@ const Facility = props => {
                 </Text>
                 <Text subtitle>Reserve Facility for Your Activity</Text>
               </View>
-              <TouchableOpacity onPress={() => alert('ke menu bookinglist')}>
-                <View>
-                  <Text subtitle> Booking List</Text>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('BookingList')}>
+                <View
+                  style={{
+                    // width: 100,
+                    borderRadius: 8,
+                    backgroundColor: colors.primary,
+                    // padding: 10,
+                    paddingVertical: 6,
+                    paddingHorizontal: 20,
+                  }}>
+                  <Text subtitle style={{color: BaseColor.whiteColor}}>
+                    {' '}
+                    Booking List
+                  </Text>
                 </View>
               </TouchableOpacity>
             </View>

@@ -160,9 +160,9 @@ const DetailFacility = props => {
     outputRange: [250, heightHeader],
     useNativeDriver: true,
   });
-  const detail = data.map(post => {
+  const detail = data?.map(post => {
     return (
-      <View>
+      <View key={post.id}>
         <Text headline style={{marginTop: 20}}>
           {post.title}
         </Text>
@@ -198,7 +198,7 @@ const DetailFacility = props => {
           <Text style={{textAlign: 'justify', width: '100%'}}>
             {post.description.replace(/<\/?[^>]+(>|$;)/gi, '')}
           </Text>
-          <Text style={{textAlign: 'justify'}}>{post.description}</Text>
+          {/* <Text style={{textAlign: 'justify'}}>{post.description}</Text> */}
         </View>
       </View>
     );

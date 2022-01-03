@@ -27,10 +27,10 @@ const Loading = props => {
           alignItems: 'center',
         }}
       />
-      <View>
+      <View style={{position: 'absolute', bottom: 10}}>
         <Text
           style={{
-            top: 100,
+            // top: 100,
             left: 0,
             right: 0,
             bottom: 0,

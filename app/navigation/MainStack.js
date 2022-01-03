@@ -57,6 +57,12 @@ import BookingDetail from '../screens/Facility/BookingDetail';
 import FSendMoney from '../screens/FSendMoney';
 import ModalProduct from '../screens/Facility/ModalProduct';
 
+import BookingList from '../screens/Facility/BookingList';
+import BookingListDetail from '../screens/Facility/BookingListDetail';
+
+import ChoosePartner from '../screens/Facility/ChoosePartner';
+import ChooseEditPartner from '../screens/Facility/ChooseEditPartner';
+
 const Stack = createStackNavigator();
 
 export const WalletTabScreens = {
@@ -314,6 +320,26 @@ function MainStack() {
       <Stack.Screen
         name="NotificationDetail"
         component={NotificationDetail}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="BookingList"
+        component={BookingList}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="BookingListDetail"
+        component={BookingListDetail}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="ChoosePartner"
+        component={ChoosePartner}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="ChooseEditPartner"
+        component={ChooseEditPartner}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

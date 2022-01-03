@@ -42,35 +42,33 @@ const Categories = ({style = {}}) => {
         <FlatList
           data={FCategories}
           renderItem={({item}) => (
-            console.log(
-              'coba userfacility == user_facility,',
-              user.UserFacility != item.user_facility,
-            ),
-            console.log(
-              'coba userfacility == user_menu,',
-              user.UserFacility == item.user_menu,
-            ),
-            (
-              <View
-                style={{
-                  flex: 1,
-                  marginVertical: 10,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
-                <CategoryIconSoft
-                  isRound
-                  icon={item.icon}
-                  title={t(item.title)}
-                  onPress={() =>
-                    user.UserFacility == item.user_facility ||
-                    item.user_menu == 'Y'
-                      ? goToScreen(item.screen)
-                      : onExpand(user.Pesan_Facility)
-                  }
-                />
-              </View>
-            )
+            // console.log(
+            //   'coba userfacility == user_facility,',
+            //   user.UserFacility != item.user_facility,
+            // ),
+            // console.log(
+            //   'coba userfacility == user_menu,',
+            //   user.UserFacility == item.user_menu,
+            // ),
+            <View
+              style={{
+                flex: 1,
+                marginVertical: 10,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <CategoryIconSoft
+                isRound
+                icon={item.icon}
+                title={t(item.title)}
+                onPress={() =>
+                  user.UserFacility == item.user_facility ||
+                  item.user_menu == 'Y'
+                    ? goToScreen(item.screen)
+                    : onExpand(user.Pesan_Facility)
+                }
+              />
+            </View>
           )}
           //Setting the number of column
           numColumns={4}

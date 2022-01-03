@@ -285,14 +285,14 @@ function BookingFacility({route}) {
     getDateBook(dataTowerUser);
   }, [dataTowerUser]);
 
-  const getDateBook = datas => {
+  const getDateBook = async datas => {
     // console.log('tes save entioty,', dataTowerUser);
     const entity_cd = datas.entity_cd;
     // console.log('next abis tower datebook', entity_cd);
     const project_no = datas.project_no;
     const obj_data = params;
 
-    axios
+    await axios
       .get(
         `http://34.87.121.155:2121/apiwebpbi/api/facility/book/hours?entity_cd=` +
           entity_cd +
@@ -315,7 +315,7 @@ function BookingFacility({route}) {
       .finally(() => setLoading(false));
   };
 
-  const getdata = () => {
+  const getdata = async () => {
     const entity_cd = dataTowerUser.entity_cd;
     // console.log('next abis tower getdata', dataTowerUser);
     const project_no = dataTowerUser.project_no;
@@ -338,7 +338,7 @@ function BookingFacility({route}) {
     //   'http://34.87.121.155:2121/apiwebpbi/api/facility/book/venue' +
     //     params_api,
     // );
-    axios
+    await axios
       .get(
         'http://34.87.121.155:2121/apiwebpbi/api/facility/book/venue' +
           params_api,
@@ -357,7 +357,7 @@ function BookingFacility({route}) {
   //   getBooked(dataTowerUser, databookdate, '');
   // }, [dataTowerUser, databookdate]);
 
-  const getBooked = (datas, databookdates, venue_klik) => {
+  const getBooked = async (datas, databookdates, venue_klik) => {
     console.log('option', venue_klik);
     const entity_cd = datas.entity_cd;
     console.log('next abis tower', datas);
@@ -408,7 +408,7 @@ function BookingFacility({route}) {
           databookdates[2].book_date +
           '&id=1',
       );
-      axios
+      await axios
         .all([
           axios.get(
             `http://34.87.121.155:2121/apiwebpbi/api/facility/book/hours_venue` +
@@ -452,7 +452,7 @@ function BookingFacility({route}) {
             console.log('res1 created if: ', res1.data);
             // console.log('res2 created: ', res2.data);
             // console.log('res3 created: ', res3.data);
-            // console.log('res4 created: ', res4.data);
+            console.log('res4 created: ', res4.data);
 
             // setData(res1.data);
             setDataBooked1(res1.data);
@@ -508,7 +508,7 @@ function BookingFacility({route}) {
       //     data[0].book_date +
       //     '&id=1',
       // );
-      axios
+      await axios
         .all([
           axios.get(
             `http://34.87.121.155:2121/apiwebpbi/api/facility/book/hours_venue` +
@@ -643,7 +643,9 @@ function BookingFacility({route}) {
           <ListOptionSelected
             style={{marginTop: 10}}
             textLeft={
-              titlenull == false ? 'Choose Venue' : venueChoosed?.venue_name
+              titlenull == false
+                ? params.venue[0].venue_name
+                : venueChoosed?.venue_name
             }
             // textRight={venueChoosed?.venue_name}
             onPress={() => setModalVisible_2(true)}
@@ -757,7 +759,7 @@ function BookingFacility({route}) {
               </View>
             ) : (
               <View style={{flex: 1, paddingHorizontal: 20}}>
-                {tab.id == 1 &&
+                {tab.id == 1 && dataBooked1.slot_hours != '' ? (
                   dataBooked1.slot_hours.map((items, indexs) => (
                     <View
                       key={indexs}
@@ -783,11 +785,15 @@ function BookingFacility({route}) {
                         ? items.databook.map((itemdatabook, keys) => (
                             <View key={keys}>
                               <Text>{itemdatabook.remarks}</Text>
-                              <Text>{itemdatabook.name}</Text>
+                              {/* <Text>{itemdatabook.name}</Text> */}
                               <Text>{itemdatabook.reservation_no}</Text>
+                              {/* <Text>{dataBooked2.venue_cd}</Text> */}
+                              {/* minta tambahin kolom venue_name   */}
                             </View>
                           ))
                         : null}
+
+                      {/* {items.datartner} */}
 
                       <TouchableOpacity
                         disabled={
@@ -809,7 +815,10 @@ function BookingFacility({route}) {
                         </Text>
                       </TouchableOpacity>
                     </View>
-                  ))}
+                  ))
+                ) : (
+                  <Text>Not available booking facility. Facility Close</Text>
+                )}
               </View>
             )}
 
@@ -845,17 +854,15 @@ function BookingFacility({route}) {
                               <Text>{itemdatabook.remarks}</Text>
                               <Text>{itemdatabook.name}</Text>
                               <Text>{itemdatabook.reservation_no}</Text>
+                              <Text>{dataBooked2.venue_cd}</Text>
+                              {/* minta tambahin kolom venue_name   */}
                             </View>
                           ))
                         : null}
 
                       <TouchableOpacity
-                        disabled={
-                          items.status_avail != 'Y' || time.jam > items.jam
-                            ? true
-                            : false
-                        }
-                        onPress={() => onBookingPress()}
+                        disabled={items.status_avail != 'Y' ? true : false}
+                        onPress={() => onBookingPress(dataBooked2, items.jam)}
                         style={{
                           backgroundColor:
                             items.status_avail == 'Y'
@@ -905,17 +912,15 @@ function BookingFacility({route}) {
                               <Text>{itemdatabook.remarks}</Text>
                               <Text>{itemdatabook.name}</Text>
                               <Text>{itemdatabook.reservation_no}</Text>
+                              <Text>{dataBooked2.venue_cd}</Text>
+                              {/* minta tambahin kolom venue_name   */}
                             </View>
                           ))
                         : null}
 
                       <TouchableOpacity
-                        disabled={
-                          items.status_avail != 'Y' || time.jam > items.jam
-                            ? true
-                            : false
-                        }
-                        onPress={() => onBookingPress()}
+                        disabled={items.status_avail != 'Y' ? true : false}
+                        onPress={() => onBookingPress(dataBooked3, items.jam)}
                         style={{
                           backgroundColor:
                             items.status_avail == 'Y'
@@ -965,17 +970,15 @@ function BookingFacility({route}) {
                               <Text>{itemdatabook.remarks}</Text>
                               <Text>{itemdatabook.name}</Text>
                               <Text>{itemdatabook.reservation_no}</Text>
+                              <Text>{dataBooked2.venue_cd}</Text>
+                              {/* minta tambahin kolom venue_name   */}
                             </View>
                           ))
                         : null}
 
                       <TouchableOpacity
-                        disabled={
-                          items.status_avail != 'Y' || time.jam > items.jam
-                            ? true
-                            : false
-                        }
-                        onPress={() => onBookingPress()}
+                        disabled={items.status_avail != 'Y' ? true : false}
+                        onPress={() => onBookingPress(dataBooked4, items.jam)}
                         style={{
                           backgroundColor:
                             items.status_avail == 'Y'
