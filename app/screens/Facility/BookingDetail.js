@@ -89,35 +89,35 @@ export default BookingDetail = props => {
 
   const [list, setList] = useState(EPostListData);
 
-  const getLotNo = () => {
-    // const entity_cd = route?.params.entity_cd;
-    // const project_no = route?.params.project_no;
-    // const facility_cd = route?.params.facility_cd;
-    // const book_date = route?.params.book_date;
-    // const id = route?.params.id;
-    // console.log('entity', entity_cd);
-    // console.log('project_no', project_no);
-    // console.log('facility_cd', facility_cd);
-    // console.log('book_date', book_date);
-    // console.log('id', id);
+  const getLotNo = async () => {
+    try {
+      const res = await axios.get(
+        'http://34.87.121.155:2121/apiwebpbi/api/facility/book/unit?email=bagus.trinanda@ifca.co.id',
+      );
+      if (res) {
+        const resLotno = res.data.data;
+        console.log('reslotno', resLotno);
+
+        // console.log('reslotno', resLotno[0].lot_no);
+        setLotno(resLotno);
+        // setTimeDate(data[0]);
+
+        setSpinner(false);
+      }
+      return res;
+    } catch (err) {
+      console.log('error lotno ya', err.response);
+    }
 
     axios
       .get(
         'http://34.87.121.155:2121/apiwebpbi/api/facility/book/unit?email=bagus.trinanda@ifca.co.id',
-        // `http://34.87.121.155:2121/apiwebpbi/api/facility/book/hours_id?entity_cd=` +
-        //   entity_cd +
-        //   '&project_no=' +
-        //   project_no +
-        //   '&facility_cd=' +
-        //   facility_cd +
-        //   '&book_date=' +
-        //   book_date +
-        //   '&id=' +
-        //   id,
       )
       .then(data => {
         // console.log('data lotno', data.data.data);
         const resLotno = data.data.data;
+        console.log('reslotno', resLotno);
+        // console.log('reslotno', resLotno[0].lot_no);
         setLotno(resLotno);
         // setTimeDate(data[0]);
 
@@ -175,7 +175,7 @@ export default BookingDetail = props => {
           jam_booking,
       )
       .then(data => {
-        console.log('data partners', data.data.data);
+        // console.log('data partners', data.data.data);
         const resPartner = data.data.data;
         setPartner(resPartner);
         setPartnerItems(resPartner);
@@ -318,6 +318,7 @@ export default BookingDetail = props => {
     return (
       <FlatList
         data={renderData}
+        keyExtractor={(item, index) => item.rowID}
         renderItem={({item, key}) => (
           <Card style={{margin: 5}} key={key}>
             <View
@@ -341,12 +342,14 @@ export default BookingDetail = props => {
                     handleChangePartner(item.rowID);
                   }}
                 />
-                <TouchableOpacity onPress={() => chooseCoba(item)}>
+                <TouchableOpacity
+                  onPress={() => chooseCoba(item)}
+                  style={{width: 110}}>
                   <Image
                     source={{uri: item.url_picture}}
                     style={{
                       width: 60,
-                      height: 100,
+                      height: 60,
                       borderRadius: 50,
                       alignSelf: 'center',
                       alignContent: 'center',
@@ -477,7 +480,61 @@ export default BookingDetail = props => {
     // console.log('dataselected_partner', dataselected_partner);
     if (lotnoChoosed == undefined) {
       // alert('choose lot no first');
-      showModalAlert(true);
+      const lotno_arr = LotNo;
+
+      // showModalAlert(true);
+
+      const data = {
+        entity_cd: route.params.items.entity_cd,
+        project_no: route.params.items.project_no,
+        facility_cd: route.params.items.facility_cd,
+        venue_cd: route.params.items.venue_cd,
+        book_date: route.params.items.book_date,
+        book_hour: route.params.jam_booking,
+        unit: lotno_arr[0].lot_no,
+        name: users.name,
+        handphone: users.handphone,
+        remarks: 'Booked', //ini hardcode ya
+        userid: users.UserId,
+        datapartner: dataselected_partner,
+      };
+
+      console.log('data submit default', data);
+
+      // console.log(
+      //   'url submit',
+      //   'http://34.87.121.155:2121/apiwebpbi/api/facility/book/save' + data,
+      // );
+
+      //submit here
+      const config = {
+        headers: {
+          accept: 'application/json',
+          'Content-Type': 'application/json',
+          token: '',
+        },
+      };
+      await axios
+        .post(
+          'http://34.87.121.155:2121/apiwebpbi/api/facility/book/save',
+          data,
+          {
+            config,
+          },
+        )
+        .then(res => {
+          // console.log('res', res);
+          // return res.data;
+          console.log('res pesan', res.data.Pesan);
+          console.log('res error', res.data.Error);
+          setErrorSubmit(res.data.Error);
+          setMessageSuccess(res.data.Pesan);
+          showModalSuccess(true);
+        })
+        .catch(error => {
+          console.log('error get tower api', error.response.data);
+          alert('error get');
+        });
     } else {
       const data = {
         entity_cd: route.params.items.entity_cd,
@@ -517,7 +574,7 @@ export default BookingDetail = props => {
           },
         )
         .then(res => {
-          console.log('res', res);
+          // console.log('res', res);
           // return res.data;
           console.log('res pesan', res.data.Pesan);
           console.log('res error', res.data.Error);
@@ -566,7 +623,7 @@ export default BookingDetail = props => {
             <ListOptionSelected
               style={{marginTop: 10}}
               textLeft={
-                titlenull == false ? 'Choose Lot No' : lotnoChoosed?.lot_no
+                titlenull == false ? LotNo[0]?.lot_no : lotnoChoosed?.lot_no
               }
               // textRight={venueChoosed?.venue_name}
               onPress={() => setModalVisible_2(true)}

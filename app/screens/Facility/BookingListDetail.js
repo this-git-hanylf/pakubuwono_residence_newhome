@@ -75,7 +75,7 @@ export default BookingListDetail = props => {
           reservation_no,
       );
       if (res) {
-        console.log('res post', res.data.Data);
+        // console.log('res post', res.data.Data);
         setDetailBooking(res.data.Data);
         setSpinner(false);
       }
@@ -266,6 +266,48 @@ export default BookingListDetail = props => {
     navigation.navigate('ChoosePartner', {reservation_no});
   };
 
+  const onCancelBooking = async onDetailBooking => {
+    // alert('ubah status cancel');
+    //   console.log('data cancel', onDetailBooking);
+
+    // const beforeHours = jambooking - h * 60 * 60 * 1000;
+    const jambooking = onDetailBooking.databooking[0].start_date;
+    console.log('jambooking', jambooking);
+
+    const currentDateObj = new Date(jambooking);
+    const numberOfMlSeconds = currentDateObj.getTime();
+    const addMlSeconds = 60 * 60 * 1000;
+    const newDateObj = new Date(numberOfMlSeconds + addMlSeconds);
+    console.log(
+      'newdateibj',
+      currentDateObj,
+      //   moment(newDateObj).format('YYYY-MM-DD, hh:mm:ss'),
+    );
+
+    const data = {
+      reservation_no: onDetailBooking.databooking[0].reservation_no,
+      remarks: 'Cancel',
+      userid: onDetailBooking.databooking[0].audit_user,
+    };
+
+    console.log('data cancel booking', data);
+
+    // try {
+    //   const res = await axios.post(
+    //     'http://34.87.121.155:2121/apiwebpbi/api/facility/book/cancel',
+    //     data,
+    //   );
+    //   if (res) {
+    //     console.log('res post', res.data.Data);
+    //     //  setDetailBooking(res.data.Data);
+    //     //  setSpinner(false);
+    //   }
+    //   return res;
+    // } catch (err) {
+    //   console.log('error cancel booking ya', err.response);
+    // }
+  };
+
   return (
     <SafeAreaView
       style={[BaseStyle.safeAreaView, {flex: 1}]}
@@ -324,17 +366,16 @@ export default BookingListDetail = props => {
                     </Text>
                   </View>
 
-                  <View>
+                  {/* <View>
                     <Text>
                       Duration time: {}
-                      {/* {moment().format('MMMM Do YYYY, h:mm:ss a')} */}
+                      {moment().format('MMMM Do YYYY, h:mm:ss a')}
                     </Text>
-                  </View>
+                  </View> */}
 
                   {/* ------ untuk partner  */}
                   {onDetailBooking?.datapartner?.length != 0 ? (
                     <View
-                      style={{marginHorizontal: 20}}
                       refreshControl={
                         <RefreshControl
                           colors={[colors.primary]}
@@ -345,50 +386,75 @@ export default BookingListDetail = props => {
                       }>
                       {/* <Text>{datapartner.staff_first_name}</Text> */}
                       {/* <View>{renderFilterPartner(onDetailBooking.datapartner)}</View> */}
-                      <View style={{paddingVertical: 20}}>
-                        <Text>Your Partners</Text>
+                      <View
+                        style={{
+                          paddingVertical: 20,
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                        }}>
+                        <View>
+                          <Text style={{fontWeight: 'bold'}}>
+                            Your Partners
+                          </Text>
+                        </View>
+
+                        <Button
+                          onPress={() =>
+                            onEditPartner(
+                              reservation_no,
+                              onDetailBooking.datapartner,
+                            )
+                          }
+                          style={{height: 35, width: 120}}>
+                          <Text style={{fontSize: 14}}>Add Partner</Text>
+                        </Button>
                       </View>
-                      <Button
-                        onPress={() =>
-                          onEditPartner(
-                            reservation_no,
-                            onDetailBooking.datapartner,
-                          )
-                        }>
-                        <Text>Add Partner</Text>
-                      </Button>
+
                       {/* <ScrollView> */}
 
                       {onDetailBooking.datapartner.map((data, key) => (
                         <View
                           key={key}
-                          style={{flexDirection: 'row', marginTop: 10}}>
-                          <Image
-                            source={{uri: data.url_picture}}
-                            style={{
-                              width: 80,
-                              height: 80,
-                              borderRadius: 50,
-                            }}></Image>
-                          <View
-                            style={{
-                              flexDirection: 'column',
-                              paddingHorizontal: 10,
+                          style={{
+                            flexDirection: 'row',
+                            marginTop: 10,
+                            justifyContent: 'space-between',
+                          }}>
+                          <View style={{flexDirection: 'row'}}>
+                            <Image
+                              source={{uri: data.url_picture}}
+                              style={{
+                                width: 80,
+                                height: 80,
+                                borderRadius: 50,
+                              }}></Image>
+                            <View
+                              style={{
+                                flexDirection: 'column',
+                                paddingHorizontal: 10,
 
-                              alignSelf: 'center',
-                            }}>
-                            <Text style={{fontSize: 14, fontWeight: 'bold'}}>
-                              {data.staff_first_name} {data.staff_last_name}
-                            </Text>
-                            <Text>as a {data.position}</Text>
+                                alignSelf: 'center',
+                              }}>
+                              <Text style={{fontSize: 14, fontWeight: 'bold'}}>
+                                {data.staff_first_name} {data.staff_last_name}
+                              </Text>
+                              <Text>as a {data.position}</Text>
+                            </View>
                           </View>
 
-                          <Button
-                            onPress={() =>
-                              onRemovePartner(data, reservation_no)
-                            }>
-                            <Text>Remove</Text>
-                          </Button>
+                          <View>
+                            <Button
+                              onPress={() =>
+                                onRemovePartner(data, reservation_no)
+                              }
+                              style={{
+                                height: 35,
+                                width: 120,
+                                backgroundColor: BaseColor.yellowColor,
+                              }}>
+                              <Text style={{fontSize: 15}}>Remove</Text>
+                            </Button>
+                          </View>
                         </View>
                       ))}
                       {/* </ScrollView> */}
@@ -419,10 +485,8 @@ export default BookingListDetail = props => {
                   )}
                   {/* ----- tutup untuk partner  */}
 
-                  <View style={{flexDirection: 'row', paddingTop: 25}}>
-                    <View
-                      style={{justifyContent: 'flex-start', flex: 1}}></View>
-                    <View style={{justifyContent: 'flex-end'}}>
+                  <View style={{flexDirection: 'row', paddingTop: 30}}>
+                    <View style={{justifyContent: 'flex-start', flex: 1}}>
                       <View style={{flexDirection: 'row'}}>
                         {/* <Icon
                 name="clock"
@@ -455,6 +519,18 @@ export default BookingListDetail = props => {
                           )}
                         </Text>
                       </View>
+                    </View>
+                    <View style={{justifyContent: 'flex-end'}}>
+                      <Button
+                        onPress={() => onCancelBooking(onDetailBooking)}
+                        style={{
+                          height: 30,
+                          width: 150,
+
+                          backgroundColor: BaseColor.redColor,
+                        }}>
+                        <Text style={{fontSize: 15}}>Cancel Booking</Text>
+                      </Button>
                     </View>
                   </View>
                 </Card>
