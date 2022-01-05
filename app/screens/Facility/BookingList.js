@@ -79,7 +79,14 @@ export default BookingList = props => {
             style={{
               fontSize: 15,
               fontWeight: 'bold',
-              color: colors.primary,
+              color:
+                item.status == 'B'
+                  ? colors.primary
+                  : item.status == 'C'
+                  ? BaseColor.redColor
+                  : item.status == 'D'
+                  ? BaseColor.blueColor
+                  : BaseColor.orangeColor,
             }}>
             # {item.reservation_no}
           </Text>
@@ -158,6 +165,7 @@ export default BookingList = props => {
           navigation.goBack();
         }}
       />
+
       <View style={{flex: 1}}>
         <FlatList
           contentContainerStyle={{paddingHorizontal: 20}}

@@ -1,4 +1,11 @@
-import {Image, SafeAreaView, Header, Button} from '@components';
+import {
+  Image,
+  SafeAreaView,
+  Header,
+  Button,
+  PlaceholderLine,
+  Placeholder,
+} from '@components';
 import Icon from '@components/Icon';
 // import LabelUpper2Row from '@components/Label/Upper2Row';
 import {BaseColor, Images, useTheme, BaseStyle} from '@config';
@@ -6,6 +13,9 @@ import {BaseColor, Images, useTheme, BaseStyle} from '@config';
 import {useNavigation} from '@react-navigation/core';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
+import Modal from 'react-native-modal';
+import IconFontisto from 'react-native-vector-icons/Fontisto';
+import IconIonicons from 'react-native-vector-icons/Ionicons';
 import {
   ScrollView,
   View,
@@ -57,6 +67,10 @@ export default BookingListDetail = props => {
   const [onDetailBooking, setDetailBooking] = useState([]);
   const [partners, setPartnerBooking] = useState([]);
 
+  const [modalSuccessVisible, showModalSuccess] = useState(false);
+  const [messageSuccess, setMessageSuccess] = useState();
+  const [errorSubmit, setErrorSubmit] = useState(false);
+
   const reservation_no = route.params.reservation_no;
 
   const [refreshing, setRefreshing] = useState(false);
@@ -75,7 +89,7 @@ export default BookingListDetail = props => {
           reservation_no,
       );
       if (res) {
-        // console.log('res post', res.data.Data);
+        console.log('res post', res.data.Data);
         setDetailBooking(res.data.Data);
         setSpinner(false);
       }
@@ -93,7 +107,7 @@ export default BookingListDetail = props => {
           reservation_no,
       )
       .then(data => {
-        console.log('data on partner booking', data.data.Data);
+        // console.log('data on partner booking', data.data.Data);
         setPartnerBooking(data.data.Data);
         setSpinner(false);
       })
@@ -257,10 +271,17 @@ export default BookingListDetail = props => {
       .finally(() => setLoading(false));
   };
 
-  const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
-    wait(2000).then(() => setRefreshing(false));
-  }, []);
+  //   const onRefresh = React.useCallback(() => {
+  //     setRefreshing(true);
+  //     wait(2000).then(() => setRefreshing(false));
+  //   }, []);
+
+  const onRefresh = () => {
+    setSpinner(true);
+    setTimeout(() => {
+      setSpinner(false);
+    }, 5000);
+  };
 
   const onAddPartner = () => {
     navigation.navigate('ChoosePartner', {reservation_no});
@@ -292,20 +313,28 @@ export default BookingListDetail = props => {
 
     console.log('data cancel booking', data);
 
-    // try {
-    //   const res = await axios.post(
-    //     'http://34.87.121.155:2121/apiwebpbi/api/facility/book/cancel',
-    //     data,
-    //   );
-    //   if (res) {
-    //     console.log('res post', res.data.Data);
-    //     //  setDetailBooking(res.data.Data);
-    //     //  setSpinner(false);
-    //   }
-    //   return res;
-    // } catch (err) {
-    //   console.log('error cancel booking ya', err.response);
-    // }
+    try {
+      const res = await axios.post(
+        'http://34.87.121.155:2121/apiwebpbi/api/facility/book/cancel',
+        data,
+      );
+      if (res) {
+        console.log('res post', res);
+        //  setDetailBooking(res.data.Data);
+        //  setSpinner(false);
+        setErrorSubmit(res.data.Error);
+        setMessageSuccess(res.data.Pesan);
+        showModalSuccess(true);
+      }
+      return res;
+    } catch (err) {
+      console.log('error cancel booking ya', err.response);
+    }
+  };
+
+  const onCloseModal = () => {
+    showModalSuccess(false);
+    navigation.navigate('Home');
   };
 
   return (
@@ -331,7 +360,13 @@ export default BookingListDetail = props => {
 
       <View>
         {spinner || onDetailBooking?.databooking?.length == 0 ? (
-          <Text>loading</Text>
+          //   <Text>loading</Text>
+          <View>
+            {/* <Spinner visible={this.state.spinner} /> */}
+            <Placeholder style={{marginVertical: 4, paddingHorizontal: 10}}>
+              <PlaceholderLine width={100} noMargin style={{height: 40}} />
+            </Placeholder>
+          </View>
         ) : onDetailBooking.databooking != undefined ||
           onDetailBooking.databooking != null ? (
           <View>
@@ -347,7 +382,14 @@ export default BookingListDetail = props => {
                       style={{
                         fontSize: 15,
                         fontWeight: 'bold',
-                        color: colors.primary,
+                        color:
+                          datas.status == 'B'
+                            ? colors.primary
+                            : datas.status == 'C'
+                            ? BaseColor.redColor
+                            : datas.status == 'D'
+                            ? BaseColor.blueColor
+                            : BaseColor.orangeColor,
                       }}>
                       # {datas.reservation_no}
                     </Text>
@@ -355,14 +397,31 @@ export default BookingListDetail = props => {
 
                   <View style={{marginVertical: 5}}>
                     <Text style={{fontSize: 14}}>
-                      {datas.status == 'B' ? 'Booked' : 'Canceled'} by{' '}
-                      {datas.name}
+                      {datas.status == 'B'
+                        ? 'Booked'
+                        : datas.status == 'C'
+                        ? 'Canceled'
+                        : datas.status == 'O'
+                        ? 'Ongoing'
+                        : datas.status == 'D'
+                        ? 'Done'
+                        : null}{' '}
+                      by {datas.name}
                     </Text>
                   </View>
 
                   <View style={{flexDirection: 'row'}}>
                     <Text style={{fontSize: 15, fontWeight: 'bold'}}>
                       {datas.facility_name} - {datas.venue_name}
+                    </Text>
+                  </View>
+
+                  <View style={{marginTop: 5}}>
+                    <Text>
+                      Start Play :{' '}
+                      {moment(datas.start_date).format(
+                        'DD MMM YYYY hh:mm:ss a',
+                      )}
                     </Text>
                   </View>
 
@@ -386,28 +445,42 @@ export default BookingListDetail = props => {
                       }>
                       {/* <Text>{datapartner.staff_first_name}</Text> */}
                       {/* <View>{renderFilterPartner(onDetailBooking.datapartner)}</View> */}
+
                       <View
                         style={{
-                          paddingVertical: 20,
+                          //   paddingVertical: 20,
+                          paddingTop: 20,
+                          paddingBottom: 10,
                           flexDirection: 'row',
                           justifyContent: 'space-between',
                         }}>
-                        <View>
+                        <View style={{alignSelf: 'center'}}>
                           <Text style={{fontWeight: 'bold'}}>
                             Your Partners
                           </Text>
                         </View>
-
-                        <Button
-                          onPress={() =>
-                            onEditPartner(
-                              reservation_no,
-                              onDetailBooking.datapartner,
-                            )
-                          }
-                          style={{height: 35, width: 120}}>
-                          <Text style={{fontSize: 14}}>Add Partner</Text>
-                        </Button>
+                        {datas.status == 'B' ? (
+                          <Button
+                            onPress={() =>
+                              onEditPartner(
+                                reservation_no,
+                                onDetailBooking.datapartner,
+                              )
+                            }
+                            style={{height: 60, width: 60}}>
+                            <IconIonicons
+                              name="person-add"
+                              size={20}
+                              color={BaseColor.whiteColor}
+                              style={{
+                                justifyContent: 'center',
+                                alignContent: 'center',
+                                alignItems: 'center',
+                                alignSelf: 'center',
+                              }}></IconIonicons>
+                            {/* <Text style={{fontSize: 14}}>Add Partner</Text> */}
+                          </Button>
+                        ) : null}
                       </View>
 
                       {/* <ScrollView> */}
@@ -443,17 +516,29 @@ export default BookingListDetail = props => {
                           </View>
 
                           <View>
-                            <Button
-                              onPress={() =>
-                                onRemovePartner(data, reservation_no)
-                              }
-                              style={{
-                                height: 35,
-                                width: 120,
-                                backgroundColor: BaseColor.yellowColor,
-                              }}>
-                              <Text style={{fontSize: 15}}>Remove</Text>
-                            </Button>
+                            {datas.status == 'B' ? (
+                              <Button
+                                onPress={() =>
+                                  onRemovePartner(data, reservation_no)
+                                }
+                                style={{
+                                  height: 60,
+                                  width: 60,
+                                  backgroundColor: BaseColor.orangeColor,
+                                }}>
+                                <IconFontisto
+                                  name="trash"
+                                  size={20}
+                                  color={BaseColor.whiteColor}
+                                  style={{
+                                    justifyContent: 'center',
+                                    alignContent: 'center',
+                                    alignItems: 'center',
+                                    alignSelf: 'center',
+                                  }}></IconFontisto>
+                                {/* <Text style={{fontSize: 15}}>Remove</Text> */}
+                              </Button>
+                            ) : null}
                           </View>
                         </View>
                       ))}
@@ -462,6 +547,16 @@ export default BookingListDetail = props => {
                   ) : (
                     <View>
                       <Button onPress={() => onAddPartner()}>
+                        <IconFontisto
+                          name="trash"
+                          size={20}
+                          color={BaseColor.whiteColor}
+                          style={{
+                            justifyContent: 'center',
+                            alignContent: 'center',
+                            alignItems: 'center',
+                            alignSelf: 'center',
+                          }}></IconFontisto>
                         <Text>Add Partner</Text>
                       </Button>
                       <View
@@ -521,16 +616,18 @@ export default BookingListDetail = props => {
                       </View>
                     </View>
                     <View style={{justifyContent: 'flex-end'}}>
-                      <Button
-                        onPress={() => onCancelBooking(onDetailBooking)}
-                        style={{
-                          height: 30,
-                          width: 150,
+                      {datas.status == 'B' ? (
+                        <Button
+                          onPress={() => onCancelBooking(onDetailBooking)}
+                          style={{
+                            height: 30,
+                            width: 150,
 
-                          backgroundColor: BaseColor.redColor,
-                        }}>
-                        <Text style={{fontSize: 15}}>Cancel Booking</Text>
-                      </Button>
+                            backgroundColor: BaseColor.redColor,
+                          }}>
+                          <Text style={{fontSize: 15}}>Cancel Booking</Text>
+                        </Button>
+                      ) : null}
                     </View>
                   </View>
                 </Card>
@@ -540,6 +637,54 @@ export default BookingListDetail = props => {
         ) : (
           <Text>Not Available Data Booking</Text>
         )}
+      </View>
+
+      <View>
+        <Modal
+          isVisible={modalSuccessVisible}
+          style={{height: '100%'}}
+          onBackdropPress={() => showModalSuccess(false)}>
+          <View
+            style={{
+              // flex: 1,
+
+              // alignContent: 'center',
+              padding: 10,
+              backgroundColor: '#fff',
+              // height: ,
+              borderRadius: 8,
+            }}>
+            <View style={{alignItems: 'center'}}>
+              <Text
+                style={{
+                  fontSize: 16,
+                  fontWeight: 'bold',
+                  color: colors.primary,
+                  marginBottom: 10,
+                }}>
+                {errorSubmit == false ? 'Success!' : 'Ups, Failed!'}
+              </Text>
+              <Text>{messageSuccess}</Text>
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
+              }}>
+              <Button
+                style={{
+                  marginTop: 10,
+                  // marginBottom: 10,
+
+                  width: 70,
+                  height: 40,
+                }}
+                onPress={() => onCloseModal()}>
+                <Text style={{fontSize: 13}}>{t('OK')}</Text>
+              </Button>
+            </View>
+          </View>
+        </Modal>
       </View>
     </SafeAreaView>
   );
