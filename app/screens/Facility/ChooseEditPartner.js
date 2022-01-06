@@ -55,7 +55,7 @@ const dataProduk = [
 export default ChooseEditPartner = props => {
   const {navigation, route} = props;
   // const {params} = props;
-  //   console.log('routes from bookinglistdetail', route.params);
+  console.log('routes from bookinglistdetail', route.params);
   const {colors} = useTheme();
   const {t} = useTranslation();
   const [loading, setLoading] = useState(true);
@@ -98,7 +98,33 @@ export default ChooseEditPartner = props => {
     setModalVisible(true);
   };
 
+  const getPartners = async () => {
+    try {
+      const reservation_no = route.params.reservation_no;
+
+      const res = await axios.get(
+        `http://34.87.121.155:2121/apiwebpbi/api/facility/book/edit/getstaffs/` +
+          reservation_no,
+      );
+      if (res) {
+        console.log('res post get partners edit', res);
+        const resPartner = res.data.Data;
+        setPartner(resPartner); //akan ditambah ischecklis
+        setPartnerItems(resPartner);
+        setSpinner(false);
+      }
+      return res;
+    } catch (err) {
+      console.log('error', err.response);
+    }
+  };
+
+  useEffect(() => {
+    getPartners();
+  }, []);
+
   const renderFlatListPartner = renderData => {
+    console.log('render data params', renderData);
     return (
       <FlatList
         data={renderData}
@@ -174,7 +200,7 @@ export default ChooseEditPartner = props => {
   //tambah kolom isChecked (true, false) di table saat gue submit partner awal di facility booking
 
   useEffect(() => {
-    choosedPartnerBefore();
+    // choosedPartnerBefore();
   }, []);
 
   const choosedPartnerBefore = index => {
@@ -263,27 +289,26 @@ export default ChooseEditPartner = props => {
             <Text>Choose Partners</Text>
           </View>
           <ScrollView>
-            <View style={{flex: 1, height: '100%'}}>
+            <View style={{flex: 1}}>
               {/* // coba dulu height nya 100%, kayak gimana */}
               {renderFlatListPartner(partners)}
             </View>
           </ScrollView>
         </ScrollView>
-        <Button
-          small
-          style={{
-            marginTop: 10,
-            marginHorizontal: 5,
-            marginBottom: 20,
-            // flex: 1,
-          }}
-          onPress={() => {
-            bookFacility();
-          }}>
-          <Text style={{textAlign: 'center'}}>{t('Book Facility')}</Text>
-        </Button>
       </View>
-
+      <Button
+        small
+        style={{
+          marginTop: 10,
+          marginHorizontal: 5,
+          marginBottom: 20,
+          // flex: 1,
+        }}
+        onPress={() => {
+          bookFacility();
+        }}>
+        <Text style={{textAlign: 'center'}}>{t('Book Facility')}</Text>
+      </Button>
       <ScrollView>
         <ModalProduct
           // colorChoosedInit={colorChoosed}
