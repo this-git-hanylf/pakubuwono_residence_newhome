@@ -134,7 +134,12 @@ const Home = props => {
       <SafeAreaView
         style={[BaseStyle.safeAreaView, {flex: 1}]}
         edges={['right', 'top', 'left']}>
-        <HeaderHome />
+        {user == null || user == '' ? (
+          <Text>data user dihome null</Text>
+        ) : (
+          <HeaderHome />
+        )}
+
         <ScrollView
           contentContainerStyle={styles.paddingSrollView}
           refreshControl={
@@ -212,7 +217,11 @@ const Home = props => {
             </View>
           </View>
           <View style={styles.paddingContent}>
-            <Categories style={{marginTop: 10}} />
+            {user == null || user == '' ? (
+              <Text>user not available</Text>
+            ) : (
+              <Categories style={{marginTop: 10}} />
+            )}
           </View>
           {/* {loading ? renderPlaceholder() : renderContent()} */}
         </ScrollView>

@@ -16,8 +16,8 @@ import SplashScreen from 'react-native-splash-screen';
 import {useDispatch, useSelector} from 'react-redux';
 import {AllScreens, ModalScreens} from './config';
 import Profile from '@screens/Profile';
-import SignIn from '@screens/SignIn';
-import Loading from '@screens/Loading';
+import SignIn from '../screens/SignIn';
+import Loading from '../screens/Loading';
 
 const RootStack = createStackNavigator();
 import {StackActions} from '@react-navigation/native';
@@ -35,6 +35,8 @@ const Navigator = props => {
   const [loading, setLoading] = useState(true);
   const navigationRef = useRef(null);
   const user = useSelector(state => getUser(state));
+
+  console.log('user null ?? ', user);
 
   useEffect(() => {
     // Hide screen loading
@@ -78,7 +80,7 @@ const Navigator = props => {
             }}>
             {loading ? (
               <RootStack.Screen name="Loading" component={Loading} />
-            ) : user === null ? (
+            ) : user == null || user == '' || user == 0 ? (
               <RootStack.Screen name="SignIn" component={SignIn} />
             ) : (
               <RootStack.Screen name="MainStack" component={MainStack} />

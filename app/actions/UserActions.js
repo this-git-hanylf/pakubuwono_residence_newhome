@@ -18,6 +18,8 @@ export const actionTypes = {
   CHANGEPASS_SUCCESS: 'CHANGEPASS_SUCCESS',
 
   EDIT: 'EDIT',
+
+  REMOVE_USER: 'REMOVE_USER',
 };
 
 const loginRequest = () => ({
@@ -70,6 +72,11 @@ const logoutRequest = () => ({
   type: actionTypes.LOGOUT,
 });
 
+const removeUser = user => ({
+  type: actionTypes.REMOVE_USER,
+  user: null,
+});
+
 export const login = (email, password) => async dispatch => {
   dispatch(loginRequest());
   try {
@@ -102,6 +109,8 @@ export const reset = (newPass, conPass, email) => async dispatch => {
 export const logout = () => async dispatch => {
   UserController.logout();
   dispatch(logoutRequest());
+  // dispatch(logout());
+  dispatch(removeUser());
 };
 
 export const saveProfile = data => async dispatch => {

@@ -50,7 +50,13 @@ class UserController {
     }
   };
 
-  logout = () => null;
+  logout = () => {
+    try {
+      console.log('logout');
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  };
 }
 
 export default new UserController();

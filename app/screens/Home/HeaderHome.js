@@ -16,42 +16,47 @@ const HeaderHome = props => {
   const {colors} = useTheme();
   const {onPressRight = () => {}, style = {}, ComponentRight} = props;
   const user = useSelector(state => getUser(state));
+  console.log('user di header home', user);
   return (
     <Fragment>
-      <View style={[styles.header, style]}>
-        <TouchableOpacity
-          style={{position: 'relative'}}
-          onPress={() => navigation.navigate('Profile')}>
-          <Image source={{uri: `${user.pict}`}} style={styles.avatar} />
-        </TouchableOpacity>
-        <View style={styles.contentHeader}>
-          <Text subhead light>
-            {t('hello')}
-          </Text>
-          <Text body2>{user.name}</Text>
-        </View>
-
-        {ComponentRight ? (
-          ComponentRight
-        ) : (
+      {user != null ? (
+        <View style={[styles.header, style]}>
           <TouchableOpacity
             style={{position: 'relative'}}
-            onPress={() => navigation.navigate('Notification')}>
-            <Icon name={'bell'} solid size={20} color={BaseColor.grayColor}>
-              <Text>0</Text>
-            </Icon>
-
-            <View
-              style={[
-                styles.notyHeader,
-                {
-                  borderColor: BaseColor.whiteColor,
-                  backgroundColor: colors.primary,
-                },
-              ]}></View>
+            onPress={() => navigation.navigate('Profile')}>
+            <Image source={{uri: `${user.pict}`}} style={styles.avatar} />
           </TouchableOpacity>
-        )}
-      </View>
+          <View style={styles.contentHeader}>
+            <Text subhead light>
+              {t('hello')}
+            </Text>
+            <Text body2>{user.name}</Text>
+          </View>
+
+          {ComponentRight ? (
+            ComponentRight
+          ) : (
+            <TouchableOpacity
+              style={{position: 'relative'}}
+              onPress={() => navigation.navigate('Notification')}>
+              <Icon name={'bell'} solid size={20} color={BaseColor.grayColor}>
+                <Text>0</Text>
+              </Icon>
+
+              <View
+                style={[
+                  styles.notyHeader,
+                  {
+                    borderColor: BaseColor.whiteColor,
+                    backgroundColor: colors.primary,
+                  },
+                ]}></View>
+            </TouchableOpacity>
+          )}
+        </View>
+      ) : (
+        <Text>user null, login again</Text>
+      )}
     </Fragment>
   );
 };

@@ -12,7 +12,7 @@ import {
 import {BaseStyle, useTheme} from '@config';
 // Load sample data
 import {UserData} from '@data';
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useState, useEffect} from 'react';
 import {useTranslation} from 'react-i18next';
 import {ScrollView, TouchableOpacity, View, Alert} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
@@ -30,6 +30,9 @@ const Profile = props => {
   const [loading, setLoading] = useState(false);
   const [userData, setUserData] = useState(UserData[0]);
   const user = useSelector(state => getUser(state));
+  const logoutUser = useCallback(() => dispatch(logout()), [dispatch]);
+
+  // ------ coba dari youtube
 
   /**
    * @description Simple logout with Redux
@@ -39,6 +42,11 @@ const Profile = props => {
   // const onLogOut = () => {
   //   dispatch([actionTypes.LOGOUT]);
   // };
+  useEffect(() => {
+    if (user == null) {
+      props.navigation.navigate('SignIn');
+    }
+  });
 
   const onLogOut = useCallback(() => {
     Alert.alert(
@@ -49,11 +57,13 @@ const Profile = props => {
           text: 'Cancel',
           style: 'cancel',
         },
-        {text: 'OK', onPress: () => dispatch(logout())},
+        {text: 'OK', onPress: () => logoutUser()},
       ],
       {cancelable: false},
     );
   }, [dispatch]);
+
+  // const
 
   const onLogIn = () => {
     navigation.navigate('SignIn');

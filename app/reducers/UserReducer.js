@@ -16,7 +16,15 @@ const userReducer = (state = initialState, action) => {
         user: action.user,
       };
     case actionTypes.LOGOUT:
-      return initialState;
+      return {
+        ...state,
+        user: null,
+      };
+    case actionTypes.REMOVE_USER:
+      return {
+        // ...state,
+        user: null,
+      };
     default:
       return state;
   }
