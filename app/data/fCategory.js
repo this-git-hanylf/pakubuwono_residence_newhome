@@ -9,14 +9,14 @@ export const FCategoryData = [
     subtitle: 'Display data with HouserRoles',
     user_facility: 'Y',
   },
-  {
-    id: '6',
-    screen: 'Announce',
-    icon: 'info',
-    title: 'Announce',
-    subtitle: 'Display data with Announce ',
-    user_facility: 'Y',
-  },
+  // {
+  //   id: '6',
+  //   screen: 'Announce',
+  //   icon: 'info',
+  //   title: 'Announce',
+  //   subtitle: 'Display data with Announce ',
+  //   user_facility: 'Y',
+  // },
   {
     id: '1',
     screen: 'MeterInfo', //jadi meter info
