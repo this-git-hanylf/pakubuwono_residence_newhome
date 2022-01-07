@@ -76,6 +76,8 @@ export default BookingListDetail = props => {
   const [refreshing, setRefreshing] = useState(false);
   //   const deviceWidth = Dimensions.get('window').width;
 
+  const [confirmModal, showConfirmModal] = useState(false);
+
   const getDetailList = async () => {
     const reservation_no = route.params.reservation_no;
     console.log(
@@ -241,11 +243,16 @@ export default BookingListDetail = props => {
   const onEditPartner = async (reservation_no, datapartner) => {
     console.log('reserv', reservation_no);
     console.log('data partner yg sudah terpilih', datapartner);
-    const datapartner_choosed = datapartner;
-    navigation.navigate('ChooseEditPartner', {
-      reservation_no,
-      datapartner_choosed,
-    });
+    //  setErrorSubmit(data.data.Error);
+    setMessageSuccess(
+      'Are you sure to change partner? The partner you previously selected will be deleted.',
+    );
+    showConfirmModal(true);
+    // const datapartner_choosed = datapartner;
+    // navigation.navigate('ChooseEditPartner', {
+    //   reservation_no,
+    //   datapartner_choosed,
+    // });
   };
 
   const onRemovePartner = async (data, reservation_no) => {
@@ -262,9 +269,16 @@ export default BookingListDetail = props => {
       .then(data => {
         console.log('data remove partner', data);
         //    setPartnerBooking(data.data.Data);
+
         setSpinner(false);
         onRefresh();
         getPartnerBooking();
+
+        console.log('res pesan', data.data.Pesan);
+        console.log('res error', data.data.Error);
+        setErrorSubmit(data.data.Error);
+        setMessageSuccess(data.data.Pesan);
+        showModalSuccess(true);
       })
       .catch(error => console.error(error))
       // .catch(error => console.error(error.response.data))
@@ -275,6 +289,15 @@ export default BookingListDetail = props => {
   //     setRefreshing(true);
   //     wait(2000).then(() => setRefreshing(false));
   //   }, []);
+
+  React.useEffect(() => {
+    getPartnerBooking();
+    const willFocusSubscription = props.navigation.addListener('focus', () => {
+      getPartnerBooking();
+    });
+
+    return willFocusSubscription;
+  }, []);
 
   const onRefresh = () => {
     setSpinner(true);
@@ -337,6 +360,42 @@ export default BookingListDetail = props => {
     navigation.navigate('Home');
   };
 
+  const onKlikNo = () => {
+    showConfirmModal(false);
+    //  navigation.navigate('Home');
+  };
+
+  const onKlikYes = reservation_no => {
+    console.log('reserv', reservation_no);
+    showConfirmModal(false);
+    onDeleteAllPartner(reservation_no);
+    // onAddPartner();
+  };
+
+  const onDeleteAllPartner = async reservation_no => {
+    const reserv_no = reservation_no;
+    try {
+      const data = await axios.delete(
+        `http://34.87.121.155:2121/apiwebpbi/api/facility/book/deletepartner/` +
+          reserv_no,
+      );
+      if (data) {
+        console.log('callback data delete all partner', data);
+        setSpinner(false);
+        getPartnerBooking();
+        onAddPartner();
+
+        // console.log('res pesan', data.data.Pesan);
+        // console.log('res error', data.data.Error);
+        // setErrorSubmit(data.data.Error);
+        // setMessageSuccess(data.data.Pesan);
+        // showModalSuccess(true);
+      }
+      return res;
+    } catch (err) {
+      console.log('error remove partner', err.response);
+    }
+  };
   return (
     <SafeAreaView
       style={[BaseStyle.safeAreaView, {flex: 1}]}
@@ -546,6 +605,36 @@ export default BookingListDetail = props => {
                     </View>
                   ) : (
                     <View>
+                      <View
+                        style={{
+                          //   paddingVertical: 20,
+                          paddingTop: 20,
+                          paddingBottom: 10,
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                        }}>
+                        <View style={{alignSelf: 'center'}}>
+                          <Text style={{fontWeight: 'bold'}}>
+                            Your Partners
+                          </Text>
+                        </View>
+                        <Button
+                          onPress={() => onAddPartner()}
+                          style={{height: 60, width: 60}}>
+                          <IconIonicons
+                            name="person-add"
+                            size={20}
+                            color={BaseColor.whiteColor}
+                            style={{
+                              justifyContent: 'center',
+                              alignContent: 'center',
+                              alignItems: 'center',
+                              alignSelf: 'center',
+                            }}></IconIonicons>
+                          {/* <Text style={{fontSize: 14}}>Add Partner</Text> */}
+                        </Button>
+                      </View>
+                      {/* 
                       <Button onPress={() => onAddPartner()}>
                         <IconFontisto
                           name="trash"
@@ -558,7 +647,7 @@ export default BookingListDetail = props => {
                             alignSelf: 'center',
                           }}></IconFontisto>
                         <Text>Add Partner</Text>
-                      </Button>
+                      </Button> */}
                       <View
                         style={{
                           alignSelf: 'center',
@@ -681,6 +770,73 @@ export default BookingListDetail = props => {
                 }}
                 onPress={() => onCloseModal()}>
                 <Text style={{fontSize: 13}}>{t('OK')}</Text>
+              </Button>
+            </View>
+          </View>
+        </Modal>
+      </View>
+
+      <View>
+        <Modal
+          isVisible={confirmModal}
+          style={{height: '100%'}}
+          onBackdropPress={() => showConfirmModal(false)}>
+          <View
+            style={{
+              // flex: 1,
+
+              // alignContent: 'center',
+              padding: 10,
+              backgroundColor: '#fff',
+              // height: ,
+              borderRadius: 8,
+            }}>
+            <View style={{alignItems: 'center'}}>
+              <Text
+                style={{
+                  fontSize: 16,
+                  fontWeight: 'bold',
+                  color: colors.primary,
+                  marginBottom: 10,
+                }}>
+                {/* {errorSubmit == false ? 'Success!' : 'Ups, Failed!'}
+                 */}
+                Warning!
+              </Text>
+              <Text>{messageSuccess}</Text>
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
+              }}>
+              <Button
+                style={{
+                  marginTop: 10,
+                  // marginBottom: 10,
+                  marginHorizontal: 15,
+                  width: 70,
+                  height: 40,
+                }}
+                onPress={() => onKlikNo()}>
+                <Text style={{fontSize: 13, color: BaseColor.whiteColor}}>
+                  {t('No')}
+                </Text>
+              </Button>
+              <Button
+                style={{
+                  marginTop: 10,
+                  // marginBottom: 10,
+                  backgroundColor: '#fff',
+                  borderColor: colors.primary,
+                  borderWidth: 2,
+                  width: 70,
+                  height: 40,
+                }}
+                onPress={() => onKlikYes(reservation_no)}>
+                <Text style={{fontSize: 13, color: colors.primary}}>
+                  {t('Yes')}
+                </Text>
               </Button>
             </View>
           </View>
