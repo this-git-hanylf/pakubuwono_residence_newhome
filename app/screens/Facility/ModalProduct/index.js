@@ -9,6 +9,7 @@ import {
   ProfileGridSmall,
   Image,
 } from '@components';
+import {useWindowDimensions} from 'react-native';
 import {useTheme, Images} from '@config';
 import {EFilterColors, EFilterSizes, FRecentTransactions} from '@data';
 import PropTypes from 'prop-types';
@@ -21,11 +22,13 @@ import SelectDropdown from 'react-native-select-dropdown';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import LabelUpper2Row from '@components/Label/Upper2Row';
 import {useNavigation} from '@react-navigation/native';
+import RenderHtml from 'react-native-render-html';
 
 const ModalProduct = props => {
   const {colors} = useTheme();
   const {t} = useTranslation();
   const navigation = useNavigation();
+  const {width} = useWindowDimensions();
 
   const cardColor = colors.card;
   const {onApply, onItems, item, colorChoosedInit, sizeChoosedInit, ...attrs} =
@@ -97,37 +100,51 @@ const ModalProduct = props => {
           ))}
         </View> */}
           <View style={{paddingVertical: 20}}>
-            <Text>Detail Partners</Text>
+            <Text style={{fontSize: 16}}>Detail Partners</Text>
           </View>
 
           <View key={item.rowID}>
             <Image
               source={{uri: item.url_picture}}
-              style={{width: 60, height: 60, borderRadius: 50}}
+              style={{
+                width: 200,
+                height: 200,
+                borderRadius: 50,
+                alignSelf: 'center',
+              }}
             />
 
-            <Text>
-              Name : {item.staff_first_name} {item.staff_last_name}
+            <Text
+              style={{alignSelf: 'center', fontSize: 20, fontWeight: 'bold'}}>
+              {item.staff_first_name} {item.staff_last_name}
             </Text>
-            <Text>
-              Profile :{' '}
-              {item.ballboy == 1
+            <Text
+              style={{alignSelf: 'center', fontSize: 14, fontWeight: 'bold'}}>
+              {item.sex}
+            </Text>
+            <Text
+              style={{alignSelf: 'center', fontSize: 16, fontWeight: 'bold'}}>
+              {item.position}
+              {/* {item.ballboy == 1
                 ? 'Ballboy'
                 : null || item.coach == 1
                 ? 'Coach'
                 : null || item.hittingpartner == 1
                 ? 'Hitting Partner'
-                : null}
+                : null} */}
             </Text>
           </View>
-          <View>
+          {/* <RenderHtml source={{html: item.resume}} contentWidth={width} /> */}
+          <View
+            style={{
+              marginTop: 30,
+              backgroundColor: '#fff',
+              padding: 20,
+              borderRadius: 10,
+            }}>
             {item.resume ? (
-              <Text>
-                {item.resume.replace(
-                  /<\/?\w(?:[^"'>]|"[^"]*"|'[^']*')*>/gim,
-                  '',
-                )}
-              </Text>
+              // <Text>{item.resume}</Text>
+              <RenderHtml source={{html: item.resume}} contentWidth={width} />
             ) : (
               <Text>{item.resume}</Text>
             )}

@@ -411,63 +411,56 @@ function BookingFacility({route}) {
           databookdates[2].book_date +
           '&id=1',
       );
-      await axios
-        .all([
-          axios.get(
-            `http://34.87.121.155:2121/apiwebpbi/api/facility/book/hours_venue` +
-              params_api +
-              '&' +
-              'book_date=' +
-              databookdates[0].book_date +
-              // '2021-12-15' +
-              `&id=1`,
-          ),
-          axios.get(
-            `http://34.87.121.155:2121/apiwebpbi/api/facility/book/hours_venue` +
-              params_api +
-              '&' +
-              'book_date=' +
-              databookdates[1].book_date +
-              // '2021-12-15' +
-              `&id=2`,
-          ),
-          axios.get(
-            `http://34.87.121.155:2121/apiwebpbi/api/facility/book/hours_venue` +
-              params_api +
-              '&' +
-              'book_date=' +
-              databookdates[2].book_date +
-              // '2021-12-15' +
-              `&id=3`,
-          ),
-          axios.get(
-            `http://34.87.121.155:2121/apiwebpbi/api/facility/book/hours_venue` +
-              params_api +
-              '&' +
-              'book_date=' +
-              databookdates[3].book_date + // '2021-12-15' + // data[3]?.book_date +
-              `&id=4`,
-          ),
-        ])
+      let endpoints = [
+        `http://34.87.121.155:2121/apiwebpbi/api/facility/book/hours_venue` +
+          params_api +
+          '&' +
+          'book_date=' +
+          databookdates[0].book_date +
+          // '2021-12-15' +
+          `&id=1`,
+        `http://34.87.121.155:2121/apiwebpbi/api/facility/book/hours_venue` +
+          params_api +
+          '&' +
+          'book_date=' +
+          databookdates[1].book_date +
+          // '2021-12-15' +
+          `&id=2`,
+        `http://34.87.121.155:2121/apiwebpbi/api/facility/book/hours_venue` +
+          params_api +
+          '&' +
+          'book_date=' +
+          databookdates[2].book_date +
+          // '2021-12-15' +
+          `&id=3`,
+        `http://34.87.121.155:2121/apiwebpbi/api/facility/book/hours_venue` +
+          params_api +
+          '&' +
+          'book_date=' +
+          databookdates[3].book_date + // '2021-12-15' + // data[3]?.book_date +
+          `&id=4`,
+      ];
+      axios
+        .all(endpoints.map(endpoint => axios.get(endpoint)))
         .then(
-          axios.spread((res1, res2, res3, res4) => {
-            // console.log('data', res.data[0])s
-            console.log('res1 created if: ', res1.data);
-            // console.log('res2 created: ', res2.data);
-            // console.log('res3 created: ', res3.data);
-            // console.log('res4 created: ', res4.data);
+          axios.spread(
+            (
+              {data: dataBooked1},
+              {data: dataBooked2},
+              {data: dataBooked3},
+              {data: dataBooked4},
+            ) => {
+              console.log('res1: ', dataBooked1);
+              console.log('res2: ', dataBooked2);
+              console.log('res3: ', dataBooked3);
+              console.log('res4: ', dataBooked4);
 
-            // setData(res1.data);
-            setDataBooked1(res1.data);
-            setDataBooked2(res2.data);
-            setDataBooked3(res3.data);
-            setDataBooked4(res4.data);
-            // setTimeout(() => {
-
-            //   setSpinnerHours(false);
-            //   // setSpinner(false);
-            // }, 5000);
-          }),
+              setDataBooked1(dataBooked1);
+              setDataBooked2(dataBooked2);
+              setDataBooked3(dataBooked3);
+              setDataBooked4(dataBooked4);
+            },
+          ),
         )
         .catch(error => console.error(error.response.data))
         .finally(
@@ -511,67 +504,63 @@ function BookingFacility({route}) {
       //     data[0].book_date +
       //     '&id=1',
       // );
-      await axios
-        .all([
-          axios.get(
-            `http://34.87.121.155:2121/apiwebpbi/api/facility/book/hours_venue` +
-              params_api +
-              '&' +
-              'book_date=' +
-              databookdates[0].book_date +
-              // '2021-12-15' +
-              `&id=1`,
-          ),
-          axios.get(
-            `http://34.87.121.155:2121/apiwebpbi/api/facility/book/hours_venue` +
-              params_api +
-              '&' +
-              'book_date=' +
-              databookdates[1].book_date +
-              `&id=2`,
-          ),
-          axios.get(
-            `http://34.87.121.155:2121/apiwebpbi/api/facility/book/hours_venue` +
-              params_api +
-              '&' +
-              'book_date=' +
-              databookdates[2].book_date +
-              `&id=3`,
-          ),
-          axios.get(
-            `http://34.87.121.155:2121/apiwebpbi/api/facility/book/hours_venue` +
-              params_api +
-              '&' +
-              'book_date=' +
-              databookdates[3].book_date +
-              // '2021-12-15' +
-              `&id=4`,
-          ),
-        ])
+      let endpoints = [
+        `http://34.87.121.155:2121/apiwebpbi/api/facility/book/hours_venue` +
+          params_api +
+          '&' +
+          'book_date=' +
+          databookdates[0].book_date +
+          // '2021-12-15' +
+          `&id=1`,
+        `http://34.87.121.155:2121/apiwebpbi/api/facility/book/hours_venue` +
+          params_api +
+          '&' +
+          'book_date=' +
+          databookdates[1].book_date +
+          // '2021-12-15' +
+          `&id=2`,
+        `http://34.87.121.155:2121/apiwebpbi/api/facility/book/hours_venue` +
+          params_api +
+          '&' +
+          'book_date=' +
+          databookdates[2].book_date +
+          // '2021-12-15' +
+          `&id=3`,
+        `http://34.87.121.155:2121/apiwebpbi/api/facility/book/hours_venue` +
+          params_api +
+          '&' +
+          'book_date=' +
+          databookdates[3].book_date + // '2021-12-15' + // data[3]?.book_date +
+          `&id=4`,
+      ];
+      axios
+        .all(endpoints.map(endpoint => axios.get(endpoint)))
         .then(
-          axios.spread((res1, res2, res3, res4) => {
-            // console.log('data', res.data[0])s
-            // console.log('res1 created else: ', res1.data);
-            console.log('res2 created: ', res2.data);
-            // console.log('res3 created: ', res3.data);
-            // console.log('res4 created: ', res4.data);
+          axios.spread(
+            (
+              {data: dataBooked1},
+              {data: dataBooked2},
+              {data: dataBooked3},
+              {data: dataBooked4},
+            ) => {
+              console.log('res1 created if: ', dataBooked1);
+              console.log('res2 created: ', dataBooked2);
+              console.log('res3 created: ', dataBooked3);
+              console.log('res4 created: ', dataBooked4);
 
-            // setData(res1.data);
-            setDataBooked1(res1.data);
-            setDataBooked2(res2.data);
-            setDataBooked3(res3.data);
-            setDataBooked4(res4.data);
-
-            // setTimeout(() => {
-
-            //   setSpinnerHours(false);
-            //   // setSpinner(false);
-            // }, 5000);
-          }),
+              setDataBooked1(dataBooked1);
+              setDataBooked2(dataBooked2);
+              setDataBooked3(dataBooked3);
+              setDataBooked4(dataBooked4);
+            },
+          ),
         )
         .catch(error => console.error(error.response.data))
-
-        .finally(() => setLoading(false));
+        .finally(
+          () => setLoading(false),
+          // setSpinnerHours(false),
+          // setSpinner(false),
+        );
     }
   };
 
@@ -767,7 +756,8 @@ function BookingFacility({route}) {
                   paddingHorizontal: 20,
                 }}>
                 {tab.id == 1 && dataBooked1?.slot_hours != ''
-                  ? dataBooked1?.slot_hours.map(
+                  ? dataBooked1?.slot_hours.map &&
+                    dataBooked1?.slot_hours.map(
                       (items, indexs) => (
                         console.log('databooked slot hour', items.databook),
                         (
@@ -796,12 +786,16 @@ function BookingFacility({route}) {
                                 ? items.databook.map((itemdatabook, keys) => (
                                     <View key={keys}>
                                       <Text>
-                                        {itemdatabook.remarks} -{' '}
+                                        {/* {itemdatabook.remarks} -{' '} */}
                                         {itemdatabook.venue_name}
                                       </Text>
                                       {/* <Text>{itemdatabook.name}</Text> */}
                                       <Text>{itemdatabook.reservation_no}</Text>
-
+                                      <Text>
+                                        {moment(
+                                          itemdatabook.reservation_date,
+                                        ).format('DD MMM YYYY hh:mm:ss')}
+                                      </Text>
                                       {/* minta tambahin kolom venue_name   */}
                                     </View>
                                   ))
@@ -895,7 +889,8 @@ function BookingFacility({route}) {
             ) : (
               <View style={{flex: 1, paddingHorizontal: 20}}>
                 {tab.id == 2 && dataBooked2?.slot_hours != ''
-                  ? dataBooked2.slot_hours.map((items, indexs) => (
+                  ? dataBooked2.slot_hours.map &&
+                    dataBooked2.slot_hours.map((items, indexs) => (
                       <View
                         key={indexs}
                         style={{
@@ -916,7 +911,7 @@ function BookingFacility({route}) {
                             ? items.databook.map((itemdatabook, keys) => (
                                 <View key={keys}>
                                   <Text>
-                                    {itemdatabook.remarks} -{' '}
+                                    {/* {itemdatabook.remarks} -{' '} */}
                                     {itemdatabook.venue_name}
                                   </Text>
                                   {/* <Text>{itemdatabook.name}</Text> */}
@@ -1005,7 +1000,8 @@ function BookingFacility({route}) {
             ) : (
               <View style={{flex: 1, paddingHorizontal: 20}}>
                 {tab.id == 3 && dataBooked3?.slot_hours != ''
-                  ? dataBooked3.slot_hours.map((items, indexs) => (
+                  ? dataBooked3.slot_hours.map &&
+                    dataBooked3.slot_hours.map((items, indexs) => (
                       <View
                         key={indexs}
                         style={{
@@ -1026,12 +1022,16 @@ function BookingFacility({route}) {
                             ? items.databook.map((itemdatabook, keys) => (
                                 <View key={keys}>
                                   <Text>
-                                    {itemdatabook.remarks} -{' '}
+                                    {/* {itemdatabook.remarks} -{' '} */}
                                     {itemdatabook.venue_name}
                                   </Text>
                                   {/* <Text>{itemdatabook.name}</Text> */}
                                   <Text>{itemdatabook.reservation_no}</Text>
-
+                                  <Text>
+                                    {moment(
+                                      itemdatabook.reservation_date,
+                                    ).format('DD MMM YYYY hh:mm:ss')}
+                                  </Text>
                                   {/* minta tambahin kolom venue_name   */}
                                 </View>
                               ))
@@ -1111,7 +1111,8 @@ function BookingFacility({route}) {
             ) : (
               <View style={{flex: 1, paddingHorizontal: 20}}>
                 {tab.id == 4 && dataBooked4?.slot_hours != ''
-                  ? dataBooked4.slot_hours.map((items, indexs) => (
+                  ? dataBooked4.slot_hours.map &&
+                    dataBooked4.slot_hours.map((items, indexs) => (
                       <View
                         key={indexs}
                         style={{
@@ -1132,12 +1133,16 @@ function BookingFacility({route}) {
                             ? items.databook.map((itemdatabook, keys) => (
                                 <View key={keys}>
                                   <Text>
-                                    {itemdatabook.remarks} -{' '}
+                                    {/* {itemdatabook.remarks} -{' '} */}
                                     {itemdatabook.venue_name}
                                   </Text>
                                   {/* <Text>{itemdatabook.name}</Text> */}
                                   <Text>{itemdatabook.reservation_no}</Text>
-
+                                  <Text>
+                                    {moment(
+                                      itemdatabook.reservation_date,
+                                    ).format('DD MMM YYYY hh:mm:ss')}
+                                  </Text>
                                   {/* minta tambahin kolom venue_name   */}
                                 </View>
                               ))

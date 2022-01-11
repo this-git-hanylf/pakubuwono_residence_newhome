@@ -6,7 +6,10 @@ import {
   ProfileGridSmall,
   FilterESort,
   Header,
+  Tag,
 } from '@components';
+
+import {TabBar, TabView, SceneMap} from 'react-native-tab-view';
 import Icon from '@components/Icon';
 import LabelUpper2Row from '@components/Label/Upper2Row';
 import {BaseColor, Images, useTheme} from '@config';
@@ -41,6 +44,8 @@ import getUser from '../../selectors/UserSelectors';
 
 import {EPostListData, ESortOption} from '@data';
 import * as Utils from '@utils';
+
+import SegmentControl from 'react-native-segment-control';
 
 const dataProduk = [
   {id: 1, txt: 'first check', isChecked: false},
@@ -89,10 +94,14 @@ export default BookingDetail = props => {
 
   const [list, setList] = useState(EPostListData);
 
+  const [allFilter, setallFilter] = useState('All');
+  const [coachFilter, setcoachFilter] = useState('');
+
   const getLotNo = async () => {
     try {
       const res = await axios.get(
-        'http://34.87.121.155:2121/apiwebpbi/api/facility/book/unit?email=bagus.trinanda@ifca.co.id',
+        'http://34.87.121.155:2121/apiwebpbi/api/facility/book/unit?email=' +
+          email,
       );
       if (res) {
         const resLotno = res.data.data;
@@ -108,25 +117,6 @@ export default BookingDetail = props => {
     } catch (err) {
       console.log('error lotno ya', err.response);
     }
-
-    axios
-      .get(
-        'http://34.87.121.155:2121/apiwebpbi/api/facility/book/unit?email=bagus.trinanda@ifca.co.id',
-      )
-      .then(data => {
-        // console.log('data lotno', data.data.data);
-        const resLotno = data.data.data;
-        console.log('reslotno', resLotno);
-        // console.log('reslotno', resLotno[0].lot_no);
-        setLotno(resLotno);
-        // setTimeDate(data[0]);
-
-        setSpinner(false);
-      })
-      .catch(error => console.error(error))
-      // .catch(error => console.error(error.response.data))
-      .finally(() => setLoading(false));
-    // http://34.87.121.155:2121/apiwebpbi/api/facility/book/unit?email=bagus.trinanda@ifca.co.id
   };
   useEffect(() => {
     getLotNo();
@@ -175,7 +165,7 @@ export default BookingDetail = props => {
           jam_booking,
       )
       .then(data => {
-        // console.log('data partners', data.data.data);
+        console.log('data partners', data.data.data);
         const resPartner = data.data.data;
         setPartner(resPartner);
         setPartnerItems(resPartner);
@@ -360,13 +350,14 @@ export default BookingDetail = props => {
                     {item.staff_first_name} {item.staff_last_name}
                   </Text>
                   <Text style={{textAlign: 'center', fontWeight: 'bold'}}>
-                    {item.ballboy == 1
+                    {/* {item.ballboy == 1
                       ? 'Ballboy'
                       : item.coach == 1
                       ? 'Coach'
                       : item.hittingpartner == 1
                       ? 'Hitting Partner'
-                      : null}
+                      : null} */}
+                    {item.position}
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -377,84 +368,255 @@ export default BookingDetail = props => {
     );
   };
 
-  const renderFilterPartner = renderData => {
+  const All = () => {
+    console.log('all', All);
     return (
-      <View style={{flexDirection: 'row'}}>
-        <TouchableOpacity onPress={() => onFilter('Coach')}>
-          <View
-            style={{
-              marginVertical: 10,
-              marginHorizontal: 10,
-              backgroundColor: colors.primary,
-              paddingHorizontal: 15,
-              paddingVertical: 10,
-              borderRadius: 8,
-            }}>
-            <Text style={{color: BaseColor.whiteColor}}>Coach</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => onFilter('Hitting Partner')}>
-          <View
-            style={{
-              marginVertical: 10,
-              marginHorizontal: 10,
-              backgroundColor: colors.primary,
-              paddingHorizontal: 15,
-              paddingVertical: 10,
-              borderRadius: 8,
-            }}>
-            <Text style={{color: BaseColor.whiteColor}}>Hitting Partner</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => onFilter('Ball Boy')}>
-          <View
-            style={{
-              marginVertical: 10,
-              marginHorizontal: 10,
-              backgroundColor: colors.primary,
-              // padding: 15,
-              paddingHorizontal: 15,
-              paddingVertical: 10,
-              borderRadius: 8,
-            }}>
-            <Text style={{color: BaseColor.whiteColor}}>Ballboy</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
+      <FlatList
+        data={partners}
+        keyExtractor={(item, index) => item.rowID}
+        renderItem={({item, key}) => (
+          <Card style={{margin: 5}} key={key}>
+            <View
+              style={{
+                padding: 10,
+                margin: 5,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+              }}
+              key={key}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  flex: 1,
+                  justifyContent: 'space-between',
+                }}>
+                <CheckBox
+                  style={{justifyContent: 'center', alignSelf: 'center'}}
+                  value={item.isChecked}
+                  onChange={() => {
+                    handleChangePartner(item.rowID);
+                  }}
+                />
+                <TouchableOpacity
+                  onPress={() => chooseCoba(item)}
+                  style={{width: 110}}>
+                  <Image
+                    source={{uri: item.url_picture}}
+                    style={{
+                      width: 60,
+                      height: 60,
+                      borderRadius: 50,
+                      alignSelf: 'center',
+                      alignContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  />
+                  <Text style={{textAlign: 'center'}}>
+                    {item.staff_first_name} {item.staff_last_name}
+                  </Text>
+                  <Text style={{textAlign: 'center', fontWeight: 'bold'}}>
+                    {item.position}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Card>
+        )}
+      />
     );
   };
-
-  const onFilter = statusPartner => {
-    console.log('sebagai', statusPartner);
-
-    const newArray = partners.filter(function (item) {
-      // console.log('item filter be', item);
-      // console.log('item filter', item.position);
-      console.log('item hittinh partner', item.hittingpartner);
-      let itemFilter = {};
-      if (item.coach == '1') {
-        itemFilter = 'Coach';
-        // console.log('item filter ya', itemFilter);
-      } else if (item.hittingpartner == '1') {
-        itemFilter = 'hitting';
-        // console.log('item filter ya', itemFilter);
-      }
-
-      // const itemFilter =
-      //   item.coach === 1
-      //     ? 'Coach'
-      //     : item.hittingpartner === 1
-      //     ? 'Hitting Partner'
-      //     : item.ballboy === 1
-      //     ? 'Ball Boy'
-      //     : item.coach == 1 && item.hittingpartner == 1
-      //     ? 'Hitting dan coach'
-      //     : null;
-      console.log('item filter ya', itemFilter);
-      return itemFilter === statusPartner;
-    });
-    console.log('new array', newArray);
+  const BallBoy = () => {
+    return (
+      <FlatList
+        data={partners}
+        keyExtractor={(item, index) => item.rowID}
+        renderItem={({item, key}) =>
+          item.ballboy == 1 ? (
+            <Card style={{margin: 5}} key={key}>
+              <View
+                style={{
+                  padding: 10,
+                  margin: 5,
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                }}
+                key={key}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flex: 1,
+                    justifyContent: 'space-between',
+                  }}>
+                  <CheckBox
+                    style={{justifyContent: 'center', alignSelf: 'center'}}
+                    value={item.isChecked}
+                    onChange={() => {
+                      handleChangePartner(item.rowID);
+                    }}
+                  />
+                  <TouchableOpacity
+                    onPress={() => chooseCoba(item)}
+                    style={{width: 110}}>
+                    <Image
+                      source={{uri: item.url_picture}}
+                      style={{
+                        width: 60,
+                        height: 60,
+                        borderRadius: 50,
+                        alignSelf: 'center',
+                        alignContent: 'center',
+                        alignItems: 'center',
+                      }}
+                    />
+                    <Text style={{textAlign: 'center'}}>
+                      {item.staff_first_name} {item.staff_last_name}
+                    </Text>
+                    <Text style={{textAlign: 'center', fontWeight: 'bold'}}>
+                      {item.ballboy == 1 ? 'Ballboy' : null}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </Card>
+          ) : null
+        }
+      />
+    );
   };
+  const Coach = () => {
+    return (
+      <FlatList
+        data={partners}
+        keyExtractor={(item, index) => item.rowID}
+        renderItem={({item, key}) =>
+          item.coach == 1 ? (
+            <Card style={{margin: 5}} key={key}>
+              <View
+                style={{
+                  padding: 10,
+                  margin: 5,
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                }}
+                key={key}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flex: 1,
+                    justifyContent: 'space-between',
+                  }}>
+                  <CheckBox
+                    style={{justifyContent: 'center', alignSelf: 'center'}}
+                    value={item.isChecked}
+                    onChange={() => {
+                      handleChangePartner(item.rowID);
+                    }}
+                  />
+                  <TouchableOpacity
+                    onPress={() => chooseCoba(item)}
+                    style={{width: 110}}>
+                    <Image
+                      source={{uri: item.url_picture}}
+                      style={{
+                        width: 60,
+                        height: 60,
+                        borderRadius: 50,
+                        alignSelf: 'center',
+                        alignContent: 'center',
+                        alignItems: 'center',
+                      }}
+                    />
+                    <Text style={{textAlign: 'center'}}>
+                      {item.staff_first_name} {item.staff_last_name}
+                    </Text>
+                    <Text style={{textAlign: 'center', fontWeight: 'bold'}}>
+                      {item.coach === 1 ? 'Coach' : null}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </Card>
+          ) : null
+        }
+      />
+    );
+  };
+  const HittingPartner = () => {
+    return (
+      <FlatList
+        data={partners}
+        keyExtractor={(item, index) => item.rowID}
+        renderItem={({item, key}) =>
+          item.hittingpartner == 1 ? (
+            <Card style={{margin: 5}} key={key}>
+              <View
+                style={{
+                  padding: 10,
+                  margin: 5,
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                }}
+                key={key}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flex: 1,
+                    justifyContent: 'space-between',
+                  }}>
+                  <CheckBox
+                    style={{justifyContent: 'center', alignSelf: 'center'}}
+                    value={item.isChecked}
+                    onChange={() => {
+                      handleChangePartner(item.rowID);
+                    }}
+                  />
+                  <TouchableOpacity
+                    onPress={() => chooseCoba(item)}
+                    style={{width: 110}}>
+                    <Image
+                      source={{uri: item.url_picture}}
+                      style={{
+                        width: 60,
+                        height: 60,
+                        borderRadius: 50,
+                        alignSelf: 'center',
+                        alignContent: 'center',
+                        alignItems: 'center',
+                      }}
+                    />
+                    <Text style={{textAlign: 'center'}}>
+                      {item.staff_first_name} {item.staff_last_name}
+                    </Text>
+                    <Text style={{textAlign: 'center', fontWeight: 'bold'}}>
+                      {item.hittingpartner == 1 ? 'Hitting Partner' : null}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </Card>
+          ) : null
+        }
+      />
+    );
+  };
+  const segments = [
+    {
+      title: 'All',
+      view: All,
+    },
+    {
+      title: 'Ballboy',
+      view: BallBoy,
+    },
+    {
+      title: 'Coach',
+      view: Coach,
+    },
+    {
+      title: 'Hitting Partner',
+      view: HittingPartner,
+    },
+  ];
 
   const goBackFacility = () => {
     const itemsForBack = {
@@ -494,7 +656,7 @@ export default BookingDetail = props => {
         unit: lotno_arr[0].lot_no,
         name: users.name,
         handphone: users.handphone,
-        remarks: 'Booked', //ini hardcode ya
+        remarks: '', //ini hardcode ya
         userid: users.UserId,
         datapartner: dataselected_partner,
       };
@@ -651,11 +813,20 @@ export default BookingDetail = props => {
           <View style={{paddingTop: 25, paddingLeft: 10}}>
             <Text>Choose Partners</Text>
           </View>
-          <View>{renderFilterPartner(partners)}</View>
+          {/* <View>{renderFilterPartner(partners)}</View>
+           */}
+
           <ScrollView>
-            <View style={{flex: 1, height: '100%'}}>
+            <View style={{flex: 1, height: '100%', backgroundColor: '#F5F7FA'}}>
+              <SegmentControl
+                segments={segments}
+                color={colors.primary}
+                style={{backgroundColor: 'red', height: 50, fontSize: 12}}
+                height={50}
+              />
+
               {/* // coba dulu height nya 100%, kayak gimana */}
-              {renderFlatListPartner(partners)}
+              {/* {renderFlatListPartner(partners)} */}
             </View>
           </ScrollView>
           {/* //kalo mau munculin partner yang udah kepilih */}
@@ -685,16 +856,21 @@ export default BookingDetail = props => {
           }}>
           <Button
             medium
+            outline
             style={{
               marginTop: 10,
               marginBottom: 20,
               marginHorizontal: 5,
+              backgroundColor: '#fff',
               flex: 1,
             }}
             onPress={() => {
               goBackFacility();
             }}>
-            {t('Back To Schedule')}
+            <Text style={{color: colors.primary}}>
+              {' '}
+              {t('Back To Schedule')}
+            </Text>
           </Button>
 
           <Button

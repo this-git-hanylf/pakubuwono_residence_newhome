@@ -165,13 +165,7 @@ export default ChooseEditPartner = props => {
                     {item.staff_first_name} {item.staff_last_name}
                   </Text>
                   <Text style={{textAlign: 'center', fontWeight: 'bold'}}>
-                    {item.ballboy == 1
-                      ? 'Ballboy'
-                      : item.coach == 1
-                      ? 'Coach'
-                      : item.hittingpartner == 1
-                      ? 'Hitting Partner'
-                      : null}
+                    {item.position}
                   </Text>
                 </TouchableOpacity>
               </View>

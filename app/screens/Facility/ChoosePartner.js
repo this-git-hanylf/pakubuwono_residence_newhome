@@ -40,17 +40,9 @@ import {useSelector} from 'react-redux';
 import getUser from '../../selectors/UserSelectors';
 
 import {EPostListData, ESortOption} from '@data';
-import * as Utils from '@utils';
 
-const dataProduk = [
-  {id: 1, txt: 'first check', isChecked: false},
-  {id: 2, txt: 'second check', isChecked: false},
-  {id: 3, txt: 'third check', isChecked: false},
-  {id: 4, txt: 'fourth check', isChecked: false},
-  {id: 5, txt: 'fifth check', isChecked: false},
-  {id: 6, txt: 'sixth check', isChecked: false},
-  {id: 7, txt: 'seventh check', isChecked: false},
-];
+import SegmentControl from 'react-native-segment-control';
+import * as Utils from '@utils';
 
 export default ChoosePartner = props => {
   const {navigation, route} = props;
@@ -154,22 +146,25 @@ export default ChoosePartner = props => {
                   //   }}
                   //   onPress={() => onCheck(item.rowID)}
                 />
-                <TouchableOpacity onPress={() => chooseCoba(item)}>
+                <TouchableOpacity
+                  onPress={() => chooseCoba(item)}
+                  style={{width: 110}}>
                   <Image
                     source={{uri: item.url_picture}}
-                    style={{width: 60, height: 60, borderRadius: 50}}
+                    style={{
+                      width: 60,
+                      height: 60,
+                      borderRadius: 50,
+                      alignSelf: 'center',
+                      alignContent: 'center',
+                      alignItems: 'center',
+                    }}
                   />
                   <Text style={{textAlign: 'center'}}>
                     {item.staff_first_name} {item.staff_last_name}
                   </Text>
                   <Text style={{textAlign: 'center', fontWeight: 'bold'}}>
-                    {item.ballboy == 1
-                      ? 'Ballboy'
-                      : item.coach == 1
-                      ? 'Coach'
-                      : item.hittingpartner == 1
-                      ? 'Hitting Partner'
-                      : null}
+                    {item.position}
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -251,6 +246,257 @@ export default ChoosePartner = props => {
     navigation.navigate('Home');
   };
 
+  const All = () => {
+    console.log('all', All);
+    return (
+      <FlatList
+        data={partners}
+        keyExtractor={(item, index) => item.rowID}
+        renderItem={({item, key}) => (
+          <Card style={{margin: 5}} key={key}>
+            <View
+              style={{
+                padding: 10,
+                margin: 5,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+              }}
+              key={key}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  flex: 1,
+                  justifyContent: 'space-between',
+                }}>
+                <CheckBox
+                  style={{justifyContent: 'center', alignSelf: 'center'}}
+                  value={item.isChecked}
+                  onChange={() => {
+                    handleChangePartner(item.rowID);
+                  }}
+                />
+                <TouchableOpacity
+                  onPress={() => chooseCoba(item)}
+                  style={{width: 110}}>
+                  <Image
+                    source={{uri: item.url_picture}}
+                    style={{
+                      width: 60,
+                      height: 60,
+                      borderRadius: 50,
+                      alignSelf: 'center',
+                      alignContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  />
+                  <Text style={{textAlign: 'center'}}>
+                    {item.staff_first_name} {item.staff_last_name}
+                  </Text>
+                  <Text style={{textAlign: 'center', fontWeight: 'bold'}}>
+                    {item.position}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Card>
+        )}
+      />
+    );
+  };
+  const BallBoy = () => {
+    return (
+      <FlatList
+        data={partners}
+        keyExtractor={(item, index) => item.rowID}
+        renderItem={({item, key}) =>
+          item.ballboy == 1 ? (
+            <Card style={{margin: 5}} key={key}>
+              <View
+                style={{
+                  padding: 10,
+                  margin: 5,
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                }}
+                key={key}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flex: 1,
+                    justifyContent: 'space-between',
+                  }}>
+                  <CheckBox
+                    style={{justifyContent: 'center', alignSelf: 'center'}}
+                    value={item.isChecked}
+                    onChange={() => {
+                      handleChangePartner(item.rowID);
+                    }}
+                  />
+                  <TouchableOpacity
+                    onPress={() => chooseCoba(item)}
+                    style={{width: 110}}>
+                    <Image
+                      source={{uri: item.url_picture}}
+                      style={{
+                        width: 60,
+                        height: 60,
+                        borderRadius: 50,
+                        alignSelf: 'center',
+                        alignContent: 'center',
+                        alignItems: 'center',
+                      }}
+                    />
+                    <Text style={{textAlign: 'center'}}>
+                      {item.staff_first_name} {item.staff_last_name}
+                    </Text>
+                    <Text style={{textAlign: 'center', fontWeight: 'bold'}}>
+                      {item.ballboy == 1 ? 'Ballboy' : null}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </Card>
+          ) : null
+        }
+      />
+    );
+  };
+  const Coach = () => {
+    return (
+      <FlatList
+        data={partners}
+        keyExtractor={(item, index) => item.rowID}
+        renderItem={({item, key}) =>
+          item.coach == 1 ? (
+            <Card style={{margin: 5}} key={key}>
+              <View
+                style={{
+                  padding: 10,
+                  margin: 5,
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                }}
+                key={key}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flex: 1,
+                    justifyContent: 'space-between',
+                  }}>
+                  <CheckBox
+                    style={{justifyContent: 'center', alignSelf: 'center'}}
+                    value={item.isChecked}
+                    onChange={() => {
+                      handleChangePartner(item.rowID);
+                    }}
+                  />
+                  <TouchableOpacity
+                    onPress={() => chooseCoba(item)}
+                    style={{width: 110}}>
+                    <Image
+                      source={{uri: item.url_picture}}
+                      style={{
+                        width: 60,
+                        height: 60,
+                        borderRadius: 50,
+                        alignSelf: 'center',
+                        alignContent: 'center',
+                        alignItems: 'center',
+                      }}
+                    />
+                    <Text style={{textAlign: 'center'}}>
+                      {item.staff_first_name} {item.staff_last_name}
+                    </Text>
+                    <Text style={{textAlign: 'center', fontWeight: 'bold'}}>
+                      {item.coach === 1 ? 'Coach' : null}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </Card>
+          ) : null
+        }
+      />
+    );
+  };
+  const HittingPartner = () => {
+    return (
+      <FlatList
+        data={partners}
+        keyExtractor={(item, index) => item.rowID}
+        renderItem={({item, key}) =>
+          item.hittingpartner == 1 ? (
+            <Card style={{margin: 5}} key={key}>
+              <View
+                style={{
+                  padding: 10,
+                  margin: 5,
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                }}
+                key={key}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flex: 1,
+                    justifyContent: 'space-between',
+                  }}>
+                  <CheckBox
+                    style={{justifyContent: 'center', alignSelf: 'center'}}
+                    value={item.isChecked}
+                    onChange={() => {
+                      handleChangePartner(item.rowID);
+                    }}
+                  />
+                  <TouchableOpacity
+                    onPress={() => chooseCoba(item)}
+                    style={{width: 110}}>
+                    <Image
+                      source={{uri: item.url_picture}}
+                      style={{
+                        width: 60,
+                        height: 60,
+                        borderRadius: 50,
+                        alignSelf: 'center',
+                        alignContent: 'center',
+                        alignItems: 'center',
+                      }}
+                    />
+                    <Text style={{textAlign: 'center'}}>
+                      {item.staff_first_name} {item.staff_last_name}
+                    </Text>
+                    <Text style={{textAlign: 'center', fontWeight: 'bold'}}>
+                      {item.hittingpartner == 1 ? 'Hitting Partner' : null}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </Card>
+          ) : null
+        }
+      />
+    );
+  };
+
+  const segments = [
+    {
+      title: 'All',
+      view: All,
+    },
+    {
+      title: 'Ballboy',
+      view: BallBoy,
+    },
+    {
+      title: 'Coach',
+      view: Coach,
+    },
+    {
+      title: 'Hitting Partner',
+      view: HittingPartner,
+    },
+  ];
+
   return (
     <View style={{flex: 1}}>
       <Header
@@ -279,9 +525,18 @@ export default ChoosePartner = props => {
             <Text>Choose Partners</Text>
           </View>
           <ScrollView>
-            <View style={{flex: 1, height: '100%'}}>
+            <View style={{flex: 1, height: '100%', backgroundColor: '#F5F7FA'}}>
+              <SegmentControl
+                segments={segments}
+                color={colors.primary}
+                fontSize={12}
+                title={{fontSize: 12}}
+                style={{backgroundColor: 'red', height: 50, fontSize: 12}}
+                height={50}
+              />
+
               {/* // coba dulu height nya 100%, kayak gimana */}
-              {renderFlatListPartner(partners)}
+              {/* {renderFlatListPartner(partners)} */}
             </View>
           </ScrollView>
         </ScrollView>

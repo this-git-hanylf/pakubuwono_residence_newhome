@@ -156,6 +156,7 @@ const Home = props => {
               marginBottom: 15,
               marginTop: -15,
               flexDirection: 'row',
+              alignSelf: 'center',
             }}
           />
           <View>

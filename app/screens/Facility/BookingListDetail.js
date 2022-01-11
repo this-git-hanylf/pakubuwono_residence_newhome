@@ -34,6 +34,7 @@ import {
 // import CheckBox from '@react-native-community/checkbox';
 // import {Button, ProfileGroup} from '../../components';
 import axios from 'axios';
+import Timeline from 'react-native-timeline-flatlist';
 // import {EFilterColors, EFilterSizes, FRecentTransactions} from '@data';
 // import ModalProduct from './ModalProduct';
 
@@ -73,10 +74,20 @@ export default BookingListDetail = props => {
 
   const reservation_no = route.params.reservation_no;
 
+  const [datalogEdited, setDataLog] = useState([]);
+
   const [refreshing, setRefreshing] = useState(false);
   //   const deviceWidth = Dimensions.get('window').width;
 
   const [confirmModal, showConfirmModal] = useState(false);
+
+  const dataDummy = [
+    {time: '09:00', title: 'Event 1', description: 'Event 1 Description'},
+    {time: '10:45', title: 'Event 2', description: 'Event 2 Description'},
+    {time: '12:00', title: 'Event 3', description: 'Event 3 Description'},
+    {time: '14:00', title: 'Event 4', description: 'Event 4 Description'},
+    {time: '16:30', title: 'Event 5', description: 'Event 5 Description'},
+  ];
 
   const getDetailList = async () => {
     const reservation_no = route.params.reservation_no;
@@ -93,6 +104,16 @@ export default BookingListDetail = props => {
       if (res) {
         console.log('res post', res.data.Data);
         setDetailBooking(res.data.Data);
+        const datalog = res.data.Data.datalog;
+        let temp = datalog.map(datalog => {
+          return {
+            title: datalog.check_by_name,
+            time: moment(datalog.check_date).format('DD-MM-YYYY   hh:mm:ss A'),
+            description: datalog.remarks,
+          };
+        });
+        console.log('datalog edited', temp);
+        setDataLog(temp);
         setSpinner(false);
       }
       return res;
@@ -129,7 +150,7 @@ export default BookingListDetail = props => {
   const renderFilterPartner = renderData => {
     return (
       <View style={{flexDirection: 'row'}}>
-        <TouchableOpacity onPress={() => onFilter('Coach')}>
+        {/* <TouchableOpacity onPress={() => onFilter('Coach')}>
           <View style={{marginVertical: 10, marginHorizontal: 10}}>
             <Text>Coach</Text>
           </View>
@@ -143,7 +164,7 @@ export default BookingListDetail = props => {
           <View style={{marginVertical: 10, marginHorizontal: 10}}>
             <Text>Ballboy</Text>
           </View>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     );
   };
@@ -181,10 +202,10 @@ export default BookingListDetail = props => {
     setPartnerBooking(temp);
   };
 
-  let selectedpartner = partners.filter(
-    partners => partners.isChecked,
-    partners.staff_first_name,
-  );
+  // let selectedpartner = partners.filter(
+  //   partners => partners.isChecked,
+  //   partners.staff_first_name,
+  // );
 
   const renderFlatListPartner = renderData => {
     return (
@@ -396,6 +417,7 @@ export default BookingListDetail = props => {
       console.log('error remove partner', err.response);
     }
   };
+
   return (
     <SafeAreaView
       style={[BaseStyle.safeAreaView, {flex: 1}]}
@@ -465,7 +487,7 @@ export default BookingListDetail = props => {
                         : datas.status == 'D'
                         ? 'Done'
                         : null}{' '}
-                      by {datas.name}
+                      by {datas.last_update_by}
                     </Text>
                   </View>
 
@@ -476,20 +498,15 @@ export default BookingListDetail = props => {
                   </View>
 
                   <View style={{marginTop: 5}}>
-                    <Text>
+                    <Text style={{fontSize: 15}}>
                       Start Play :{' '}
-                      {moment(datas.start_date).format(
-                        'DD MMM YYYY hh:mm:ss a',
-                      )}
+                      {moment(datas.start_date).format('DD MMM YYYY hh:mm A')}
+                    </Text>
+                    <Text style={{marginTop: 5, fontSize: 15}}>
+                      Duration time : {datas.duration}{' '}
+                      {datas.duration > 1 ? 'Hours' : 'Hour'}
                     </Text>
                   </View>
-
-                  {/* <View>
-                    <Text>
-                      Duration time: {}
-                      {moment().format('MMMM Do YYYY, h:mm:ss a')}
-                    </Text>
-                  </View> */}
 
                   {/* ------ untuk partner  */}
                   {onDetailBooking?.datapartner?.length != 0 ? (
@@ -776,6 +793,26 @@ export default BookingListDetail = props => {
         </Modal>
       </View>
 
+      <View
+        style={{
+          flex: 1,
+          padding: 20,
+          paddingTop: 20,
+          backgroundColor: 'white',
+          // width: 200,
+        }}>
+        <Text style={{fontWeight: 'bold', marginBottom: 20}}>Status Log</Text>
+        <Timeline
+          timeContainerStyle={{width: 130}}
+          lineColor={colors.primary}
+          circleColor={colors.primary}
+          options={{
+            removeClippedSubviews: false,
+          }}
+          style={{marginTop: 20, flex: 1, marginLeft: 10}}
+          data={datalogEdited}
+        />
+      </View>
       <View>
         <Modal
           isVisible={confirmModal}

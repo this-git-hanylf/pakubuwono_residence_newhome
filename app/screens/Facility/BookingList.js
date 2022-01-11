@@ -74,34 +74,54 @@ export default BookingList = props => {
         style={{margin: 5, padding: 10}}
         key={index}
         onPress={() => onDetailList(item)}>
-        <View style={{marginVertical: 10}}>
-          <Text
-            style={{
-              fontSize: 15,
-              fontWeight: 'bold',
-              color:
-                item.status == 'B'
-                  ? colors.primary
+        <View style={{flexDirection: 'row', flex: 1}}>
+          <View style={{flex: 1}}>
+            <View style={{marginVertical: 10}}>
+              <Text
+                style={{
+                  fontSize: 15,
+                  fontWeight: 'bold',
+                  color:
+                    item.status == 'B'
+                      ? colors.primary
+                      : item.status == 'C'
+                      ? BaseColor.redColor
+                      : item.status == 'D'
+                      ? BaseColor.blueColor
+                      : BaseColor.orangeColor,
+                }}>
+                # {item.reservation_no}
+              </Text>
+            </View>
+
+            <View style={{marginVertical: 5}}>
+              <Text style={{fontSize: 14}}>
+                {item.status == 'B'
+                  ? 'Booked'
                   : item.status == 'C'
-                  ? BaseColor.redColor
+                  ? 'Canceled'
+                  : item.status == 'O'
+                  ? 'Ongoing'
                   : item.status == 'D'
-                  ? BaseColor.blueColor
-                  : BaseColor.orangeColor,
-            }}>
-            # {item.reservation_no}
-          </Text>
+                  ? 'Done'
+                  : null}{' '}
+                by {item.last_update_by}
+                {/* nanti name berubah pake kolom baru */}
+              </Text>
+            </View>
+            <View style={{flexDirection: 'row'}}>
+              <Text style={{fontSize: 15, fontWeight: 'bold'}}>
+                {item.facility_name} - {item.venue_name}
+              </Text>
+            </View>
+          </View>
+          <View style={{justifyContent: 'space-between', marginTop: 10}}>
+            <Image
+              source={{uri: item.facility_picture}}
+              style={{height: 100, width: 140, borderRadius: 10}}></Image>
+          </View>
         </View>
 
-        <View style={{marginVertical: 5}}>
-          <Text style={{fontSize: 14}}>
-            {item.status_desc} by {item.name}
-          </Text>
-        </View>
-        <View style={{flexDirection: 'row'}}>
-          <Text style={{fontSize: 15, fontWeight: 'bold'}}>
-            {item.facility_name} - {item.venue_name}
-          </Text>
-        </View>
         <View style={{flexDirection: 'row', flex: 1, paddingTop: 25}}>
           <View style={{justifyContent: 'flex-start', flex: 1}}></View>
           <View style={{justifyContent: 'flex-end'}}>
