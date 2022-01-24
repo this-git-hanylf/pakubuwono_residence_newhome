@@ -64,6 +64,7 @@ export default BookingListDetail = props => {
   const [spinner, setSpinner] = useState(true);
   const users = useSelector(state => getUser(state));
   const [email, setEmail] = useState(users.user);
+  const [userId, setUserId] = useState(users.UserId);
 
   const [onDetailBooking, setDetailBooking] = useState([]);
   const [partners, setPartnerBooking] = useState([]);
@@ -353,6 +354,7 @@ export default BookingListDetail = props => {
       reservation_no: onDetailBooking.databooking[0].reservation_no,
       remarks: 'Cancel',
       userid: onDetailBooking.databooking[0].audit_user,
+      email: email,
     };
 
     console.log('data cancel booking', data);
@@ -535,7 +537,8 @@ export default BookingListDetail = props => {
                             Your Partners
                           </Text>
                         </View>
-                        {datas.status == 'B' ? (
+                        {userId != datas.audit_user ? null : datas.status ==
+                          'B' ? (
                           <Button
                             onPress={() =>
                               onEditPartner(
@@ -591,31 +594,33 @@ export default BookingListDetail = props => {
                             </View>
                           </View>
 
-                          <View>
-                            {datas.status == 'B' ? (
-                              <Button
-                                onPress={() =>
-                                  onRemovePartner(data, reservation_no)
-                                }
-                                style={{
-                                  height: 60,
-                                  width: 60,
-                                  backgroundColor: BaseColor.orangeColor,
-                                }}>
-                                <IconFontisto
-                                  name="trash"
-                                  size={20}
-                                  color={BaseColor.whiteColor}
+                          {userId != datas.audit_user ? null : (
+                            <View>
+                              {datas.status == 'B' ? (
+                                <Button
+                                  onPress={() =>
+                                    onRemovePartner(data, reservation_no)
+                                  }
                                   style={{
-                                    justifyContent: 'center',
-                                    alignContent: 'center',
-                                    alignItems: 'center',
-                                    alignSelf: 'center',
-                                  }}></IconFontisto>
-                                {/* <Text style={{fontSize: 15}}>Remove</Text> */}
-                              </Button>
-                            ) : null}
-                          </View>
+                                    height: 60,
+                                    width: 60,
+                                    backgroundColor: BaseColor.orangeColor,
+                                  }}>
+                                  <IconFontisto
+                                    name="trash"
+                                    size={20}
+                                    color={BaseColor.whiteColor}
+                                    style={{
+                                      justifyContent: 'center',
+                                      alignContent: 'center',
+                                      alignItems: 'center',
+                                      alignSelf: 'center',
+                                    }}></IconFontisto>
+                                  {/* <Text style={{fontSize: 15}}>Remove</Text> */}
+                                </Button>
+                              ) : null}
+                            </View>
+                          )}
                         </View>
                       ))}
                       {/* </ScrollView> */}
@@ -635,6 +640,7 @@ export default BookingListDetail = props => {
                             Your Partners
                           </Text>
                         </View>
+
                         <Button
                           onPress={() => onAddPartner()}
                           style={{height: 60, width: 60}}>
@@ -721,20 +727,23 @@ export default BookingListDetail = props => {
                         </Text>
                       </View>
                     </View>
-                    <View style={{justifyContent: 'flex-end'}}>
-                      {datas.status == 'B' ? (
-                        <Button
-                          onPress={() => onCancelBooking(onDetailBooking)}
-                          style={{
-                            height: 30,
-                            width: 150,
 
-                            backgroundColor: BaseColor.redColor,
-                          }}>
-                          <Text style={{fontSize: 15}}>Cancel Booking</Text>
-                        </Button>
-                      ) : null}
-                    </View>
+                    {userId != datas.audit_user ? null : (
+                      <View style={{justifyContent: 'flex-end'}}>
+                        {datas.status == 'B' ? (
+                          <Button
+                            onPress={() => onCancelBooking(onDetailBooking)}
+                            style={{
+                              height: 30,
+                              width: 150,
+
+                              backgroundColor: BaseColor.redColor,
+                            }}>
+                            <Text style={{fontSize: 15}}>Cancel Booking</Text>
+                          </Button>
+                        ) : null}
+                      </View>
+                    )}
                   </View>
                 </Card>
               </View>

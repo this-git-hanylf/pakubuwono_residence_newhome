@@ -159,38 +159,106 @@ const Billing = ({
           ))}
         </View>
         <View style={{flex: 1, paddingHorizontal: 20}}>
-          {tab.id == 1 &&
-            dataCurrent.map(item => (
-              <ListTransactionExpand
-                onPress={() => navigation.navigate('FHistoryDetail')}
-                key={item.id}
-                tower={item.tower}
-                name={item.name}
-                trx_type={item.trx_type}
-                doc_no={item.doc_no}
-                doc_date={moment(item.doc_date).format('DD MMMM YYYY')}
-                descs={item.descs}
-                due_date={moment(item.due_date).format('DD MMMM YYYY')}
-                mbal_amt={`${numFormat(`${item.mbal_amt}`)}`}
-              />
-            ))}
+          {tab.id == 1 && dataCurrent != null
+            ? dataCurrent.map(item => (
+                <ListTransactionExpand
+                  onPress={() => navigation.navigate('FHistoryDetail')}
+                  key={item.id}
+                  tower={item.tower}
+                  name={item.name}
+                  trx_type={item.trx_type}
+                  doc_no={item.doc_no}
+                  doc_date={moment(item.doc_date).format('DD MMMM YYYY')}
+                  descs={item.descs}
+                  due_date={moment(item.due_date).format('DD MMMM YYYY')}
+                  mbal_amt={`${numFormat(`${item.mbal_amt}`)}`}
+                />
+              ))
+            : tab.id == 1 && (
+                <View
+                  style={{
+                    flex: 1,
+                    // height: '100%',
+                    marginTop: '70%',
+                    // justifyContent: 'center',
+                    // alignContent: 'center',
+                    // alignItems: 'center',
+                    // alignSelf: 'center',
+                  }}>
+                  {/* <IconFontisto
+                    name="holiday-village"
+                    size={40}
+                    color={colors.primary}
+                    style={{
+                      justifyContent: 'center',
+                      alignContent: 'center',
+                      alignItems: 'center',
+                      alignSelf: 'center',
+                    }}></IconFontisto> */}
+                  <Text
+                    style={{
+                      justifyContent: 'center',
+                      alignContent: 'center',
+                      alignItems: 'center',
+                      alignSelf: 'center',
+                      fontSize: 16,
+                      marginTop: 10,
+                    }}>
+                    Sorry! Data not available.
+                  </Text>
+                </View>
+              )}
         </View>
         <View style={{flex: 1, paddingHorizontal: 20}}>
-          {tab.id == 2 &&
-            data.map(item => (
-              <ListTransactionExpand
-                onPress={() => navigation.navigate('FHistoryDetail')}
-                key={item.id}
-                tower={item.tower}
-                name={item.name}
-                trx_type={item.trx_type}
-                doc_no={item.doc_no}
-                doc_date={moment(item.doc_date).format('DD MMMM YYYY')}
-                descs={item.descs}
-                due_date={moment(item.due_date).format('DD MMMM YYYY')}
-                mbal_amt={`${numFormat(`${item.mbal_amt}`)}`}
-              />
-            ))}
+          {tab.id == 2 && data != null
+            ? data.map(item => (
+                <ListTransactionExpand
+                  onPress={() => navigation.navigate('FHistoryDetail')}
+                  key={item.id}
+                  tower={item.tower}
+                  name={item.name}
+                  trx_type={item.trx_type}
+                  doc_no={item.doc_no}
+                  doc_date={moment(item.doc_date).format('DD MMMM YYYY')}
+                  descs={item.descs}
+                  due_date={moment(item.due_date).format('DD MMMM YYYY')}
+                  mbal_amt={`${numFormat(`${item.mbal_amt}`)}`}
+                />
+              ))
+            : tab.id == 2 && (
+                <View
+                  style={{
+                    flex: 1,
+                    // height: '100%',
+                    marginTop: '70%',
+                    // justifyContent: 'center',
+                    // alignContent: 'center',
+                    // alignItems: 'center',
+                    // alignSelf: 'center',
+                  }}>
+                  {/* <IconFontisto
+                    name="holiday-village"
+                    size={40}
+                    color={colors.primary}
+                    style={{
+                      justifyContent: 'center',
+                      alignContent: 'center',
+                      alignItems: 'center',
+                      alignSelf: 'center',
+                    }}></IconFontisto> */}
+                  <Text
+                    style={{
+                      justifyContent: 'center',
+                      alignContent: 'center',
+                      alignItems: 'center',
+                      alignSelf: 'center',
+                      fontSize: 16,
+                      marginTop: 10,
+                    }}>
+                    Sorry! Data not available.
+                  </Text>
+                </View>
+              )}
         </View>
       </ScrollView>
     </SafeAreaView>
