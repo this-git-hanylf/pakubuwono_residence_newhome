@@ -659,7 +659,7 @@ export default BookingDetail = props => {
         remarks: '', //ini hardcode ya
         userid: users.UserId,
         datapartner: dataselected_partner,
-        email: email,
+        // email: email,
       };
 
       console.log('data submit default', data);
@@ -686,7 +686,7 @@ export default BookingDetail = props => {
           },
         )
         .then(res => {
-          // console.log('res', res);
+          console.log('res save book', res.data);
           // return res.data;
           console.log('res pesan', res.data.Pesan);
           console.log('res error', res.data.Error);
@@ -712,7 +712,7 @@ export default BookingDetail = props => {
         remarks: 'Booked', //ini hardcode ya
         userid: users.UserId,
         datapartner: dataselected_partner,
-        email: email,
+        // email: email,
       };
       console.log('data submit book', data);
 

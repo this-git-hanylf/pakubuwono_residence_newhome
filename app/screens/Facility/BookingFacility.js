@@ -757,7 +757,8 @@ function BookingFacility({route}) {
                 }}>
                 {tab.id == 1 && (
                   <Text style={{fontStyle: 'italic'}}>
-                    Open Booking : {dataBooked1.open_book}
+                    Open Booking : {dataBooked1.open_book} -{' '}
+                    {dataBooked1.close_book}
                   </Text>
                 )}
                 {tab.id == 1 && dataBooked1?.slot_hours != ''
@@ -823,6 +824,8 @@ function BookingFacility({route}) {
                               ? true
                               : false || dataBooked1.open_book > items.jam
                               ? true
+                              : false || dataBooked1.close_book < items.jam
+                              ? true
                               : false
                           }
                           onPress={() => onBookingPress(dataBooked1, items.jam)}
@@ -886,7 +889,8 @@ function BookingFacility({route}) {
               <View style={{flex: 1, paddingHorizontal: 20}}>
                 {tab.id == 2 && (
                   <Text style={{fontStyle: 'italic'}}>
-                    Open Booking : {dataBooked2.open_book}
+                    Open Booking : {dataBooked2.open_book} -{' '}
+                    {dataBooked2.close_book}
                   </Text>
                 )}
                 {tab.id == 2 && dataBooked2?.slot_hours != ''
@@ -946,6 +950,8 @@ function BookingFacility({route}) {
                             items.status_avail != 'Y'
                               ? true
                               : false || dataBooked2.open_book > items.jam
+                              ? true
+                              : false || dataBooked2.close_book < items.jam
                               ? true
                               : false
                           }
@@ -1010,7 +1016,8 @@ function BookingFacility({route}) {
               <View style={{flex: 1, paddingHorizontal: 20}}>
                 {tab.id == 3 && (
                   <Text style={{fontStyle: 'italic'}}>
-                    Open Booking : {dataBooked3.open_book}
+                    Open Booking : {dataBooked3.open_book} -{' '}
+                    {dataBooked3.close_book}
                   </Text>
                 )}
                 {tab.id == 3 && dataBooked3?.slot_hours != ''
@@ -1070,6 +1077,8 @@ function BookingFacility({route}) {
                             items.status_avail != 'Y'
                               ? true
                               : false || dataBooked3.open_book > items.jam
+                              ? true
+                              : false || dataBooked3.close_book < items.jam
                               ? true
                               : false
                           }
@@ -1134,7 +1143,8 @@ function BookingFacility({route}) {
               <View style={{flex: 1, paddingHorizontal: 20}}>
                 {tab.id == 4 && (
                   <Text style={{fontStyle: 'italic'}}>
-                    Open Booking : {dataBooked4.open_book}
+                    Open Booking : {dataBooked4.open_book} -{' '}
+                    {dataBooked4.close_book}
                   </Text>
                 )}
                 {tab.id == 4 && dataBooked4?.slot_hours != ''
@@ -1194,6 +1204,8 @@ function BookingFacility({route}) {
                             items.status_avail != 'Y'
                               ? true
                               : false || dataBooked4.open_book > items.jam
+                              ? true
+                              : false || dataBooked4.close_book < items.jam
                               ? true
                               : false
                           }
