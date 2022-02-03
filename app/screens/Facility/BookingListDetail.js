@@ -523,7 +523,8 @@ export default BookingListDetail = props => {
                       }>
                       {/* <Text>{datapartner.staff_first_name}</Text> */}
                       {/* <View>{renderFilterPartner(onDetailBooking.datapartner)}</View> */}
-
+                      <Text>{userId}</Text>
+                      <Text>{datas.audit_user}</Text>
                       <View
                         style={{
                           //   paddingVertical: 20,
