@@ -29,13 +29,24 @@ const Grid1 = ({
       />
 
       <View>
-        <Text subhead bold numberOfLines={2} style={{marginTop: 10}}>
+        <Text
+          subhead
+          bold
+          numberOfLines={2}
+          style={{marginTop: 20, textAlign: 'center'}}>
           {title}
         </Text>
-        <Text footnote grayColor style={{marginTop: 5}}>
+        <Text footnote blackColor style={{marginTop: 5, textAlign: 'center'}}>
           {description} available venue
         </Text>
       </View>
+      <Button
+        disabled
+        style={{height: 35, width: '100%', borderRadius: 15, marginTop: 10}}>
+        <Text style={{fontSize: 14, color: BaseColor.whiteColor}}>
+          Check Availability
+        </Text>
+      </Button>
     </TouchableOpacity>
   );
 };
@@ -52,7 +63,7 @@ Grid1.propTypes = {
 };
 
 Grid1.defaultProps = {
-  description: '',
+  description: {},
   title: '',
   style: {},
   image: Images.eProduct,

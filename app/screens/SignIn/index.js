@@ -67,8 +67,7 @@ const SignIn = props => {
           style={{
             height: 60,
             width: 180,
-            flexDirection: 'row',
-            alignItems: 'center',
+            alignSelf: 'center',
             marginHorizontal: 100,
             marginBottom: 15,
             marginTop: -15,

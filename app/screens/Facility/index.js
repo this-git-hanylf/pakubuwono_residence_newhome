@@ -221,7 +221,7 @@ const Facility = props => {
               </View> */}
                 {data?.map((item, index) => {
                   return (
-                    <View key={index} style={{width: '50%'}}>
+                    <View key={index} style={{width: '50%', height: 290}}>
                       <ProductGrid1
                         key={index}
                         style={{
@@ -229,7 +229,7 @@ const Facility = props => {
                           paddingRight: index % 2 == 0 ? 10 : 0,
                           paddingLeft: index % 2 != 0 ? 10 : 0,
                         }}
-                        description={item.availabel}
+                        description={item.available}
                         title={item.title}
                         image={item.image}
                         // costPrice={item.costPrice}

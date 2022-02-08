@@ -59,7 +59,8 @@ const Categories = ({style = {}}) => {
               }}>
               <CategoryIconSoft
                 isRound
-                icon={item.icon}
+                // icon={item.icon}
+                icon_url={item.icon_url}
                 title={t(item.title)}
                 onPress={() =>
                   user.UserFacility == item.user_facility ||

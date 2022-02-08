@@ -45,10 +45,11 @@ export const BottomTabNavigatorMazi = ({tabScreens = {}}) => {
       initialRouteName="Home"
       tabBarOptions={{
         showIcon: true,
-        showLabel: true,
-        activeTintColor: colors.primaryColor,
+        showLabel: false, //untuk menghide title pada navigasi bottom bar
+        activeTintColor: BaseColor.whiteColor,
         inactiveTintColor: BaseColor.grayColor,
-        style: BaseStyle.tabBar,
+        // style: BaseStyle.tabBar,
+        style: {backgroundColor: colors.primary},
         labelStyle: {
           fontSize: 12,
         },

@@ -10,9 +10,9 @@ const Loading = props => {
     <View style={styles.container}>
       <View style={{alignItems: 'center'}}>
         <Image source={Images.logo} style={styles.logo} resizeMode="contain" />
-        <Text title1 style={{marginTop: 10}}>
+        {/* <Text title1 style={{marginTop: 10}}>
           The Pakubuwono
-        </Text>
+        </Text> */}
       </View>
       <ActivityIndicator
         size="large"

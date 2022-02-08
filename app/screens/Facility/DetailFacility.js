@@ -163,42 +163,84 @@ const DetailFacility = props => {
   const detail = data?.map(post => {
     return (
       <View key={post.id}>
-        <Text headline style={{marginTop: 20}}>
+        <Text
+          headline
+          style={{marginTop: 20, fontSize: 20, fontWeight: 'bold'}}>
           {post.title}
         </Text>
 
         <View style={styles.specifications}>
-          <ProductSpecGrid
-            style={{flex: 1}}
-            description={'OPEN'}
+          <Text style={{fontSize: 16}}>
+            Status :{' '}
+            <Text style={{color: colors.primary, fontWeight: 'bold'}}>
+              Open
+            </Text>{' '}
+            /{' '}
+            <Text style={{color: BaseColor.redColor, fontWeight: 'bold'}}>
+              Close
+            </Text>
+          </Text>
+          {/* <Text></Text> */}
+          {/* <ProductSpecGrid
+            style={{flex: 1, fontSize: 20}}
+            description={'Status'}
             title={post.openjam}
-          />
-          <ProductSpecGrid
-            style={{flex: 1}}
-            description={'Location'}
-            title={post.location}
-          />
+          /> */}
         </View>
-        <View style={styles.specifications}>
-          <ProductSpecGrid
+
+        <View style={[styles.specifications, {marginTop: 10}]}>
+          <View style={{flexDirection: 'column'}}>
+            <Text style={{fontSize: 16, color: BaseColor.grayColor}}>
+              Phone
+            </Text>
+            <Text
+              style={{fontSize: 16, color: colors.primary, fontWeight: 'bold'}}>
+              {post.phone}
+            </Text>
+          </View>
+
+          {/* <ProductSpecGrid
             style={{flex: 1}}
             description={'Phone'}
             title={post.phone}
-          />
+          /> */}
         </View>
         <View style={{margin: 0, paddingBottom: 0}}>
           <Text
             style={{
-              fontSize: 12,
+              fontSize: 16,
               color: BaseColor.grayColor,
               paddingBottom: 5,
             }}>
             Description
           </Text>
-          <Text style={{textAlign: 'justify', width: '100%'}}>
+          <Text
+            style={{
+              textAlign: 'justify',
+              width: '100%',
+              color: colors.primary,
+              fontWeight: 'bold',
+              fontSize: 16,
+            }}>
             {post.description.replace(/<\/?[^>]+(>|$;)/gi, '')}
           </Text>
           {/* <Text style={{textAlign: 'justify'}}>{post.description}</Text> */}
+        </View>
+        <View style={styles.specifications}>
+          <View style={{flexDirection: 'column'}}>
+            <Text style={{flex: 1, fontSize: 16, color: BaseColor.grayColor}}>
+              Location
+            </Text>
+            <Text
+              style={{fontSize: 16, color: colors.primary, fontWeight: 'bold'}}>
+              {post.location}
+            </Text>
+          </View>
+          {/* <ProductSpecGrid
+            style={{flex: 1}}
+            description={'Location'}
+            title={post.location}
+          /> */}
         </View>
       </View>
     );

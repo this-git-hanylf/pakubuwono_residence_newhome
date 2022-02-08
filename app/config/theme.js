@@ -119,7 +119,7 @@ export const ThemeSupport = [
     light: {
       dark: false,
       colors: {
-        primary: '#58D68D',
+        primary: '#068444',
         primaryDark: '#388E3C',
         primaryLight: '#C8E6C9',
         accent: '#607D8B',
@@ -132,7 +132,7 @@ export const ThemeSupport = [
     dark: {
       dark: true,
       colors: {
-        primary: '#58D68D',
+        primary: '#068444',
         primaryDark: '#388E3C',
         primaryLight: '#C8E6C9',
         accent: '#607D8B',
@@ -178,7 +178,7 @@ export const ThemeSupport = [
  * Define default theme use for whole application
  */
 export const DefaultTheme = {
-  theme: 'pink',
+  theme: 'green',
   light: {
     dark: false,
     colors: {

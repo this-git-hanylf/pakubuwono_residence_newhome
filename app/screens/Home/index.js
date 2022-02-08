@@ -199,6 +199,7 @@ const Home = props => {
           <View style={{flexDirection: 'row', marginVertical: 15}}>
             <View style={{flex: 1, paddingRight: 7}}>
               <CardReport06
+                style={{backgroundColor: colors.primary}}
                 icon="arrow-up"
                 title="Invoice Due"
                 // price="$0.68"
@@ -208,7 +209,7 @@ const Home = props => {
             </View>
             <View style={{flex: 1, paddingLeft: 7}}>
               <CardReport06
-                style={{backgroundColor: BaseColor.kashmir}}
+                style={{backgroundColor: colors.primary}}
                 icon="arrow-up"
                 title="Total"
                 // price="$0.68"

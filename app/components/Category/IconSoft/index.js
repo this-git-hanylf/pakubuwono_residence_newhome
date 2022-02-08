@@ -8,9 +8,11 @@ import {TouchableOpacity, View, StyleSheet} from 'react-native';
 import styles from './styles';
 import {parseHexTransparency} from '@utils';
 import Loading from './Loading';
+import {Image} from 'react-native-elements';
 export default function CategoryIconSoft({
   style = '',
   icon = '',
+  icon_url = '',
   title = '',
   onPress = () => {},
   loading = false,
@@ -32,7 +34,7 @@ export default function CategoryIconSoft({
     if (isBlack) {
       return colors.text;
     }
-    return colors.primaryLight;
+    return BaseColor.whiteColor;
   };
 
   return (
@@ -48,7 +50,7 @@ export default function CategoryIconSoft({
         style={StyleSheet.flatten([
           styles.iconContent,
           isNormal && {
-            backgroundColor: parseHexTransparency(colors.primary, 30),
+            backgroundColor: parseHexTransparency(colors.primary, 100),
           },
           isWhite && {
             backgroundColor: parseHexTransparency(colors.whiteColor, 30),
@@ -58,12 +60,15 @@ export default function CategoryIconSoft({
           },
           isRound && styles.isRound,
         ])}>
-        <Icon
+        <Image
+          source={icon_url}
+          style={{borderRadius: 20, width: 60, height: 60}}></Image>
+        {/* <Icon
           name={icon}
           size={isRound ? 24 : 32}
           color={getIconColor()}
           solid
-        />
+        /> */}
       </View>
       <View style={{marginTop: 8, maxWidth: maxWidth}}>
         <Text footnote numberOfLines={1} style={{textAlign: 'center'}}>
@@ -77,6 +82,7 @@ export default function CategoryIconSoft({
 CategoryIconSoft.propTypes = {
   style: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
   icon: PropTypes.node.isRequired,
+  icon_url: PropTypes.node.isRequired,
   title: PropTypes.string,
   onPress: PropTypes.func,
 };
@@ -84,6 +90,7 @@ CategoryIconSoft.propTypes = {
 CategoryIconSoft.defaultProps = {
   style: {},
   icon: '',
+  icon_url: '',
   title: '',
   onPress: () => {},
 };
