@@ -7,7 +7,7 @@ class UserController {
     this.basePath = '/login_mobile';
   }
 
-  login = async (email, password) => {
+  login = async (email, password, token_firebase) => {
     try {
       const result = await httpClient.request({
         url: '/login_mobile',
@@ -18,6 +18,7 @@ class UserController {
           token: '',
           device: 'ios',
           mac: 'mac',
+          token_firebase,
         },
       });
       // alert(result.Pesan);

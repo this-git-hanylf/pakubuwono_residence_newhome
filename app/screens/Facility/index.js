@@ -214,7 +214,7 @@ const Facility = props => {
               </TouchableOpacity>
             </View>
 
-            <View style={{flex: 1, padding: 15, paddingTop: 10}}>
+            <View style={{flex: 1, paddingTop: 10}}>
               <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
                 {/* <View>
                 <Text>{data.title}</Text>

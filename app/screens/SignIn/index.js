@@ -11,6 +11,7 @@ import {
   Image,
   KeyboardAvoidingView,
   Platform,
+  Alert,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import {useSelector, useDispatch} from 'react-redux';
@@ -20,6 +21,7 @@ import getUser from '../../selectors/UserSelectors';
 import errorsSelector from '../../selectors/ErrorSelectors';
 import {isLoadingSelector} from '../../selectors/StatusSelectors';
 import {login, actionTypes} from '../../actions/UserActions';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SignIn = props => {
   const {navigation} = props;
@@ -30,6 +32,9 @@ const SignIn = props => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const [token_firebase, setTokenFirebase] = useState('');
+  const [token, setTokenBasic] = useState('');
+
   const user = useSelector(state => getUser(state));
   const isLoading = useSelector(state =>
     isLoadingSelector([actionTypes.LOGIN], state),
@@ -39,9 +44,88 @@ const SignIn = props => {
   );
 
   const loginUser = useCallback(
-    () => dispatch(login(email, password)),
-    [email, password, dispatch],
+    () => dispatch(login(email, password, token_firebase)),
+    [email, password, token_firebase, dispatch],
   );
+
+  useEffect(() => {
+    checkPermission();
+    createNotificationListeners();
+  });
+
+  const checkPermission = async () => {
+    const enabled = await firebase.messaging().hasPermission();
+    if (enabled) {
+      getToken();
+    } else {
+      requestPermission();
+    }
+  };
+
+  const getToken = async () => {
+    let fcmToken = await AsyncStorage.getItem('fcmToken');
+    // console.log('fcmToken', fcmToken);
+    if (!fcmToken) {
+      fcmToken = await firebase.messaging().getToken();
+      if (fcmToken) {
+        // user has a device token
+        await AsyncStorage.setItem('token', fcmToken);
+        console.log('fcmToken', fcmToken);
+        setTokenBasic(fcmToken);
+      }
+    }
+  };
+
+  const requestPermission = async () => {
+    try {
+      await firebase.messaging().requestPermission();
+      // User has authorised
+      getToken();
+    } catch (error) {
+      // User has rejected permissions
+      console.log('permission rejected');
+    }
+  };
+
+  const createNotificationListeners = async () => {
+    firebase.notifications().setBadge(0);
+    this.notificationListener = firebase
+      .notifications()
+      .onNotification(notification => {
+        const {title, body} = notification;
+
+        showAlert(title, body);
+      });
+
+    this.notificationOpenedListener = firebase
+      .notifications()
+      .onNotificationOpened(notificationOpen => {
+        const {title, body} = notificationOpen.notification;
+        showAlert(title, body);
+      });
+
+    const notificationOpen = await firebase
+      .notifications()
+      .getInitialNotification();
+    if (notificationOpen) {
+      const {title, body} = notificationOpen.notification;
+      showAlert(title, body);
+    }
+
+    this.messageListener = firebase.messaging().onMessage(message => {
+      console.log(JSON.stringify(message));
+    });
+  };
+
+  const showAlert = (title, body) => {
+    Alert.alert(
+      title,
+      body,
+      [{text: 'OK', onPress: () => console.log('OK Pressed')}],
+      {cancelable: false},
+    );
+  };
+
   const passwordChanged = useCallback(value => setPassword(value), []);
   const emailChanged = useCallback(value => setEmail(value), []);
 

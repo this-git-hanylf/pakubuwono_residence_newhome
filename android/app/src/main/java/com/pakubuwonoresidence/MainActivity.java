@@ -1,4 +1,4 @@
-package com.ifcaresident.bagus;
+package com.pakubuwono.residence;
 
 import org.devio.rn.splashscreen.SplashScreen;
 import com.facebook.react.ReactActivity;
@@ -16,7 +16,7 @@ public class MainActivity extends ReactActivity {
    */
   @Override
   protected String getMainComponentName() {
-    return "IfcaResident";
+    return "pakubuwonoresidence";
   }
    @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		00E356F31AD99517003FC87E /* IfcaResidentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* IfcaResidentTests.m */; };
+		00E356F31AD99517003FC87E /* pakubuwonoresidenceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* pakubuwonoresidenceTests.m */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		98E591BF351E076F11636698 /* libPods-IfcaResident.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DFA28E7E09667F49B442824B /* libPods-IfcaResident.a */; };
-		A17A60A82F3C96B3FD2FCDE3 /* libPods-IfcaResident-IfcaResidentTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 11BE2F46AC4336046E9E49E6 /* libPods-IfcaResident-IfcaResidentTests.a */; };
+		98E591BF351E076F11636698 /* libPods-pakubuwonoresidence.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DFA28E7E09667F49B442824B /* libPods-pakubuwonoresidence.a */; };
+		A17A60A82F3C96B3FD2FCDE3 /* libPods-pakubuwonoresidence-pakubuwonoresidenceTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 11BE2F46AC4336046E9E49E6 /* libPods-pakubuwonoresidence-pakubuwonoresidenceTests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -22,27 +22,27 @@
 			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
-			remoteInfo = IfcaResident;
+			remoteInfo = pakubuwonoresidence;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		00E356EE1AD99517003FC87E /* IfcaResidentTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IfcaResidentTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		00E356EE1AD99517003FC87E /* pakubuwonoresidenceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = pakubuwonoresidenceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		00E356F21AD99517003FC87E /* IfcaResidentTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IfcaResidentTests.m; sourceTree = "<group>"; };
-		11BE2F46AC4336046E9E49E6 /* libPods-IfcaResident-IfcaResidentTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-IfcaResident-IfcaResidentTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07F961A680F5B00A75B9A /* IfcaResident.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IfcaResident.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = IfcaResident/AppDelegate.h; sourceTree = "<group>"; };
-		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = IfcaResident/AppDelegate.m; sourceTree = "<group>"; };
-		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = IfcaResident/Images.xcassets; sourceTree = "<group>"; };
-		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = IfcaResident/Info.plist; sourceTree = "<group>"; };
-		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = IfcaResident/main.m; sourceTree = "<group>"; };
-		18313D82F2C36B4EEC92408C /* Pods-IfcaResident.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IfcaResident.debug.xcconfig"; path = "Target Support Files/Pods-IfcaResident/Pods-IfcaResident.debug.xcconfig"; sourceTree = "<group>"; };
-		3B8912A53653E137E8A19476 /* Pods-IfcaResident.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IfcaResident.release.xcconfig"; path = "Target Support Files/Pods-IfcaResident/Pods-IfcaResident.release.xcconfig"; sourceTree = "<group>"; };
-		53CC1B343EC73D4C48FBBB03 /* Pods-IfcaResident-IfcaResidentTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IfcaResident-IfcaResidentTests.release.xcconfig"; path = "Target Support Files/Pods-IfcaResident-IfcaResidentTests/Pods-IfcaResident-IfcaResidentTests.release.xcconfig"; sourceTree = "<group>"; };
-		7562D30B15BC951012FA54F3 /* Pods-IfcaResident-IfcaResidentTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IfcaResident-IfcaResidentTests.debug.xcconfig"; path = "Target Support Files/Pods-IfcaResident-IfcaResidentTests/Pods-IfcaResident-IfcaResidentTests.debug.xcconfig"; sourceTree = "<group>"; };
-		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = IfcaResident/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		DFA28E7E09667F49B442824B /* libPods-IfcaResident.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-IfcaResident.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		00E356F21AD99517003FC87E /* pakubuwonoresidenceTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = pakubuwonoresidenceTests.m; sourceTree = "<group>"; };
+		11BE2F46AC4336046E9E49E6 /* libPods-pakubuwonoresidence-pakubuwonoresidenceTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-pakubuwonoresidence-pakubuwonoresidenceTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07F961A680F5B00A75B9A /* pakubuwonoresidence.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = pakubuwonoresidence.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = pakubuwonoresidence/AppDelegate.h; sourceTree = "<group>"; };
+		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = pakubuwonoresidence/AppDelegate.m; sourceTree = "<group>"; };
+		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = pakubuwonoresidence/Images.xcassets; sourceTree = "<group>"; };
+		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = pakubuwonoresidence/Info.plist; sourceTree = "<group>"; };
+		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = pakubuwonoresidence/main.m; sourceTree = "<group>"; };
+		18313D82F2C36B4EEC92408C /* Pods-pakubuwonoresidence.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-pakubuwonoresidence.debug.xcconfig"; path = "Target Support Files/Pods-pakubuwonoresidence/Pods-pakubuwonoresidence.debug.xcconfig"; sourceTree = "<group>"; };
+		3B8912A53653E137E8A19476 /* Pods-pakubuwonoresidence.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-pakubuwonoresidence.release.xcconfig"; path = "Target Support Files/Pods-pakubuwonoresidence/Pods-pakubuwonoresidence.release.xcconfig"; sourceTree = "<group>"; };
+		53CC1B343EC73D4C48FBBB03 /* Pods-pakubuwonoresidence-pakubuwonoresidenceTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-pakubuwonoresidence-pakubuwonoresidenceTests.release.xcconfig"; path = "Target Support Files/Pods-pakubuwonoresidence-pakubuwonoresidenceTests/Pods-pakubuwonoresidence-pakubuwonoresidenceTests.release.xcconfig"; sourceTree = "<group>"; };
+		7562D30B15BC951012FA54F3 /* Pods-pakubuwonoresidence-pakubuwonoresidenceTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-pakubuwonoresidence-pakubuwonoresidenceTests.debug.xcconfig"; path = "Target Support Files/Pods-pakubuwonoresidence-pakubuwonoresidenceTests/Pods-pakubuwonoresidence-pakubuwonoresidenceTests.debug.xcconfig"; sourceTree = "<group>"; };
+		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = pakubuwonoresidence/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		DFA28E7E09667F49B442824B /* libPods-pakubuwonoresidence.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-pakubuwonoresidence.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -51,7 +51,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A17A60A82F3C96B3FD2FCDE3 /* libPods-IfcaResident-IfcaResidentTests.a in Frameworks */,
+				A17A60A82F3C96B3FD2FCDE3 /* libPods-pakubuwonoresidence-pakubuwonoresidenceTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -59,20 +59,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				98E591BF351E076F11636698 /* libPods-IfcaResident.a in Frameworks */,
+				98E591BF351E076F11636698 /* libPods-pakubuwonoresidence.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		00E356EF1AD99517003FC87E /* IfcaResidentTests */ = {
+		00E356EF1AD99517003FC87E /* pakubuwonoresidenceTests */ = {
 			isa = PBXGroup;
 			children = (
-				00E356F21AD99517003FC87E /* IfcaResidentTests.m */,
+				00E356F21AD99517003FC87E /* pakubuwonoresidenceTests.m */,
 				00E356F01AD99517003FC87E /* Supporting Files */,
 			);
-			path = IfcaResidentTests;
+			path = pakubuwonoresidenceTests;
 			sourceTree = "<group>";
 		};
 		00E356F01AD99517003FC87E /* Supporting Files */ = {
@@ -83,7 +83,7 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		13B07FAE1A68108700A75B9A /* IfcaResident */ = {
+		13B07FAE1A68108700A75B9A /* pakubuwonoresidence */ = {
 			isa = PBXGroup;
 			children = (
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -93,15 +93,15 @@
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
-			name = IfcaResident;
+			name = pakubuwonoresidence;
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				DFA28E7E09667F49B442824B /* libPods-IfcaResident.a */,
-				11BE2F46AC4336046E9E49E6 /* libPods-IfcaResident-IfcaResidentTests.a */,
+				DFA28E7E09667F49B442824B /* libPods-pakubuwonoresidence.a */,
+				11BE2F46AC4336046E9E49E6 /* libPods-pakubuwonoresidence-pakubuwonoresidenceTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -109,10 +109,10 @@
 		796FCD43BC2305E339D2E18D /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				18313D82F2C36B4EEC92408C /* Pods-IfcaResident.debug.xcconfig */,
-				3B8912A53653E137E8A19476 /* Pods-IfcaResident.release.xcconfig */,
-				7562D30B15BC951012FA54F3 /* Pods-IfcaResident-IfcaResidentTests.debug.xcconfig */,
-				53CC1B343EC73D4C48FBBB03 /* Pods-IfcaResident-IfcaResidentTests.release.xcconfig */,
+				18313D82F2C36B4EEC92408C /* Pods-pakubuwonoresidence.debug.xcconfig */,
+				3B8912A53653E137E8A19476 /* Pods-pakubuwonoresidence.release.xcconfig */,
+				7562D30B15BC951012FA54F3 /* Pods-pakubuwonoresidence-pakubuwonoresidenceTests.debug.xcconfig */,
+				53CC1B343EC73D4C48FBBB03 /* Pods-pakubuwonoresidence-pakubuwonoresidenceTests.release.xcconfig */,
 			);
 			name = Pods;
 			path = Pods;
@@ -128,9 +128,9 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				13B07FAE1A68108700A75B9A /* IfcaResident */,
+				13B07FAE1A68108700A75B9A /* pakubuwonoresidence */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
-				00E356EF1AD99517003FC87E /* IfcaResidentTests */,
+				00E356EF1AD99517003FC87E /* pakubuwonoresidenceTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				796FCD43BC2305E339D2E18D /* Pods */,
@@ -143,8 +143,8 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* IfcaResident.app */,
-				00E356EE1AD99517003FC87E /* IfcaResidentTests.xctest */,
+				13B07F961A680F5B00A75B9A /* pakubuwonoresidence.app */,
+				00E356EE1AD99517003FC87E /* pakubuwonoresidenceTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -152,9 +152,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		00E356ED1AD99517003FC87E /* IfcaResidentTests */ = {
+		00E356ED1AD99517003FC87E /* pakubuwonoresidenceTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "IfcaResidentTests" */;
+			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "pakubuwonoresidenceTests" */;
 			buildPhases = (
 				AB7D3C11AC04D37AC3A997E1 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
@@ -168,14 +168,14 @@
 			dependencies = (
 				00E356F51AD99517003FC87E /* PBXTargetDependency */,
 			);
-			name = IfcaResidentTests;
-			productName = IfcaResidentTests;
-			productReference = 00E356EE1AD99517003FC87E /* IfcaResidentTests.xctest */;
+			name = pakubuwonoresidenceTests;
+			productName = pakubuwonoresidenceTests;
+			productReference = 00E356EE1AD99517003FC87E /* pakubuwonoresidenceTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		13B07F861A680F5B00A75B9A /* IfcaResident */ = {
+		13B07F861A680F5B00A75B9A /* pakubuwonoresidence */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "IfcaResident" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "pakubuwonoresidence" */;
 			buildPhases = (
 				8D1D6AA0752F47C1A8F70533 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
@@ -190,9 +190,9 @@
 			);
 			dependencies = (
 			);
-			name = IfcaResident;
-			productName = IfcaResident;
-			productReference = 13B07F961A680F5B00A75B9A /* IfcaResident.app */;
+			name = pakubuwonoresidence;
+			productName = pakubuwonoresidence;
+			productReference = 13B07F961A680F5B00A75B9A /* pakubuwonoresidence.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -212,7 +212,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "IfcaResident" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "pakubuwonoresidence" */;
 			compatibilityVersion = "Xcode 12.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -225,8 +225,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				13B07F861A680F5B00A75B9A /* IfcaResident */,
-				00E356ED1AD99517003FC87E /* IfcaResidentTests */,
+				13B07F861A680F5B00A75B9A /* pakubuwonoresidence */,
+				00E356ED1AD99517003FC87E /* pakubuwonoresidenceTests */,
 			);
 		};
 /* End PBXProject section */
@@ -271,15 +271,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-IfcaResident-IfcaResidentTests/Pods-IfcaResident-IfcaResidentTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-pakubuwonoresidence-pakubuwonoresidenceTests/Pods-pakubuwonoresidence-pakubuwonoresidenceTests-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-IfcaResident-IfcaResidentTests/Pods-IfcaResident-IfcaResidentTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-pakubuwonoresidence-pakubuwonoresidenceTests/Pods-pakubuwonoresidence-pakubuwonoresidenceTests-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-IfcaResident-IfcaResidentTests/Pods-IfcaResident-IfcaResidentTests-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-pakubuwonoresidence-pakubuwonoresidenceTests/Pods-pakubuwonoresidence-pakubuwonoresidenceTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		6F7172C3A0E8C3C4D8950D7B /* [CP] Embed Pods Frameworks */ = {
@@ -288,15 +288,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-IfcaResident/Pods-IfcaResident-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-pakubuwonoresidence/Pods-pakubuwonoresidence-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-IfcaResident/Pods-IfcaResident-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-pakubuwonoresidence/Pods-pakubuwonoresidence-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-IfcaResident/Pods-IfcaResident-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-pakubuwonoresidence/Pods-pakubuwonoresidence-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		8D1D6AA0752F47C1A8F70533 /* [CP] Check Pods Manifest.lock */ = {
@@ -314,7 +314,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-IfcaResident-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-pakubuwonoresidence-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -336,7 +336,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-IfcaResident-IfcaResidentTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-pakubuwonoresidence-pakubuwonoresidenceTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -349,15 +349,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-IfcaResident-IfcaResidentTests/Pods-IfcaResident-IfcaResidentTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-pakubuwonoresidence-pakubuwonoresidenceTests/Pods-pakubuwonoresidence-pakubuwonoresidenceTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-IfcaResident-IfcaResidentTests/Pods-IfcaResident-IfcaResidentTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-pakubuwonoresidence-pakubuwonoresidenceTests/Pods-pakubuwonoresidence-pakubuwonoresidenceTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-IfcaResident-IfcaResidentTests/Pods-IfcaResident-IfcaResidentTests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-pakubuwonoresidence-pakubuwonoresidenceTests/Pods-pakubuwonoresidence-pakubuwonoresidenceTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F5481C2EBCF66B010BFCFCF7 /* [CP] Copy Pods Resources */ = {
@@ -366,15 +366,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-IfcaResident/Pods-IfcaResident-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-pakubuwonoresidence/Pods-pakubuwonoresidence-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-IfcaResident/Pods-IfcaResident-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-pakubuwonoresidence/Pods-pakubuwonoresidence-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-IfcaResident/Pods-IfcaResident-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-pakubuwonoresidence/Pods-pakubuwonoresidence-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
@@ -403,7 +403,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00E356F31AD99517003FC87E /* IfcaResidentTests.m in Sources */,
+				00E356F31AD99517003FC87E /* pakubuwonoresidenceTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -421,7 +421,7 @@
 /* Begin PBXTargetDependency section */
 		00E356F51AD99517003FC87E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 13B07F861A680F5B00A75B9A /* IfcaResident */;
+			target = 13B07F861A680F5B00A75B9A /* pakubuwonoresidence */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -429,14 +429,14 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7562D30B15BC951012FA54F3 /* Pods-IfcaResident-IfcaResidentTests.debug.xcconfig */;
+			baseConfigurationReference = 7562D30B15BC951012FA54F3 /* Pods-pakubuwonoresidence-pakubuwonoresidenceTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = IfcaResidentTests/Info.plist;
+				INFOPLIST_FILE = pakubuwonoresidenceTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -450,17 +450,17 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/IfcaResident.app/IfcaResident";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/pakubuwonoresidence.app/pakubuwonoresidence";
 			};
 			name = Debug;
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 53CC1B343EC73D4C48FBBB03 /* Pods-IfcaResident-IfcaResidentTests.release.xcconfig */;
+			baseConfigurationReference = 53CC1B343EC73D4C48FBBB03 /* Pods-pakubuwonoresidence-pakubuwonoresidenceTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
-				INFOPLIST_FILE = IfcaResidentTests/Info.plist;
+				INFOPLIST_FILE = pakubuwonoresidenceTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -474,19 +474,19 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/IfcaResident.app/IfcaResident";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/pakubuwonoresidence.app/pakubuwonoresidence";
 			};
 			name = Release;
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 18313D82F2C36B4EEC92408C /* Pods-IfcaResident.debug.xcconfig */;
+			baseConfigurationReference = 18313D82F2C36B4EEC92408C /* Pods-pakubuwonoresidence.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_BITCODE = NO;
-				INFOPLIST_FILE = IfcaResident/Info.plist;
+				INFOPLIST_FILE = pakubuwonoresidence/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -497,7 +497,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = IfcaResident;
+				PRODUCT_NAME = pakubuwonoresidence;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -506,12 +506,12 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3B8912A53653E137E8A19476 /* Pods-IfcaResident.release.xcconfig */;
+			baseConfigurationReference = 3B8912A53653E137E8A19476 /* Pods-pakubuwonoresidence.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				INFOPLIST_FILE = IfcaResident/Info.plist;
+				INFOPLIST_FILE = pakubuwonoresidence/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -522,7 +522,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = IfcaResident;
+				PRODUCT_NAME = pakubuwonoresidence;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -654,7 +654,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "IfcaResidentTests" */ = {
+		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "pakubuwonoresidenceTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				00E356F61AD99517003FC87E /* Debug */,
@@ -663,7 +663,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "IfcaResident" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "pakubuwonoresidence" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
@@ -672,7 +672,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "IfcaResident" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "pakubuwonoresidence" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,

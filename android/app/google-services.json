@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "521996564157",
-    "project_id": "ifca-master",
-    "storage_bucket": "ifca-master.appspot.com"
+    "project_number": "408302101564",
+    "project_id": "pakubuwono-d270c",
+    "storage_bucket": "pakubuwono-d270c.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:521996564157:android:e5e9e9fce5b93f955a29d4",
+        "mobilesdk_app_id": "1:408302101564:android:49f104cf7a221545c8cf39",
         "android_client_info": {
-          "package_name": "com.ifcaresident.bagus"
+          "package_name": "com.pakubuwono.residence"
         }
       },
       "oauth_client": [
         {
-          "client_id": "521996564157-3kbadmosfsichfvo02tmq2s1cvkfvk33.apps.googleusercontent.com",
+          "client_id": "408302101564-dtec0md15qo29jn4e49pqhol58lmr1lg.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBrM70h5iINg5zVkHL8FOOEiEG3bdFmLWE"
+          "current_key": "AIzaSyBSRgugcJofa0ptzJM2Faj2BunP-WjXC1A"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "521996564157-3kbadmosfsichfvo02tmq2s1cvkfvk33.apps.googleusercontent.com",
+              "client_id": "408302101564-dtec0md15qo29jn4e49pqhol58lmr1lg.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

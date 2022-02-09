@@ -2,8 +2,8 @@
  * Basic Setting Variables Define
  */
 export const BaseSetting = {
-  name: 'IfcaResident',
-  displayName: 'ifcaresident',
+  name: 'pakubuwonoresidence',
+  displayName: 'pakubuwonoresidence',
   appVersion: '0.0.1',
   defaultLanguage: 'en',
   languageSupport: [
