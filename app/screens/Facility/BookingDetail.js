@@ -100,7 +100,7 @@ export default BookingDetail = props => {
   const getLotNo = async () => {
     try {
       const res = await axios.get(
-        'http://34.87.121.155:2121/apiwebpbi/api/facility/book/unit?email=' +
+        'http://103.111.204.131/apiwebpbi/api/facility/book/unit?email=' +
           email,
       );
       if (res) {
@@ -138,7 +138,7 @@ export default BookingDetail = props => {
 
     console.log(
       'url api partner',
-      `http://34.87.121.155:2121/apiwebpbi/api/facility/book/staffs?entity_cd=` +
+      `http://103.111.204.131/apiwebpbi/api/facility/book/staffs?entity_cd=` +
         entity_cd +
         '&project_no=' +
         project_no +
@@ -151,9 +151,9 @@ export default BookingDetail = props => {
     );
     axios
       .get(
-        //  'http://34.87.121.155:2121/apiwebpbi/api/facility/book/staffs?entity_cd=01&project_no=01&facility_cd=BDMT&venue_cd=796160&book_date=2021-12-14&book_hour=15:00',
-        // http://34.87.121.155:2121/apiwebpbi/api/facility/book/staffs?entity_cd=01&project_no=01&facility_cd=BDMT&venue_cd=796160&book_date=2021-12-14&book_hour=15:00
-        `http://34.87.121.155:2121/apiwebpbi/api/facility/book/staffs?entity_cd=` +
+        //  'http://103.111.204.131/apiwebpbi/api/facility/book/staffs?entity_cd=01&project_no=01&facility_cd=BDMT&venue_cd=796160&book_date=2021-12-14&book_hour=15:00',
+        // http://103.111.204.131/apiwebpbi/api/facility/book/staffs?entity_cd=01&project_no=01&facility_cd=BDMT&venue_cd=796160&book_date=2021-12-14&book_hour=15:00
+        `http://103.111.204.131/apiwebpbi/api/facility/book/staffs?entity_cd=` +
           entity_cd +
           '&project_no=' +
           project_no +
@@ -177,7 +177,7 @@ export default BookingDetail = props => {
       .catch(error => console.error(error))
       // .catch(error => console.error(error.response.data))
       .finally(() => setLoading(false));
-    // http://34.87.121.155:2121/apiwebpbi/api/facility/book/unit?email=bagus.trinanda@ifca.co.id
+    // http://103.111.204.131/apiwebpbi/api/facility/book/unit?email=bagus.trinanda@ifca.co.id
   };
   useEffect(() => {
     getPartners();
@@ -666,7 +666,7 @@ export default BookingDetail = props => {
 
       // console.log(
       //   'url submit',
-      //   'http://34.87.121.155:2121/apiwebpbi/api/facility/book/save' + data,
+      //   'http://103.111.204.131/apiwebpbi/api/facility/book/save' + data,
       // );
 
       //submit here
@@ -678,13 +678,9 @@ export default BookingDetail = props => {
         },
       };
       await axios
-        .post(
-          'http://34.87.121.155:2121/apiwebpbi/api/facility/book/save',
-          data,
-          {
-            config,
-          },
-        )
+        .post('http://103.111.204.131/apiwebpbi/api/facility/book/save', data, {
+          config,
+        })
         .then(res => {
           console.log('res save book', res.data);
           // return res.data;
@@ -718,7 +714,7 @@ export default BookingDetail = props => {
 
       console.log(
         'url submit',
-        'http://34.87.121.155:2121/apiwebpbi/api/facility/book/save' + data,
+        'http://103.111.204.131/apiwebpbi/api/facility/book/save' + data,
       );
 
       //submit here
@@ -730,13 +726,9 @@ export default BookingDetail = props => {
         },
       };
       await axios
-        .post(
-          'http://34.87.121.155:2121/apiwebpbi/api/facility/book/save',
-          data,
-          {
-            config,
-          },
-        )
+        .post('http://103.111.204.131/apiwebpbi/api/facility/book/save', data, {
+          config,
+        })
         .then(res => {
           // console.log('res', res);
           // return res.data;

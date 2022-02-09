@@ -128,9 +128,7 @@ class MeterInfo extends React.Component {
     console.log('check User', getEmail);
 
     fetch(
-      'http://34.87.121.155:2121/apiwebpbi/api/getProject' +
-        '/' +
-        `${getEmail}`,
+      'http://103.111.204.131/apiwebpbi/api/getProject' + '/' + `${getEmail}`,
       {
         method: 'GET',
         headers: this.state.hd,
@@ -174,7 +172,7 @@ class MeterInfo extends React.Component {
     };
 
     fetch(
-      'http://34.87.121.155:2121/apiwebpbi/api/getDataFilter/IFCAPB/' +
+      'http://103.111.204.131/apiwebpbi/api/getDataFilter/IFCAPB/' +
         entitycds +
         '/' +
         projectnos +
@@ -243,7 +241,7 @@ class MeterInfo extends React.Component {
 
     console.log('cek isi retrieve', data);
     fetch(
-      'http://34.87.121.155:2121/apiwebpbi/api/getDataFilter/IFCAPB/' +
+      'http://103.111.204.131/apiwebpbi/api/getDataFilter/IFCAPB/' +
         data.Entitycdz +
         '/' +
         data.Projectnoz +

@@ -86,7 +86,7 @@ function BookingFacility({route}) {
 
   useEffect(() => {
     axios
-      .get('http://34.87.121.155:2121/apiwebpbi/api/facility/book/time')
+      .get('http://103.111.204.131/apiwebpbi/api/facility/book/time')
       .then(time => {
         console.log('time from server?', time.data);
         setTime(time.data);
@@ -115,7 +115,7 @@ function BookingFacility({route}) {
   // useEffect(() => {
   //   axios
   //     .get(
-  //       `http://34.87.121.155:2121/apiwebpbi/api/facility/book/hours?entity_cd=01&project_no=01&facility_cd=CA`,
+  //       `http://103.111.204.131/apiwebpbi/api/facility/book/hours?entity_cd=01&project_no=01&facility_cd=CA`,
   //     )
   //     .then(res => {
   //       console.log('data date book', res.data[0]);
@@ -130,7 +130,7 @@ function BookingFacility({route}) {
   useEffect(() => {
     axios
       .get(
-        `http://34.87.121.155:2121/apiwebpbi/api/facility/book/hours_id?entity_cd=01&project_no=01&facility_cd=CA&book_date=2021-12-07&id=1`,
+        `http://103.111.204.131/apiwebpbi/api/facility/book/hours_id?entity_cd=01&project_no=01&facility_cd=CA&book_date=2021-12-07&id=1`,
       )
       .then(data => {
         console.log('timedate', data.data);
@@ -146,7 +146,7 @@ function BookingFacility({route}) {
   // const fetchDataDays = async () => {
   //   try {
   //     const res = await axios.get(
-  //       'http://34.87.121.155:2121/apiwebpbi/api/facility/book/hours_id?entity_cd=01&project_no=01&facility_cd=CA&book_date=2021-12-08&id=2',
+  //       'http://103.111.204.131/apiwebpbi/api/facility/book/hours_id?entity_cd=01&project_no=01&facility_cd=CA&book_date=2021-12-08&id=2',
   //     );
   //     setDays(res.data);
   //     console.log('dayss', res.data);
@@ -246,11 +246,11 @@ function BookingFacility({route}) {
     };
     console.log(
       'url api tower',
-      `http://34.87.121.155:2121/apiwebpbi/api/getData/mysql/${datas.email}/${datas.app}`,
+      `http://103.111.204.131/apiwebpbi/api/getData/mysql/${datas.email}/${datas.app}`,
     );
     axios
       .get(
-        `http://34.87.121.155:2121/apiwebpbi/api/getData/mysql/${datas.email}/${datas.app}`,
+        `http://103.111.204.131/apiwebpbi/api/getData/mysql/${datas.email}/${datas.app}`,
         {
           config,
         },
@@ -297,7 +297,7 @@ function BookingFacility({route}) {
 
     await axios
       .get(
-        `http://34.87.121.155:2121/apiwebpbi/api/facility/book/hours?entity_cd=` +
+        `http://103.111.204.131/apiwebpbi/api/facility/book/hours?entity_cd=` +
           entity_cd +
           `&project_no=` +
           project_no +
@@ -338,13 +338,12 @@ function BookingFacility({route}) {
     // 'SB';
     // console.log(
     //   'params daata',
-    //   'http://34.87.121.155:2121/apiwebpbi/api/facility/book/venue' +
+    //   'http://103.111.204.131/apiwebpbi/api/facility/book/venue' +
     //     params_api,
     // );
     await axios
       .get(
-        'http://34.87.121.155:2121/apiwebpbi/api/facility/book/venue' +
-          params_api,
+        'http://103.111.204.131/apiwebpbi/api/facility/book/venue' + params_api,
       )
       .then(res => {
         // console.log('ress facility book venue:', res.data);
@@ -403,7 +402,7 @@ function BookingFacility({route}) {
       // );
       console.log(
         'url params',
-        'http://34.87.121.155:2121/apiwebpbi/api/facility/book/hours_venue' +
+        'http://103.111.204.131/apiwebpbi/api/facility/book/hours_venue' +
           params_api +
           '&' +
           'book_date=' +
@@ -412,28 +411,28 @@ function BookingFacility({route}) {
           '&id=1',
       );
       let endpoints = [
-        `http://34.87.121.155:2121/apiwebpbi/api/facility/book/hours_venue` +
+        `http://103.111.204.131/apiwebpbi/api/facility/book/hours_venue` +
           params_api +
           '&' +
           'book_date=' +
           databookdates[0].book_date +
           // '2021-12-15' +
           `&id=1`,
-        `http://34.87.121.155:2121/apiwebpbi/api/facility/book/hours_venue` +
+        `http://103.111.204.131/apiwebpbi/api/facility/book/hours_venue` +
           params_api +
           '&' +
           'book_date=' +
           databookdates[1].book_date +
           // '2021-12-15' +
           `&id=2`,
-        `http://34.87.121.155:2121/apiwebpbi/api/facility/book/hours_venue` +
+        `http://103.111.204.131/apiwebpbi/api/facility/book/hours_venue` +
           params_api +
           '&' +
           'book_date=' +
           databookdates[2].book_date +
           // '2021-12-15' +
           `&id=3`,
-        `http://34.87.121.155:2121/apiwebpbi/api/facility/book/hours_venue` +
+        `http://103.111.204.131/apiwebpbi/api/facility/book/hours_venue` +
           params_api +
           '&' +
           'book_date=' +
@@ -497,7 +496,7 @@ function BookingFacility({route}) {
       // console.log('params booked', params_api);
       // console.log(
       //   'url params',
-      //   'http://34.87.121.155:2121/apiwebpbi/api/facility/book/hours_venue' +
+      //   'http://103.111.204.131/apiwebpbi/api/facility/book/hours_venue' +
       //     params_api +
       //     '&' +
       //     'book_date=' +
@@ -505,28 +504,28 @@ function BookingFacility({route}) {
       //     '&id=1',
       // );
       let endpoints = [
-        `http://34.87.121.155:2121/apiwebpbi/api/facility/book/hours_venue` +
+        `http://103.111.204.131/apiwebpbi/api/facility/book/hours_venue` +
           params_api +
           '&' +
           'book_date=' +
           databookdates[0].book_date +
           // '2021-12-15' +
           `&id=1`,
-        `http://34.87.121.155:2121/apiwebpbi/api/facility/book/hours_venue` +
+        `http://103.111.204.131/apiwebpbi/api/facility/book/hours_venue` +
           params_api +
           '&' +
           'book_date=' +
           databookdates[1].book_date +
           // '2021-12-15' +
           `&id=2`,
-        `http://34.87.121.155:2121/apiwebpbi/api/facility/book/hours_venue` +
+        `http://103.111.204.131/apiwebpbi/api/facility/book/hours_venue` +
           params_api +
           '&' +
           'book_date=' +
           databookdates[2].book_date +
           // '2021-12-15' +
           `&id=3`,
-        `http://34.87.121.155:2121/apiwebpbi/api/facility/book/hours_venue` +
+        `http://103.111.204.131/apiwebpbi/api/facility/book/hours_venue` +
           params_api +
           '&' +
           'book_date=' +

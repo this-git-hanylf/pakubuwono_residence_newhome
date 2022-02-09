@@ -79,7 +79,7 @@ const Billing = ({
   async function fetchData() {
     try {
       const res = await axios.get(
-        `http://34.87.121.155:2121/apiwebpbi/api/getDataDue/IFCAPB/${user.user}`,
+        `http://103.111.204.131/apiwebpbi/api/getDataDue/IFCAPB/${user.user}`,
       );
       setDataCurrent(res.data.Data);
       console.log('datasss', data);
@@ -97,7 +97,7 @@ const Billing = ({
   async function fetchDataCurrent() {
     try {
       const res = await axios.get(
-        `http://34.87.121.155:2121/apiwebpbi/api/getDataCurrent/IFCAPB/${user.user}`,
+        `http://103.111.204.131/apiwebpbi/api/getDataCurrent/IFCAPB/${user.user}`,
       );
       setData(res.data.Data);
       console.log('data', dataCurrent);

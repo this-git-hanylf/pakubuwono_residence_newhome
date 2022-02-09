@@ -73,7 +73,7 @@ export default function ModalLocation(props) {
     console.log('url api', urlApi);
 
     await axios
-      .get('http://34.87.121.155:8181/apiwebpbi/api/csentry-getLocation', {
+      .get('http://103.111.204.131/apiwebpbi/api/csentry-getLocation', {
         config,
       })
       .then(res => {

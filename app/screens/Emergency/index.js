@@ -19,7 +19,7 @@ const Emergency = props => {
   async function fetchDataDue() {
     try {
       const res = await axios.get(
-        'http://34.87.121.155:2121/apiwebpbi/api/emergency',
+        'http://103.111.204.131/apiwebpbi/api/emergency',
       );
       setData(res.data.data);
       console.log('data', data);

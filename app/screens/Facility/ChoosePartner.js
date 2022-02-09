@@ -87,7 +87,7 @@ export default ChoosePartner = props => {
       const reservation_no = route.params.reservation_no;
 
       const res = await axios.get(
-        `http://34.87.121.155:2121/apiwebpbi/api/facility/book/edit/getstaffs/` +
+        `http://103.111.204.131/apiwebpbi/api/facility/book/edit/getstaffs/` +
           reservation_no,
       );
       if (res) {
@@ -222,7 +222,7 @@ export default ChoosePartner = props => {
         datapartner: dataselected_partner,
       };
       const res = await axios.post(
-        'http://34.87.121.155:2121/apiwebpbi/api/facility/book/edit/staff',
+        'http://103.111.204.131/apiwebpbi/api/facility/book/edit/staff',
         data,
       );
       if (res) {

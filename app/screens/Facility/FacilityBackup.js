@@ -50,7 +50,7 @@ function BookingFacility1({route}) {
 
   useEffect(() => {
     axios
-      .get('http://34.87.121.155:2121/apiwebpbi/api/facility/book/time')
+      .get('http://103.111.204.131/apiwebpbi/api/facility/book/time')
       .then(time => {
         console.log('time', time.data);
         setTime(time.data);
@@ -77,7 +77,7 @@ function BookingFacility1({route}) {
 
   useEffect(() => {
     axios
-      .get(`http://34.87.121.155:2121/apiwebpbi/api/facility/book/hours`, {
+      .get(`http://103.111.204.131/apiwebpbi/api/facility/book/hours`, {
         params: setBody,
       })
       .then(res => {
@@ -92,7 +92,7 @@ function BookingFacility1({route}) {
   useEffect(() => {
     axios
       .get(
-        `http://34.87.121.155:2121/apiwebpbi/api/facility/book/days?entity_cd=01&project_no=01&facility_cd=CA`,
+        `http://103.111.204.131/apiwebpbi/api/facility/book/days?entity_cd=01&project_no=01&facility_cd=CA`,
         {},
       )
       .then(data => {

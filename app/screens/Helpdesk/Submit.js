@@ -98,7 +98,7 @@ export default function SubmitHelpdesk({route, props}) {
 
     await axios
       .get(
-        `http://34.87.121.155:2121/apiwebpbi/api/getData/mysql/${data.email}/${data.app}`,
+        `http://103.111.204.131/apiwebpbi/api/getData/mysql/${data.email}/${data.app}`,
         {
           config,
         },
@@ -322,7 +322,7 @@ export default function SubmitHelpdesk({route, props}) {
     });
     console.log('liatbody', bodyData);
     return fetch(
-      'http://34.87.121.155:2121/apiwebpbi/api/csentry-saveTicketWithImage',
+      'http://103.111.204.131/apiwebpbi/api/csentry-saveTicketWithImage',
       {
         method: 'post',
         headers: {
@@ -453,7 +453,7 @@ export default function SubmitHelpdesk({route, props}) {
 
   //     await axios
   //       .post(
-  //         'http://34.87.121.155:2121/apiwebpbi/api/csentry-saveTicketWithImage',
+  //         'http://103.111.204.131/apiwebpbi/api/csentry-saveTicketWithImage',
   //         formData,
   //         {
   //           headers: {
@@ -605,7 +605,7 @@ export default function SubmitHelpdesk({route, props}) {
 
   //     await axios
   //       .post(
-  //         'http://34.87.121.155:2121/apiwebpbi/api/csentry-saveTicketWithImage',
+  //         'http://103.111.204.131/apiwebpbi/api/csentry-saveTicketWithImage',
 
   //         formData,
   //         {
@@ -736,7 +736,7 @@ export default function SubmitHelpdesk({route, props}) {
   //       console.log('dataSave', formData);
   //     RNFetchBlob.fetch(
   //       'POST',
-  //       'http://34.87.121.155:2121/apiwebpbi/api/csentry-saveTicketWithImage',
+  //       'http://103.111.204.131/apiwebpbi/api/csentry-saveTicketWithImage',
   //       {
   //         'Content-Type': 'multipart/form-data',
   //       },

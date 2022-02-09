@@ -94,12 +94,11 @@ export default BookingListDetail = props => {
     const reservation_no = route.params.reservation_no;
     console.log(
       'url datalist detail',
-      `http://34.87.121.155:2121/apiwebpbi/api/facility/book/id/` +
-        reservation_no,
+      `http://103.111.204.131/apiwebpbi/api/facility/book/id/` + reservation_no,
     );
     try {
       const res = await axios.get(
-        `http://34.87.121.155:2121/apiwebpbi/api/facility/book/id/` +
+        `http://103.111.204.131/apiwebpbi/api/facility/book/id/` +
           reservation_no,
       );
       if (res) {
@@ -127,7 +126,7 @@ export default BookingListDetail = props => {
     const reservation_no = route.params.reservation_no;
     await axios
       .get(
-        `http://34.87.121.155:2121/apiwebpbi/api/facility/book/edit/getstaffs/` +
+        `http://103.111.204.131/apiwebpbi/api/facility/book/edit/getstaffs/` +
           reservation_no,
       )
       .then(data => {
@@ -283,7 +282,7 @@ export default BookingListDetail = props => {
 
     await axios
       .delete(
-        `http://34.87.121.155:2121/apiwebpbi/api/facility/book/removepartner/` +
+        `http://103.111.204.131/apiwebpbi/api/facility/book/removepartner/` +
           reservation_no +
           '/' +
           data.staff_id,
@@ -361,7 +360,7 @@ export default BookingListDetail = props => {
 
     try {
       const res = await axios.post(
-        'http://34.87.121.155:2121/apiwebpbi/api/facility/book/cancel',
+        'http://103.111.204.131/apiwebpbi/api/facility/book/cancel',
         data,
       );
       if (res) {
@@ -399,7 +398,7 @@ export default BookingListDetail = props => {
     const reserv_no = reservation_no;
     try {
       const data = await axios.delete(
-        `http://34.87.121.155:2121/apiwebpbi/api/facility/book/deletepartner/` +
+        `http://103.111.204.131/apiwebpbi/api/facility/book/deletepartner/` +
           reserv_no,
       );
       if (data) {

@@ -77,8 +77,8 @@ export default function SpecHelpDesk() {
 
     await axios
       .get(
-        // `http://34.87.121.155:2121/apisysadmin/api/getProject/${data.email}`,
-        `http://34.87.121.155:2121/apiwebpbi/api/getData/mysql/${data.email}/${data.app}`,
+        // `http://103.111.204.131/apisysadmin/api/getProject/${data.email}`,
+        `http://103.111.204.131/apiwebpbi/api/getData/mysql/${data.email}/${data.app}`,
         {
           config,
         },
@@ -134,12 +134,9 @@ export default function SpecHelpDesk() {
       },
     };
     await axios
-      .post(
-        'http://34.87.121.155:8181/apiwebpbi/api/csentry-getDebtor' + params,
-        {
-          config,
-        },
-      )
+      .post('http://103.111.204.131/apiwebpbi/api/csentry-getDebtor' + params, {
+        config,
+      })
       .then(res => {
         console.log('res', res);
         const datas = res.data;
@@ -198,13 +195,9 @@ export default function SpecHelpDesk() {
     };
 
     await axios
-      .post(
-        'http://34.87.121.155:8181/apiwebpbi/api/csentry-getLotno',
-        params,
-        {
-          config,
-        },
-      )
+      .post('http://103.111.204.131/apiwebpbi/api/csentry-getLotno', params, {
+        config,
+      })
       .then(res => {
         const datas = res.data;
         const dataLotno = datas.Data;
@@ -242,13 +235,9 @@ export default function SpecHelpDesk() {
     };
 
     await axios
-      .post(
-        'http://34.87.121.155:8181/apiwebpbi/api/csentry-getFloor',
-        params,
-        {
-          config,
-        },
-      )
+      .post('http://103.111.204.131/apiwebpbi/api/csentry-getFloor', params, {
+        config,
+      })
       .then(res => {
         // console.log('res floor', res);
         const datas = res.data;

@@ -25,7 +25,7 @@ const Notification = props => {
   const [spinner, setSpinner] = useState(true);
   const [urlApi, seturlApi] = useState(API_URL);
   const [dataNotif, setDataNotif] = useState([]);
-  // http://34.87.121.155:2121/apiwebpbi/api/notification
+  // http://103.111.204.131/apiwebpbi/api/notification
 
   // POST
   // body : email, entity_cd, project_no, device (hardcode aja valuenya Mobile)
@@ -46,7 +46,7 @@ const Notification = props => {
 
     await axios
       .get(
-        `http://34.87.121.155:2121/apiwebpbi/api/getData/mysql/${data.email}/${data.app}`,
+        `http://103.111.204.131/apiwebpbi/api/getData/mysql/${data.email}/${data.app}`,
       )
       .then(res => {
         const datas = res.data;
@@ -94,13 +94,10 @@ const Notification = props => {
       },
     };
 
-    console.log(
-      'http://34.87.121.155:8181/apiwebifca/api/notification',
-      formData,
-    );
+    console.log('http://103.111.204.131/apiwebifca/api/notification', formData);
 
     await axios
-      .post('http://34.87.121.155:8181/apiwebifca/api/notification', formData)
+      .post('http://103.111.204.131/apiwebifca/api/notification', formData)
       .then(res => {
         // console.log('res tiket multi', res.data);
         const resNotif = res.data;

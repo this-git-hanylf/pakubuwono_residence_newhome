@@ -79,7 +79,7 @@ export default function StatusHelp({route}) {
 
     await axios
       .get(
-        `http://34.87.121.155:2121/apiwebpbi/api/getData/mysql/${data.email}/${data.app}`,
+        `http://103.111.204.131/apiwebpbi/api/getData/mysql/${data.email}/${data.app}`,
         {
           config,
         },
@@ -145,7 +145,7 @@ export default function StatusHelp({route}) {
 
     await axios
       .post(
-        'http://34.87.121.155:8181/apiwebpbi/api/csallticket-getstatus/IFCAPB',
+        'http://103.111.204.131/apiwebpbi/api/csallticket-getstatus/IFCAPB',
         formData,
         {
           config,
@@ -194,7 +194,7 @@ export default function StatusHelp({route}) {
     };
     await axios
       .post(
-        'http://34.87.121.155:8181/apiwebpbi/api/csallticket-getwherestatus/IFCAPB',
+        'http://103.111.204.131/apiwebpbi/api/csallticket-getwherestatus/IFCAPB',
         formData,
         {
           config,

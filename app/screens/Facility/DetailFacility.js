@@ -73,7 +73,7 @@ const DetailFacility = props => {
     };
     axios
       .get(
-        `http://34.87.121.155:2121/apiwebpbi/api/getData/mysql/${data.email}/${data.app}`,
+        `http://103.111.204.131/apiwebpbi/api/getData/mysql/${data.email}/${data.app}`,
         {
           config,
         },
@@ -119,7 +119,7 @@ const DetailFacility = props => {
     const facility_cd = route.params.facility_cd;
     console.log(
       'url data detail facility',
-      'http://34.87.121.155:2121/apiwebpbi/api/fb-facilitydetail/' +
+      'http://103.111.204.131/apiwebpbi/api/fb-facilitydetail/' +
         entity_cd +
         '/' +
         project_no +
@@ -127,7 +127,7 @@ const DetailFacility = props => {
         facility_cd,
     );
     const response = await axios(
-      'http://34.87.121.155:2121/apiwebpbi/api/fb-facilitydetail/' +
+      'http://103.111.204.131/apiwebpbi/api/fb-facilitydetail/' +
         entity_cd +
         '/' +
         project_no +

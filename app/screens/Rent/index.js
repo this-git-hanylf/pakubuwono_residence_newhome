@@ -66,7 +66,7 @@ const Rent = props => {
 
   useEffect(() => {
     axios
-      .get('http://34.87.121.155:2121/apiwebpbi/api/rsentryMobileSale/')
+      .get('http://103.111.204.131/apiwebpbi/api/rsentryMobileSale/')
       .then(({data}) => {
         console.log('defaultApp -> data', data);
         setData(data);
@@ -77,7 +77,7 @@ const Rent = props => {
 
   useEffect(() => {
     axios
-      .get('http://34.87.121.155:2121/apiwebpbi/api/rsentryMobile')
+      .get('http://103.111.204.131/apiwebpbi/api/rsentryMobile')
       .then(({data}) => {
         console.log('defaultApp -> data', rent);
         setRent(data);

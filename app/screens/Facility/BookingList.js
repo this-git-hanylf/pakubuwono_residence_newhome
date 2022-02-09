@@ -53,7 +53,7 @@ export default BookingList = props => {
 
   const getListBooking = () => {
     axios
-      .get(`http://34.87.121.155:2121/apiwebpbi/api/facility/book/all/` + email)
+      .get(`http://103.111.204.131/apiwebpbi/api/facility/book/all/` + email)
       .then(data => {
         console.log('data book list', data.data.Data);
         setdataBooking(data.data.Data);

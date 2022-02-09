@@ -1,141 +1,141 @@
-{ 
-    "data" :[
+{
+  "data": [
+    {
+      "entry": [
         {
-    "entry": [
-        {
-            "rowID": 8,
-            "advID": "1GK2Q5",
-            "adv_type": "Sale",
-            "agentID": "80645",
-            "property_type": "Rumah",
-            "market_type": "Secondary",
-            "submit_date": "2021-10-26 09:56:46",
-            "subject": "Rumah super mewah aman strategis",
-            "description": "Rumah Baru Super Mewah Jl. Hang Lekiu, Kebayoran Baru, Jakarta SelatanSpesifikasi:Luas Tanah : 325 m2 ( Brahang 50m2 ) Shm 270m2Luas Bangunan : 600m2SHM + IMBKamar Tidur : 4 + 2Kamar Mandi : 8 + 1ada pos securityada gudangada ruang kerjaGarasi / Carport: 10 mobilListrik 11000Hadap Timur# Harga : 32 M negoMore info Nurul  0813XXXXXXXX",
-            "province": "31",
-            "city": "3171",
-            "build_area": "100",
-            "land_area": "120",
-            "certificate": "SHM",
-            "currency": "IDR",
-            "price": "1.000.000.000",
-            "price_descs": "1 milyar",
-            "bed_room": "3",
-            "bath_room": "2",
-            "maid_bedroom": "1",
-            "maid_bathroom": "1",
-            "parking": "1",
-            "electrical_power": "1.300",
-            "floor": "2",
-            "publish_date": "2021-10-26 00:00:00",
-            "end_publish": "2021-11-26 23:59:59",
-            "reason_cancel": null,
-            "verify_by": "MGR",
-            "verify_date": "2021-10-26 09:57:07",
-            "view_count": null,
-            "status": "Active",
-            "audit_user": "MGR",
-            "audit_date": "2021-10-26 09:56:46"
+          "rowID": 8,
+          "advID": "1GK2Q5",
+          "adv_type": "Sale",
+          "agentID": "80645",
+          "property_type": "Rumah",
+          "market_type": "Secondary",
+          "submit_date": "2021-10-26 09:56:46",
+          "subject": "Rumah super mewah aman strategis",
+          "description": "Rumah Baru Super Mewah Jl. Hang Lekiu, Kebayoran Baru, Jakarta SelatanSpesifikasi:Luas Tanah : 325 m2 ( Brahang 50m2 ) Shm 270m2Luas Bangunan : 600m2SHM + IMBKamar Tidur : 4 + 2Kamar Mandi : 8 + 1ada pos securityada gudangada ruang kerjaGarasi / Carport: 10 mobilListrik 11000Hadap Timur# Harga : 32 M negoMore info Nurul  0813XXXXXXXX",
+          "province": "31",
+          "city": "3171",
+          "build_area": "100",
+          "land_area": "120",
+          "certificate": "SHM",
+          "currency": "IDR",
+          "price": "1.000.000.000",
+          "price_descs": "1 milyar",
+          "bed_room": "3",
+          "bath_room": "2",
+          "maid_bedroom": "1",
+          "maid_bathroom": "1",
+          "parking": "1",
+          "electrical_power": "1.300",
+          "floor": "2",
+          "publish_date": "2021-10-26 00:00:00",
+          "end_publish": "2021-11-26 23:59:59",
+          "reason_cancel": null,
+          "verify_by": "MGR",
+          "verify_date": "2021-10-26 09:57:07",
+          "view_count": null,
+          "status": "Active",
+          "audit_user": "MGR",
+          "audit_date": "2021-10-26 09:56:46"
         }
-    ],
-    "province": {
+      ],
+      "province": {
         "id": 31,
         "nama": "Dki Jakarta"
-    },
-    "city": {
+      },
+      "city": {
         "id": 3171,
         "id_provinsi": "31",
         "nama": "Kota Jakarta Selatan"
-    },
-    "facility": [
+      },
+      "facility": [
         {
-            "rowID": 56,
-            "advID": "1GK2Q5",
-            "facility_name": "AC"
+          "rowID": 56,
+          "advID": "1GK2Q5",
+          "facility_name": "AC"
         },
         {
-            "rowID": 57,
-            "advID": "1GK2Q5",
-            "facility_name": "Internet"
+          "rowID": 57,
+          "advID": "1GK2Q5",
+          "facility_name": "Internet"
         },
         {
-            "rowID": 58,
-            "advID": "1GK2Q5",
-            "facility_name": "24 Hours Security"
+          "rowID": 58,
+          "advID": "1GK2Q5",
+          "facility_name": "24 Hours Security"
         },
         {
-            "rowID": 59,
-            "advID": "1GK2Q5",
-            "facility_name": "Fitness Center"
+          "rowID": 59,
+          "advID": "1GK2Q5",
+          "facility_name": "Fitness Center"
         },
         {
-            "rowID": 60,
-            "advID": "1GK2Q5",
-            "facility_name": "Center Business"
+          "rowID": 60,
+          "advID": "1GK2Q5",
+          "facility_name": "Center Business"
         },
         {
-            "rowID": 61,
-            "advID": "1GK2Q5",
-            "facility_name": "Near Business District"
+          "rowID": 61,
+          "advID": "1GK2Q5",
+          "facility_name": "Near Business District"
         },
         {
-            "rowID": 62,
-            "advID": "1GK2Q5",
-            "facility_name": "Near Shopping Center"
+          "rowID": 62,
+          "advID": "1GK2Q5",
+          "facility_name": "Near Shopping Center"
         }
-    ],
-    "image": [
+      ],
+      "image": [
         {
-            "rowID": 19,
-            "advID": "1GK2Q5",
-            "pict": "http://34.87.121.155:2121/webpbi/storage/file_rentsale/rumah-super-mewah-aman-strategis.jpeg",
-            "flag": "Y"
+          "rowID": 19,
+          "advID": "1GK2Q5",
+          "pict": "http://103.111.204.131/webpbi/storage/file_rentsale/rumah-super-mewah-aman-strategis.jpeg",
+          "flag": "Y"
         },
         {
-            "rowID": 20,
-            "advID": "1GK2Q5",
-            "pict": "http://34.87.121.155:2121/webpbi/storage/file_rentsale/2.jpeg",
-            "flag": "N"
+          "rowID": 20,
+          "advID": "1GK2Q5",
+          "pict": "http://103.111.204.131/webpbi/storage/file_rentsale/2.jpeg",
+          "flag": "N"
         },
         {
-            "rowID": 21,
-            "advID": "1GK2Q5",
-            "pict": "http://34.87.121.155:2121/webpbi/storage/file_rentsale/3.jpeg",
-            "flag": "N"
+          "rowID": 21,
+          "advID": "1GK2Q5",
+          "pict": "http://103.111.204.131/webpbi/storage/file_rentsale/3.jpeg",
+          "flag": "N"
         },
         {
-            "rowID": 22,
-            "advID": "1GK2Q5",
-            "pict": "http://34.87.121.155:2121/webpbi/storage/file_rentsale/4.jpeg",
-            "flag": "N"
+          "rowID": 22,
+          "advID": "1GK2Q5",
+          "pict": "http://103.111.204.131/webpbi/storage/file_rentsale/4.jpeg",
+          "flag": "N"
         },
         {
-            "rowID": 23,
-            "advID": "1GK2Q5",
-            "pict": "http://34.87.121.155:2121/webpbi/storage/file_rentsale/5.jpeg",
-            "flag": "N"
+          "rowID": 23,
+          "advID": "1GK2Q5",
+          "pict": "http://103.111.204.131/webpbi/storage/file_rentsale/5.jpeg",
+          "flag": "N"
         },
         {
-            "rowID": 24,
-            "advID": "1GK2Q5",
-            "pict": "http://34.87.121.155:2121/webpbi/storage/file_rentsale/6.jpeg",
-            "flag": "N"
+          "rowID": 24,
+          "advID": "1GK2Q5",
+          "pict": "http://103.111.204.131/webpbi/storage/file_rentsale/6.jpeg",
+          "flag": "N"
         }
-    ],
-    "agent": [
+      ],
+      "agent": [
         {
-            "rowID": 3,
-            "agentID": "80645",
-            "agent_name": "Wahyu",
-            "agent_type": "E",
-            "hp_call": "4492423",
-            "hp_wa": "4492423",
-            "email": "test@gmail.com",
-            "pict": "http://34.87.121.155:2121/webpbi/img/Agent/agent2.jpg",
-            "audit_user": "MGR",
-            "audit_date": "2021-10-25 17:41:18"
+          "rowID": 3,
+          "agentID": "80645",
+          "agent_name": "Wahyu",
+          "agent_type": "E",
+          "hp_call": "4492423",
+          "hp_wa": "4492423",
+          "email": "test@gmail.com",
+          "pict": "http://103.111.204.131/webpbi/img/Agent/agent2.jpg",
+          "audit_user": "MGR",
+          "audit_date": "2021-10-25 17:41:18"
         }
-    ]
-}
-    ]
+      ]
+    }
+  ]
 }

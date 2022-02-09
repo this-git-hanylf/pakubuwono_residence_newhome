@@ -97,7 +97,7 @@ const Detail = dataTiketPassProp => {
 
     await axios
       .get(
-        `http://34.87.121.155:2121/apiwebpbi/api/getData/mysql/${data.email}/${data.app}`,
+        `http://103.111.204.131/apiwebpbi/api/getData/mysql/${data.email}/${data.app}`,
         {
           config,
         },
@@ -143,7 +143,7 @@ const Detail = dataTiketPassProp => {
 
     await axios
       .post(
-        'http://34.87.121.155:8181/apiwebpbi/api/csallticket-getticketmulti/IFCAPB',
+        'http://103.111.204.131/apiwebpbi/api/csallticket-getticketmulti/IFCAPB',
         formData,
         {config},
       )
@@ -536,7 +536,7 @@ const Feedback = () => {
 
     await axios
       .get(
-        `http://34.87.121.155:2121/apiwebpbi/api/getData/mysql/${data.email}/${data.app}`,
+        `http://103.111.204.131/apiwebpbi/api/getData/mysql/${data.email}/${data.app}`,
         {
           config,
         },

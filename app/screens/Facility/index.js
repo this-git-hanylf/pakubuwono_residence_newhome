@@ -84,7 +84,7 @@ const Facility = props => {
 
     await axios
       .get(
-        `http://34.87.121.155:2121/apiwebpbi/api/getData/mysql/${data.email}/${data.app}`,
+        `http://103.111.204.131/apiwebpbi/api/getData/mysql/${data.email}/${data.app}`,
         {
           config,
         },
@@ -127,7 +127,7 @@ const Facility = props => {
     const project_no = data.project_no;
     axios
       .get(
-        'http://34.87.121.155:2121/apiwebpbi/api/fb-facilitylist/' +
+        'http://103.111.204.131/apiwebpbi/api/fb-facilitylist/' +
           entity_cd +
           '/' +
           project_no,

@@ -66,7 +66,7 @@ const Segmented = ({
   async function fetchData() {
     try {
       const res = await axios.get(
-        `http://34.87.121.155:2121/apiwebpbi/api/getDataDue/IFCAPB/${user.user}`,
+        `http://103.111.204.131/apiwebpbi/api/getDataDue/IFCAPB/${user.user}`,
       );
       setDataCurrent(res.data.Data);
       console.log('datasss', data);
@@ -79,7 +79,7 @@ const Segmented = ({
   async function fetchDataTime() {
     try {
       const res = await axios.get(
-        'http://34.87.121.155:2121/apiwebpbi/api/facility/book/time',
+        'http://103.111.204.131/apiwebpbi/api/facility/book/time',
       );
       setTime(res.data.Data);
       console.log('time', time);
@@ -92,7 +92,7 @@ const Segmented = ({
   async function fetchDataDays() {
     try {
       const res = await axios.get(
-        'http://34.87.121.155:2121/apiwebpbi/api/facility/book/days?entity_cd=01&project_no=01&facility_cd=CA',
+        'http://103.111.204.131/apiwebpbi/api/facility/book/days?entity_cd=01&project_no=01&facility_cd=CA',
       );
       setDays(res.data);
       console.log('days', res.data);
@@ -105,7 +105,7 @@ const Segmented = ({
   async function fetchDataHours() {
     try {
       const res = await axios.get(
-        'http://34.87.121.155:2121/apiwebpbi/api/facility/book/hours',
+        'http://103.111.204.131/apiwebpbi/api/facility/book/hours',
         {
           params: {
             id: '01',
