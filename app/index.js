@@ -23,7 +23,11 @@ const Mazi = () => {
   };
 
   const onNotif = notif => {
-    Alert.alert(notif.title, notif.message);
+    // Alert.alert(notif.title, notif.message);
+    console.log('notif di on notif', notif);
+    // navigation.navigate('Notification');
+    console.log('notif data title di onnotif', notif.data.title);
+    console.log('notif data body di onnotif', notif.data.body);
   };
 
   const notif = new NotifService(onRegister, onNotif);

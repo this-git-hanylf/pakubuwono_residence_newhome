@@ -4,10 +4,11 @@ import httpClient from './HttpClient';
 
 class UserController {
   constructor() {
-    this.basePath = '/login_mobile';
+    this.basePath = 'http://34.87.121.155:8181/apiwebpbi/api';
   }
 
   login = async (email, password, token_firebase) => {
+    console.log('token firebase yg akan dikirim', token_firebase);
     try {
       const result = await httpClient.request({
         url: '/login_mobile',
@@ -18,7 +19,7 @@ class UserController {
           token: '',
           device: 'ios',
           mac: 'mac',
-          token_firebase,
+          token_firebase: token_firebase,
         },
       });
       // alert(result.Pesan);

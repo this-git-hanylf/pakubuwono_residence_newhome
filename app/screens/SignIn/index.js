@@ -22,6 +22,7 @@ import errorsSelector from '../../selectors/ErrorSelectors';
 import {isLoadingSelector} from '../../selectors/StatusSelectors';
 import {login, actionTypes} from '../../actions/UserActions';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import messaging from '@react-native-firebase/messaging';
 
 const SignIn = props => {
   const {navigation} = props;
@@ -48,84 +49,6 @@ const SignIn = props => {
     [email, password, token_firebase, dispatch],
   );
 
-  useEffect(() => {
-    checkPermission();
-    createNotificationListeners();
-  });
-
-  const checkPermission = async () => {
-    const enabled = await firebase.messaging().hasPermission();
-    if (enabled) {
-      getToken();
-    } else {
-      requestPermission();
-    }
-  };
-
-  const getToken = async () => {
-    let fcmToken = await AsyncStorage.getItem('fcmToken');
-    // console.log('fcmToken', fcmToken);
-    if (!fcmToken) {
-      fcmToken = await firebase.messaging().getToken();
-      if (fcmToken) {
-        // user has a device token
-        await AsyncStorage.setItem('token', fcmToken);
-        console.log('fcmToken', fcmToken);
-        setTokenBasic(fcmToken);
-      }
-    }
-  };
-
-  const requestPermission = async () => {
-    try {
-      await firebase.messaging().requestPermission();
-      // User has authorised
-      getToken();
-    } catch (error) {
-      // User has rejected permissions
-      console.log('permission rejected');
-    }
-  };
-
-  const createNotificationListeners = async () => {
-    firebase.notifications().setBadge(0);
-    this.notificationListener = firebase
-      .notifications()
-      .onNotification(notification => {
-        const {title, body} = notification;
-
-        showAlert(title, body);
-      });
-
-    this.notificationOpenedListener = firebase
-      .notifications()
-      .onNotificationOpened(notificationOpen => {
-        const {title, body} = notificationOpen.notification;
-        showAlert(title, body);
-      });
-
-    const notificationOpen = await firebase
-      .notifications()
-      .getInitialNotification();
-    if (notificationOpen) {
-      const {title, body} = notificationOpen.notification;
-      showAlert(title, body);
-    }
-
-    this.messageListener = firebase.messaging().onMessage(message => {
-      console.log(JSON.stringify(message));
-    });
-  };
-
-  const showAlert = (title, body) => {
-    Alert.alert(
-      title,
-      body,
-      [{text: 'OK', onPress: () => console.log('OK Pressed')}],
-      {cancelable: false},
-    );
-  };
-
   const passwordChanged = useCallback(value => setPassword(value), []);
   const emailChanged = useCallback(value => setEmail(value), []);
 
@@ -134,6 +57,33 @@ const SignIn = props => {
       props.navigation.navigate('MainStack');
     }
   });
+
+  useEffect(() => {
+    requestUserPermission();
+  }, []);
+
+  const requestUserPermission = async () => {
+    const authStatus = await messaging().requestPermission();
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+
+    if (enabled) {
+      getFcmToken();
+      console.log('Authorization status:', authStatus);
+    }
+  };
+
+  const getFcmToken = async () => {
+    const fcmToken = await messaging().getToken();
+    if (fcmToken) {
+      console.log(fcmToken);
+      console.log('Your Firebase Token is:', fcmToken);
+      setTokenFirebase(fcmToken);
+    } else {
+      console.log('Failed', 'No token received');
+    }
+  };
 
   const offsetKeyboard = Platform.select({
     ios: 0,
