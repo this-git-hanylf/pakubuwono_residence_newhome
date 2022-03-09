@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   Picker,
   Text,
+  useWindowDimensions,
 } from 'react-native';
 import styles from './styles';
 import {
@@ -36,6 +37,7 @@ import {Button} from '../../components';
 
 import {useSelector} from 'react-redux';
 import getUser from '../../selectors/UserSelectors';
+import RenderHtml from 'react-native-render-html';
 
 const DetailFacility = props => {
   const {navigation, route} = props;
@@ -43,6 +45,7 @@ const DetailFacility = props => {
   console.log('routes from facility menu', route.params);
   const {t} = useTranslation();
   const {colors} = useTheme();
+  const {width} = useWindowDimensions();
   const [heightHeader, setHeightHeader] = useState(Utils.heightHeader());
   const scrollY = useRef(new Animated.Value(0)).current;
   const [data, setData] = useState([]);
@@ -54,9 +57,11 @@ const DetailFacility = props => {
   const [email, setEmail] = useState(users.user);
   const [dataTowerUser, setdataTowerUser] = useState([]);
   const [arrDataTowerUser, setArrDataTowerUser] = useState([]);
+  const [arrImages, setArrayImage] = useState();
 
   const [spinner, setSpinner] = useState(true);
-
+  const [terms, setDataTerms] = useState([]);
+  const onSelect = indexSelected => {};
   // --- for get tower
   const getTower = async () => {
     const data = {
@@ -108,6 +113,7 @@ const DetailFacility = props => {
   useEffect(() => {
     // getTower();
     getData();
+    getTermsConditions();
   }, [dataTowerUser]);
 
   useEffect(() => {}, []);
@@ -136,6 +142,37 @@ const DetailFacility = props => {
     );
     console.log('response fasility detail: ', response.data);
     setData(response.data);
+
+    // const dataArr = response.data[0];
+    const dataAll = response.data;
+    console.log('data all', dataAll);
+
+    // const imagefor = dataAll.forEach((image, i) => {
+    //   console.log('images foreach', image.images);
+
+    //   setArrayImage(image.images);
+    // });
+    const arrImage = dataAll.map((imgs, keyimgs) => {
+      console.log('imgs[0', imgs.images);
+      return imgs.images;
+    });
+    console.log('coba arrimages isinya', ...arrImage);
+    setArrayImage(...arrImage);
+
+    setSpinner(arrImage != '' ? false : true);
+  };
+
+  const getTermsConditions = async () => {
+    const entity_cd = dataTowerUser.entity_cd;
+    const project_no = dataTowerUser.project_no;
+    const response = await axios(
+      'http://34.87.121.155:2121/apiwebpbi/api/fb_master-getFacilityTermsAndConditions/' +
+        entity_cd +
+        '/' +
+        project_no,
+    );
+    console.log('response terms data: ', response.data);
+    setDataTerms(response.data.Data);
     setSpinner(false);
   };
 
@@ -242,25 +279,29 @@ const DetailFacility = props => {
         </View>
 
         <View style={styles.specifications}>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('TermsConditions', dataTowerUser);
-            }}>
-            <View>
-              <Text
-                style={{
-                  fontSize: 16,
-                  color: BaseColor.grayColor,
-                  fontWeight: 'bold',
-                }}>
-                Terms & Conditions
-              </Text>
-            </View>
-          </TouchableOpacity>
+          <View>
+            <Text
+              style={{
+                fontSize: 16,
+                color: BaseColor.grayColor,
+                // fontWeight: 'bold',
+              }}>
+              Terms & Conditions
+            </Text>
+            {terms.map((dataTerms, index) => (
+              <View key={index} style={{marginRight: 20, textAlign: 'justify'}}>
+                <RenderHtml
+                  source={{html: dataTerms.description}}
+                  contentWidth={width}
+                />
+              </View>
+            ))}
+          </View>
         </View>
       </View>
     );
   });
+
   return (
     <SafeAreaView
       style={[BaseStyle.safeAreaView, {flex: 1}]}
@@ -290,7 +331,7 @@ const DetailFacility = props => {
         </View>
       ) : (
         <ScrollView
-          contentContainerStyle={styles.paddingSrollView}
+          // contentContainerStyle={styles.paddingSrollView}
           height={'100%'}>
           <Animated.View
             style={[
@@ -298,9 +339,12 @@ const DetailFacility = props => {
               {
                 opacity: headerImageOpacity,
                 height: heightViewImg,
+                padding: 0,
               },
             ]}>
             <Swiper
+              // showsButtons
+              style={{padding: 0}}
               dotStyle={{
                 backgroundColor: BaseColor.dividerColor,
                 marginBottom: 8,
@@ -309,35 +353,58 @@ const DetailFacility = props => {
                 marginBottom: 8,
               }}
               paginationStyle={{bottom: 0}}
-              loop={false}
+              loop={true}
+              autoplay={true}
+              autoplayTimeout={3}
               activeDotColor={colors.primary}
               removeClippedSubviews={false}
               onIndexChanged={index => onSelect(index)}>
-              {data.map((item, key) => {
-                return (
-                  <TouchableOpacity
-                    key={key}
-                    style={{flex: 1}}
-                    activeOpacity={1}
-                    onPress={() =>
-                      navigation.navigate('PreviewImage', {images: images})
-                    }>
-                    <Image
+              {arrImages != undefined ? (
+                arrImages.map &&
+                arrImages.map((item, key) => {
+                  return (
+                    <TouchableOpacity
                       key={key}
-                      style={{
-                        width: '100%',
-                        height: Utils.scaleWithPixel(150),
-                      }}
-                      source={{uri: `${item.images[0].pict}`}}
+                      style={{flex: 1, padding: 0}}
+                      activeOpacity={1}
+                      onPress={() =>
+                        navigation.navigate('PreviewImages', {
+                          images: arrImages,
+                        })
+                      }>
+                      <View key={key}>
+                        {/* <Text style={{color: 'black'}}>{item.pict}</Text> */}
+                        <Image
+                          key={key}
+                          style={{
+                            width: '100%',
+                            height: Utils.scaleWithPixel(250),
+                          }}
+                          source={{uri: `${item.pict}`}}
+                        />
+                      </View>
+                    </TouchableOpacity>
+                  );
+                })
+              ) : (
+                <View>
+                  {/* <Spinner visible={this.state.spinner} /> */}
+                  <Placeholder
+                    style={{marginVertical: 4, paddingHorizontal: 10}}>
+                    <PlaceholderLine
+                      width={100}
+                      noMargin
+                      style={{height: 40}}
                     />
-                  </TouchableOpacity>
-                );
-              })}
+                  </Placeholder>
+                </View>
+              )}
             </Swiper>
           </Animated.View>
-          <View>{data && detail}</View>
+          <View style={styles.paddingSrollView}>{data && detail}</View>
         </ScrollView>
       )}
+
       <TouchableOpacity
         onPress={() => navigation.navigate('BookingFacility', route.params)}>
         <View

@@ -36,6 +36,34 @@ import getUser from '../../selectors/UserSelectors';
 import * as Utils from '@utils';
 import moment from 'moment';
 
+const TABS = [
+  {
+    id: 1,
+    title: 'Booked',
+    status: 'B',
+  },
+  {
+    id: 2,
+    title: 'On Going',
+    status: 'O',
+  },
+  {
+    id: 3,
+    title: 'Done',
+    status: 'D',
+  },
+  {
+    id: 4,
+    title: 'Cancel',
+    status: 'C',
+  },
+  {
+    id: 5,
+    title: 'Not Show',
+    status: 'W',
+  },
+];
+
 export default BookingList = props => {
   const {navigation, route} = props;
   //   // const {params} = props;
@@ -51,12 +79,27 @@ export default BookingList = props => {
 
   const [dataBooking, setdataBooking] = useState([]);
 
+  const [tabChoosed, setTabChoosed] = useState(TABS[0]);
+
   const getListBooking = () => {
     axios
       .get(`http://103.111.204.131/apiwebpbi/api/facility/book/all/` + email)
       .then(data => {
-        console.log('data book list', data.data.Data);
-        setdataBooking(data.data.Data);
+        // console.log('data book list', data.data.Data);
+
+        const datas = data.data.Data;
+        // console.log('data package', datas);
+        setSpinner(true);
+        const dataFilter = datas.filter(data =>
+          // console.log(
+          //   'data filter',
+          //   data.status === tabChoosed.status ? data.status : null,
+          // ),
+          data.status === tabChoosed.status ? data : null,
+        );
+        console.log('datafilter', dataFilter);
+
+        setdataBooking(dataFilter);
         setSpinner(false);
       })
       .catch(error => console.error(error))
@@ -66,7 +109,7 @@ export default BookingList = props => {
 
   useEffect(() => {
     getListBooking();
-  }, []);
+  }, [tabChoosed]);
 
   const renderItemList = ({item, index}) => {
     return (
@@ -186,21 +229,69 @@ export default BookingList = props => {
         }}
       />
 
-      <View style={{flex: 1}}>
-        <FlatList
-          contentContainerStyle={{paddingHorizontal: 20}}
-          showsHorizontalScrollIndicator={false}
-          showsVerticalScrollIndicator={false}
-          data={dataBooking}
-          keyExtractor={item => item.rowID}
-          renderItem={renderItemList}
-          //   renderItem={({item, index}) => (
-          //     <View key={index}>
-          //       <Text>{item.facility_name}</Text>
-          //     </View>
+      <View
+        style={{
+          flexDirection: 'row',
+          paddingHorizontal: 15,
+          paddingVertical: 14,
+        }}>
+        {TABS.map(tab => (
+          <View key={tab.id} style={{flex: 1, padding: 2}}>
+            <Tag
+              primary={true}
+              style={{
+                height: 50,
+                width: 80,
+                backgroundColor:
+                  tab.id == tabChoosed.id ? colors.primary : colors.background,
+              }}
+              textStyle={{
+                color:
+                  tab.id == tabChoosed.id ? BaseColor.whiteColor : colors.text,
+                fontSize: 14,
+              }}
+              onPress={() => setTabChoosed(tab)}>
+              {/* <View style={{}}> */}
+              <Text
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignContent: 'space-between',
+                }}>
+                {tab.title}
+              </Text>
+              {/* </View> */}
+            </Tag>
+          </View>
+        ))}
+      </View>
 
-          //   )}
-        />
+      <View style={{flex: 1}}>
+        {spinner == true ? (
+          <View>
+            <ActivityIndicator size="large" color="#37BEB7" />
+          </View>
+        ) : dataBooking == 0 || dataBooking == '' ? (
+          <View
+            style={{flex: 1, justifyContent: 'center', alignSelf: 'center'}}>
+            <Text>Data not available</Text>
+          </View>
+        ) : (
+          <FlatList
+            contentContainerStyle={{paddingHorizontal: 20}}
+            showsHorizontalScrollIndicator={false}
+            showsVerticalScrollIndicator={false}
+            data={dataBooking}
+            keyExtractor={item => item.rowID}
+            renderItem={renderItemList}
+            //   renderItem={({item, index}) => (
+            //     <View key={index}>
+            //       <Text>{item.facility_name}</Text>
+            //     </View>
+
+            //   )}
+          />
+        )}
       </View>
 
       {/* <View>

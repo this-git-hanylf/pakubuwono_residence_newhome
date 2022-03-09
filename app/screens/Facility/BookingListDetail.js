@@ -537,29 +537,6 @@ export default BookingListDetail = props => {
                             Your Partners
                           </Text>
                         </View>
-                        {userId != datas.audit_user ? null : datas.status ==
-                          'B' ? (
-                          <Button
-                            onPress={() =>
-                              onEditPartner(
-                                reservation_no,
-                                onDetailBooking.datapartner,
-                              )
-                            }
-                            style={{height: 60, width: 60}}>
-                            <IconIonicons
-                              name="person-add"
-                              size={20}
-                              color={BaseColor.whiteColor}
-                              style={{
-                                justifyContent: 'center',
-                                alignContent: 'center',
-                                alignItems: 'center',
-                                alignSelf: 'center',
-                              }}></IconIonicons>
-                            {/* <Text style={{fontSize: 14}}>Add Partner</Text> */}
-                          </Button>
-                        ) : null}
                       </View>
 
                       {/* <ScrollView> */}
@@ -593,34 +570,6 @@ export default BookingListDetail = props => {
                               <Text>as a {data.position}</Text>
                             </View>
                           </View>
-
-                          {userId != datas.audit_user ? null : (
-                            <View>
-                              {datas.status == 'B' ? (
-                                <Button
-                                  onPress={() =>
-                                    onRemovePartner(data, reservation_no)
-                                  }
-                                  style={{
-                                    height: 60,
-                                    width: 60,
-                                    backgroundColor: BaseColor.orangeColor,
-                                  }}>
-                                  <IconFontisto
-                                    name="trash"
-                                    size={20}
-                                    color={BaseColor.whiteColor}
-                                    style={{
-                                      justifyContent: 'center',
-                                      alignContent: 'center',
-                                      alignItems: 'center',
-                                      alignSelf: 'center',
-                                    }}></IconFontisto>
-                                  {/* <Text style={{fontSize: 15}}>Remove</Text> */}
-                                </Button>
-                              ) : null}
-                            </View>
-                          )}
                         </View>
                       ))}
                       {/* </ScrollView> */}

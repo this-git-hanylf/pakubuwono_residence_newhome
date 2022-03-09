@@ -23,7 +23,9 @@ const Grid1 = ({
   return (
     <TouchableOpacity style={[styles.grid1, style]} onPress={onPress}>
       <Image
-        source={{uri: image}}
+        // source={{uri: image}}
+        // source={require('@assets/images/icon-helpdesk/newtiket.png')}
+        source={image}
         style={styles.imageBackgroundGrid1}
         imageStyle={{borderRadius: 8}}
       />
@@ -43,7 +45,7 @@ const Grid1 = ({
       <Button
         disabled
         style={{height: 35, width: '100%', borderRadius: 15, marginTop: 10}}>
-        <Text style={{fontSize: 14, color: BaseColor.whiteColor}}>
+        <Text style={{fontSize: 12, color: BaseColor.whiteColor}}>
           Check Availability
         </Text>
       </Button>

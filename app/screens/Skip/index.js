@@ -30,7 +30,7 @@ const Skip = props => {
 
   useEffect(() => {
     axios
-      .get('http://34.87.121.155:8000/ifcaprop-api/api/about/01/01')
+      .get('http://103.111.204.131/ifcaprop-api/api/about')
       .then(({data}) => {
         console.log('data', data);
         setData(data[0]);

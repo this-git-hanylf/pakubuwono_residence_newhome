@@ -57,16 +57,6 @@ const Facility = props => {
   const [arrDataTowerUser, setArrDataTowerUser] = useState([]);
   const [spinner, setSpinner] = useState(true);
 
-  useEffect(() => {
-    // const getData = async () => {
-    //   // const response = await axios('http://10.0.2.2:3000/check');
-    //   console.log('response: ', response);
-    //   setData(response.data);
-    // };
-    // getData();
-    // getTower();
-  }, []);
-
   //-----FOR GET ENTITY & PROJJECT
   const getTower = async () => {
     const data = {
@@ -114,11 +104,11 @@ const Facility = props => {
   useEffect(() => {
     // getTower();
     // getdata();
-
-    setTimeout(() => {
-      setLoading(false);
-      getTower();
-    }, 3000);
+    getTower();
+    // setTimeout(() => {
+    //   // setLoading(false);
+    //   getTower();
+    // }, 3000);
   }, []);
 
   const getdata = data => {
@@ -135,19 +125,8 @@ const Facility = props => {
       .then(res => {
         console.log('ress fcacility:', res.data);
         setData(res.data);
+        setSpinner(false);
       });
-  };
-
-  const goPost = item => () => {
-    navigation.navigate('Post', {item: item});
-  };
-
-  const goPostDetail = item => () => {
-    navigation.navigate('PostDetail', {item: item});
-  };
-
-  const goToCategory = () => {
-    navigation.navigate('Category');
   };
 
   const renderContent = () => {
@@ -172,80 +151,70 @@ const Facility = props => {
             navigation.goBack();
           }}
         />
-        {spinner ? (
-          <View>
+        <ScrollView contentContainerStyle={styles.paddingSrollView}>
+          <View
+            style={{
+              flexDirection: 'row',
+              width: '100%',
+              justifyContent: 'space-between',
+            }}>
             <View>
-              {/* <Spinner visible={this.state.spinner} /> */}
-              <Placeholder style={{marginVertical: 4, paddingHorizontal: 10}}>
-                <PlaceholderLine width={100} noMargin style={{height: 40}} />
-              </Placeholder>
+              <Text bold headline>
+                Choose Facility
+              </Text>
+              <Text subtitle>Reserve Facility for Your Activity</Text>
             </View>
-          </View>
-        ) : (
-          <ScrollView contentContainerStyle={styles.paddingSrollView}>
-            <View
-              style={{
-                flexDirection: 'row',
-                width: '100%',
-                justifyContent: 'space-between',
-              }}>
-              <View>
-                <Text bold headline>
-                  Choose Facility
+            <TouchableOpacity
+              onPress={() => navigation.navigate('BookingList')}>
+              <View
+                style={{
+                  // width: 100,
+                  borderRadius: 8,
+                  backgroundColor: colors.primary,
+                  // padding: 10,
+                  paddingVertical: 6,
+                  paddingHorizontal: 20,
+                }}>
+                <Text subtitle style={{color: BaseColor.whiteColor}}>
+                  {' '}
+                  Booking List
                 </Text>
-                <Text subtitle>Reserve Facility for Your Activity</Text>
               </View>
-              <TouchableOpacity
-                onPress={() => navigation.navigate('BookingList')}>
-                <View
-                  style={{
-                    // width: 100,
-                    borderRadius: 8,
-                    backgroundColor: colors.primary,
-                    // padding: 10,
-                    paddingVertical: 6,
-                    paddingHorizontal: 20,
-                  }}>
-                  <Text subtitle style={{color: BaseColor.whiteColor}}>
-                    {' '}
-                    Booking List
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            </View>
+            </TouchableOpacity>
+          </View>
 
-            <View style={{flex: 1, paddingTop: 10}}>
-              <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
-                {/* <View>
+          <View style={{flex: 1, padding: 15, paddingTop: 10}}>
+            <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+              {/* <View>
                 <Text>{data.title}</Text>
               </View> */}
-                {data?.map((item, index) => {
-                  return (
-                    <View key={index} style={{width: '50%', height: 290}}>
-                      <ProductGrid1
-                        key={index}
-                        style={{
-                          width: '100%',
-                          paddingRight: index % 2 == 0 ? 10 : 0,
-                          paddingLeft: index % 2 != 0 ? 10 : 0,
-                        }}
-                        description={item.available}
-                        title={item.title}
-                        image={item.image}
-                        // costPrice={item.costPrice}
-                        // salePrice={item.salePrice}
-                        // isFavorite={item.isFavorite}
-                        onPress={() =>
-                          navigation.navigate('DetailFacility', item)
-                        }
-                      />
-                    </View>
-                  );
-                })}
-              </View>
+              {data?.map((item, index) => {
+                return (
+                  <View key={index} style={{width: '50%', height: 290}}>
+                    <ProductGrid1
+                      key={index}
+                      style={{
+                        width: '100%',
+                        paddingRight: index % 2 == 0 ? 10 : 0,
+                        paddingLeft: index % 2 != 0 ? 10 : 0,
+                      }}
+                      description={item.available}
+                      title={item.title}
+                      // image={item.image}
+                      image={require('@assets/images/logo-tageline.png')}
+                      // costPrice={item.costPrice}
+                      // salePrice={item.salePrice}
+                      // isFavorite={item.isFavorite}
+                      onPress={() =>
+                        navigation.navigate('DetailFacility', item)
+                      }
+                    />
+                  </View>
+                );
+              })}
             </View>
-          </ScrollView>
-        )}
+          </View>
+        </ScrollView>
       </SafeAreaView>
     );
   };

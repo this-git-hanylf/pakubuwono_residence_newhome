@@ -81,17 +81,22 @@ const Billing = ({
       const res = await axios.get(
         `http://103.111.204.131/apiwebpbi/api/getDataDue/IFCAPB/${user.user}`,
       );
+      console.log('res datacurrent', res.data.Data);
       setDataCurrent(res.data.Data);
-      console.log('datasss', data);
+      // console.log('DATA DUE DATE -->', dataCurrent);
     } catch (error) {
       setErrors(error.ressponse.data);
-      alert(hasError.toString());
+      // alert(hasError.toString());
     }
   }
 
-  const sum = dataCurrent.reduceRight((max, bills) => {
-    return (max += parseInt(bills.mbal_amt));
-  }, 0);
+  // ----- ini gak kepake kan? ga ada yang panggil const sum
+  const sum =
+    dataCurrent != null
+      ? dataCurrent.reduceRight((max, bills) => {
+          return (max += parseInt(bills.mbal_amt));
+        }, 0)
+      : null;
   console.log('sum', sum);
 
   async function fetchDataCurrent() {
@@ -100,10 +105,10 @@ const Billing = ({
         `http://103.111.204.131/apiwebpbi/api/getDataCurrent/IFCAPB/${user.user}`,
       );
       setData(res.data.Data);
-      console.log('data', dataCurrent);
+      console.log('data', data);
     } catch (error) {
       setErrors(error.ressponse.data);
-      alert(hasError.toString());
+      // alert(hasError.toString());
     }
   }
 

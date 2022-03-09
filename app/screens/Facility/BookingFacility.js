@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   Picker,
   Dimensions,
+  StyleSheet,
 } from 'react-native';
 import styles from './styles';
 import {
@@ -83,6 +84,9 @@ function BookingFacility({route}) {
   const [dataBooked2, setDataBooked2] = useState([]);
   const [dataBooked3, setDataBooked3] = useState([]);
   const [dataBooked4, setDataBooked4] = useState([]);
+
+  const [isExpand, setIsExpand] = useState(false);
+  const [isIconUp, setIconUp] = useState(false);
 
   useEffect(() => {
     axios
@@ -454,17 +458,26 @@ function BookingFacility({route}) {
               console.log('res3: ', dataBooked3);
               console.log('res4: ', dataBooked4);
 
-              setDataBooked1(dataBooked1);
-              setDataBooked2(dataBooked2);
-              setDataBooked3(dataBooked3);
-              setDataBooked4(dataBooked4);
+              if (dataBooked1) {
+                setDataBooked1(dataBooked1);
+              }
+              if (dataBooked2) {
+                setDataBooked2(dataBooked2);
+              }
+              if (dataBooked3) {
+                setDataBooked3(dataBooked3);
+              }
+              if (dataBooked4) {
+                setDataBooked4(dataBooked4);
+              }
             },
           ),
+          setSpinnerHours(false),
         )
         .catch(error => console.error(error.response.data))
         .finally(
           () => setLoading(false),
-          // setSpinnerHours(false),
+          setSpinnerHours(false),
           // setSpinner(false),
         );
     } else {
@@ -551,13 +564,15 @@ function BookingFacility({route}) {
               setDataBooked2(dataBooked2);
               setDataBooked3(dataBooked3);
               setDataBooked4(dataBooked4);
+              // setSpinnerHours(false);
             },
           ),
+          setSpinnerHours(false),
         )
         .catch(error => console.error(error.response.data))
         .finally(
           () => setLoading(false),
-          // setSpinnerHours(false),
+          setSpinnerHours(false),
           // setSpinner(false),
         );
     }
@@ -566,7 +581,7 @@ function BookingFacility({route}) {
   useEffect(() => {
     setTimeout(() => {
       setSpinnerHours(false);
-    }, 5000);
+    }, 10000);
   }, []);
 
   const onChangeOption = option => {
@@ -590,6 +605,12 @@ function BookingFacility({route}) {
     console.log('items all', item);
     // setModalVisible(true);
     navigation.navigate('BookingDetail', item);
+  };
+
+  const setExpandIcon = indexs => {
+    console.log('indexs', indexs);
+    setIsExpand(!isExpand);
+    setIconUp(indexs ? !isIconUp : isIconUp);
   };
 
   return (
@@ -741,7 +762,7 @@ function BookingFacility({route}) {
             )}
 
             {/* ---coba ya */}
-            {spinnerHour ? (
+            {spinnerHour === true ? (
               <View>
                 {/* <Spinner visible={this.state.spinner} /> */}
                 <Placeholder style={{marginVertical: 4, paddingHorizontal: 10}}>
@@ -760,12 +781,13 @@ function BookingFacility({route}) {
                     {dataBooked1.close_book}
                   </Text>
                 )}
-                {tab.id == 1 && dataBooked1?.slot_hours != ''
-                  ? dataBooked1?.slot_hours.map &&
-                    dataBooked1?.slot_hours.map((items, indexs) => (
-                      <View
-                        key={indexs}
-                        style={{
+                {tab.id == 1 && dataBooked1?.slot_hours != undefined ? (
+                  dataBooked1?.slot_hours.map &&
+                  dataBooked1?.slot_hours.map((items, indexs) => (
+                    <View
+                      key={indexs}
+                      style={StyleSheet.flatten([
+                        {
                           paddingVertical: 15,
                           flexDirection: 'row',
                           justifyContent: 'space-between',
@@ -773,50 +795,93 @@ function BookingFacility({route}) {
                           borderRadius: 15,
                           borderColor: '#dbdbdb',
                           borderBottomWidth: 1,
-                        }}>
-                        <Text key={items.id} bold>
-                          {items.jam}
-                        </Text>
-                        {/* <Text key={items.id} bold>
+                        },
+                        !isExpand && {
+                          borderBottomWidth: 1,
+
+                          borderBottomColor: colors.border,
+                        },
+                      ])}>
+                      <Text key={items.id} bold>
+                        {items.jam}
+                      </Text>
+                      {/* <Text key={items.id} bold>
                         {time.jam > items.jam
                           ? 'lebih dari jam'
                           : 'kurang dari jam'}
                       </Text> */}
 
-                        <View style={{flexDirection: 'column'}}>
-                          {items.databook != ''
-                            ? items.databook.map((itemdatabook, keys) => (
-                                <View key={keys}>
-                                  <Text>
-                                    {/* {itemdatabook.remarks} -{' '} */}
-                                    {itemdatabook.venue_name}
-                                  </Text>
-                                  {/* <Text>{itemdatabook.name}</Text> */}
-                                  <Text>{itemdatabook.reservation_no}</Text>
-                                  <Text>
-                                    {moment(
-                                      itemdatabook.reservation_date,
-                                    ).format('DD MMM YYYY hh:mm:ss')}
-                                  </Text>
-                                  {/* minta tambahin kolom venue_name   */}
-                                </View>
-                              ))
-                            : null}
-                          {items.datapartner != ''
-                            ? items.datapartner.map((itemdatapartner, keys) => (
-                                <View key={keys}>
-                                  <Text>
-                                    {itemdatapartner.staff_first_name}{' '}
-                                    {itemdatapartner.staff_last_name}
-                                  </Text>
-                                  <Text style={{width: 150}}>
-                                    as a {itemdatapartner.position}
-                                  </Text>
-                                </View>
-                              ))
-                            : null}
-                        </View>
+                      <View>
+                        {items.databook != ''
+                          ? items.databook.map((itemdatabook, keys) => (
+                              <View key={keys}>
+                                <Text
+                                  bold
+                                  style={{
+                                    width: 250,
+                                  }}>
+                                  {itemdatabook.name}
+                                </Text>
+                                <Text bold>{itemdatabook.unit}</Text>
+                                {/* minta tambahin kolom venue_name   */}
+                              </View>
+                            ))
+                          : null}
+                        {isExpand && (
+                          <View>
+                            {items.databook != ''
+                              ? items.databook.map((itemdatabook, keys) => (
+                                  <View key={keys} style={{width: '100%'}}>
+                                    <Text>
+                                      Created date :{' '}
+                                      {moment(
+                                        itemdatabook.reservation_date,
+                                      ).format('DD MMM YYYY hh:mm:ss')}
+                                    </Text>
+                                    <Text>
+                                      Duration : {itemdatabook.duration}{' '}
+                                      {itemdatabook.duration > 1
+                                        ? 'Hour'
+                                        : 'Hours'}
+                                    </Text>
+                                    {/* minta tambahin kolom venue_name   */}
+                                  </View>
+                                ))
+                              : null}
+                            {items.datapartner != ''
+                              ? items.datapartner.map(
+                                  (itemdatapartner, keys) => (
+                                    <View key={keys}>
+                                      {console.log(
+                                        'itemdata partner',
+                                        itemdatapartner,
+                                      )}
+                                      <Text>
+                                        Partner :{' '}
+                                        {itemdatapartner.staff_first_name}{' '}
+                                        {itemdatapartner.staff_last_name}
+                                      </Text>
 
+                                      <Text>
+                                        Status :{' '}
+                                        {itemdatapartner.confirm_status == 'W'
+                                          ? 'Waiting Confirm'
+                                          : 'Confirm'}
+                                      </Text>
+                                      {/* <Text style={{width: 150}}>
+                                          as a {itemdatapartner.position}
+                                        </Text> */}
+                                    </View>
+                                  ),
+                                )
+                              : null}
+                          </View>
+                        )}
+                      </View>
+
+                      {(items.status_avail == 'Y' && time.jam < items.jam) ||
+                      dataBooked1.open_book > items.jam ||
+                      dataBooked1.close_book < items.jam ? (
                         <TouchableOpacity
                           disabled={
                             items.status_avail != 'Y' || time.jam > items.jam
@@ -843,37 +908,73 @@ function BookingFacility({route}) {
                             Booking
                           </Text>
                         </TouchableOpacity>
-                      </View>
-                    ))
-                  : tab.id == 1 && (
-                      <View
-                        style={{
-                          flex: 1,
-                          marginTop: '50%',
-                        }}>
-                        <IconFontisto
-                          name="holiday-village"
-                          size={40}
-                          color={colors.primary}
-                          style={{
-                            justifyContent: 'center',
-                            alignContent: 'center',
-                            alignItems: 'center',
-                            alignSelf: 'center',
-                          }}></IconFontisto>
-                        <Text
-                          style={{
-                            justifyContent: 'center',
-                            alignContent: 'center',
-                            alignItems: 'center',
-                            alignSelf: 'center',
-                            fontSize: 16,
-                            marginTop: 10,
-                          }}>
-                          Sorry! The Facility is closed.
-                        </Text>
-                      </View>
-                    )}
+                      ) : (
+                        <TouchableOpacity
+                          style={{marginRight: 5}}
+                          onPress={() => setExpandIcon(indexs)}>
+                          {/* {console.log('boolean apasi ini', indexs)} */}
+                          <View
+                            style={{
+                              width: 25,
+                              height: 25,
+                              borderRadius: 10,
+                              backgroundColor: colors.primary,
+                              alignSelf: 'center',
+                              alignItems: 'center',
+                              alignContent: 'center',
+                              justifyContent: 'center',
+                            }}>
+                            <Icon
+                              name={
+                                'chevron-down'
+                                // isIconUp ? 'chevron-up' : 'chevron-down'
+                              }
+                              color={'#fff'}></Icon>
+                          </View>
+                        </TouchableOpacity>
+                      )}
+                    </View>
+                  ))
+                ) : (tab.id == 1 && dataBooked1?.slot_hours != undefined) ||
+                  dataBooked1?.slot_hours != '' ? (
+                  // <Text>loading...</Text>
+                  <Placeholder
+                    style={{marginVertical: 4, paddingHorizontal: 10}}>
+                    <PlaceholderLine
+                      width={100}
+                      noMargin
+                      style={{height: 40}}
+                    />
+                  </Placeholder>
+                ) : (
+                  <View
+                    style={{
+                      flex: 1,
+                      marginTop: '50%',
+                    }}>
+                    <IconFontisto
+                      name="holiday-village"
+                      size={40}
+                      color={colors.primary}
+                      style={{
+                        justifyContent: 'center',
+                        alignContent: 'center',
+                        alignItems: 'center',
+                        alignSelf: 'center',
+                      }}></IconFontisto>
+                    <Text
+                      style={{
+                        justifyContent: 'center',
+                        alignContent: 'center',
+                        alignItems: 'center',
+                        alignSelf: 'center',
+                        fontSize: 16,
+                        marginTop: 10,
+                      }}>
+                      Sorry! The Facility is closed.
+                    </Text>
+                  </View>
+                )}
               </View>
             )}
 

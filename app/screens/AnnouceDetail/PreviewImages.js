@@ -1,7 +1,7 @@
-import {Header, Icon, Image, SafeAreaView, Text} from '@components';
+import {Header, Icon, SafeAreaView, Text} from '@components';
 import {BaseColor, BaseStyle, Images, useTheme} from '@config';
 import React, {useState} from 'react';
-import {FlatList, TouchableOpacity, View} from 'react-native';
+import {FlatList, TouchableOpacity, View, Image} from 'react-native';
 import Swiper from 'react-native-swiper';
 import styles from './styles';
 
@@ -15,14 +15,14 @@ const imagesInit = [
   {id: '7', image: Images.location7},
 ];
 
-export default function PreviewImage({navigation, route}) {
+export default function PreviewImages({navigation, route}) {
   const {colors} = useTheme();
   const imagesParam = route?.params?.images ?? imagesInit;
   let flatListRef = null;
   let swiperRef = null;
 
   const [images, setImages] = useState(imagesParam);
-  console.log('image');
+  console.log('image set', images);
   const [indexSelected, setIndexSelected] = useState(0);
 
   /**
@@ -98,7 +98,7 @@ export default function PreviewImage({navigation, route}) {
               key={key}
               style={{width: '100%', height: '100%'}}
               resizeMode="contain"
-              source={item.image}
+              source={{uri: item.pict}}
             />
           );
         })}
@@ -141,7 +141,7 @@ export default function PreviewImage({navigation, route}) {
                       : BaseColor.grayColor,
                   borderWidth: 1,
                 }}
-                source={item.image}
+                source={{uri: item.pict}}
               />
             </TouchableOpacity>
           )}

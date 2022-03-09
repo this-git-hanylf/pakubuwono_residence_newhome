@@ -4,7 +4,7 @@ import {StyleSheet} from 'react-native';
 export default StyleSheet.create({
   imageBackgroundGrid1: {
     width: '100%',
-    height: Utils.scaleWithPixel(180),
+    height: Utils.scaleWithPixel(130),
     borderRadius: 30,
   },
   grid1: {
