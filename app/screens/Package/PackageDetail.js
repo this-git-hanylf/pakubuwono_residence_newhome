@@ -41,6 +41,7 @@ import getUser from '../../selectors/UserSelectors';
 
 import styles from './styles';
 import Modal from 'react-native-modal';
+import QRCode from 'react-native-qrcode-svg';
 
 const PackageDetail = props => {
   const {navigation, route} = props;
@@ -168,10 +169,33 @@ const PackageDetail = props => {
                         {item.status == 'P' ? 'Security' : 'TRO'}
                       </Text>
                     </View>
-                    <View>
-                      <Text style={{fontWeight: 'bold', fontSize: 14}}>
-                        # {item.package_id}
-                      </Text>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        flex: 1,
+                        justifyContent: 'space-between',
+                      }}>
+                      <View style={{justifyContent: 'space-between'}}>
+                        <Text style={{fontWeight: 'bold', fontSize: 14}}>
+                          # {item.package_id}
+                        </Text>
+                      </View>
+
+                      <TouchableOpacity
+                        onPress={() => {
+                          setModalQrcode(true);
+                        }}>
+                        <View>
+                          <Text
+                            style={{
+                              fontWeight: 'bold',
+                              fontSize: 14,
+                              color: colors.primary,
+                            }}>
+                            Show QrCode
+                          </Text>
+                        </View>
+                      </TouchableOpacity>
                     </View>
 
                     <View style={{marginTop: 10}}>
@@ -217,7 +241,7 @@ const PackageDetail = props => {
                           paddingRight: 10,
                         }}>
                         <View style={{paddingVertical: 5}}>
-                          <Text>Type : {item.package_type}</Text>
+                          <Text>Type : {item.package_descs}</Text>
                         </View>
 
                         <View style={{paddingVertical: 5}}>

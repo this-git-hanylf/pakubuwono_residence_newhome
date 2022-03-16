@@ -94,16 +94,21 @@ const Package = props => {
         `http://103.111.204.131/apiwebpbi/api/package/getDataPackage/` + email,
       );
       const datas = res.data.Data;
-      console.log('data package', data);
-      const dataFilter = datas.filter(data =>
-        // console.log(
-        //   'data filter',
-        //   data.status === tabChoosed.status ? data.status : null,
-        // ),
-        data.status === tabChoosed.status ? data : null,
-      );
-      setDataPackage(dataFilter);
-      setLoading(false);
+      console.log('data package', datas);
+      if (datas != null || datas != '' || datas != 0) {
+        const dataFilter = datas.filter(data =>
+          // console.log(
+          //   'data filter',
+          //   data.status === tabChoosed.status ? data.status : null,
+          // ),
+          data.status === tabChoosed.status ? data : null,
+        );
+        setDataPackage(dataFilter);
+        setLoading(false);
+      } else {
+        setDataPackage(datas);
+        setLoading(false);
+      }
     } catch (error) {
       setErrors(error.response.data);
       console.log('error', error);
@@ -187,7 +192,7 @@ const Package = props => {
         ) : (
           <SafeAreaView style={[styles.paddingSrollView, {flex: 1}]}>
             {/* <ScrollView contentContainerStyle={styles.paddingSrollView}> */}
-            {dataPackage != null ? (
+            {dataPackage != null || dataPackage != '' || dataPackage != 0 ? (
               <FlatList
                 scrollEnabled={true}
                 contentContainerStyle={styles.paddingFlatList}
@@ -243,10 +248,7 @@ const Package = props => {
                           paddingRight: 10,
                         }}>
                         <View style={{paddingVertical: 5}}>
-                          <Text>
-                            Type :{' '}
-                            {item.package_type == 'MP' ? 'Market Place' : null}
-                          </Text>
+                          <Text>Type : {item.package_descs}</Text>
                         </View>
 
                         <View style={{paddingVertical: 5}}>

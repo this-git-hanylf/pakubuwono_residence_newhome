@@ -38,7 +38,7 @@ const Announce = props => {
 
   useEffect(() => {
     axios
-      .get('http://34.87.121.155:8000/ifcaprop-api/api/announce/')
+      .get('http://103.111.204.131/ifcaprop-api/api/announce/')
       .then(({data}) => {
         console.log('defaultApp -> data', data);
         const peopleArray = Object.values(data);
@@ -73,7 +73,7 @@ const Announce = props => {
         style={[BaseStyle.safeAreaView, {flex: 1}]}
         edges={['right', 'top', 'left']}>
         <Header
-          title={t('Announce')}
+          title={t('Announcement')}
           renderLeft={() => {
             return (
               <Icon

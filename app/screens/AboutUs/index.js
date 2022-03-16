@@ -69,10 +69,10 @@ const AboutUs = props => {
         <View>
           {/* <Image source={Images.trip4} style={{width: '100%', height: 135}} /> */}
           <Image
-            source={require('../../assets/images/pakubuwono.png')}
+            source={require('../../assets/images/logo_about_us.jpg')}
             style={{
-              height: 60,
-              width: 180,
+              height: 150,
+              width: 250,
               alignItems: 'center',
               marginHorizontal: 100,
               flexDirection: 'row',
@@ -80,18 +80,6 @@ const AboutUs = props => {
               alignSelf: 'center',
             }}
           />
-          <View style={styles.titleAbout}>
-            {/* <Text title1 semibold whiteColor>
-              {t('about_us')}
-            </Text> */}
-            <Text
-              subhead
-              greyColor
-              style={{marginTop: 70, textAlign: 'center'}}>
-              {/* {t('slogan_about_us')} */}
-              {data.about_title}
-            </Text>
-          </View>
         </View>
         <View style={{padding: 20}}>
           <Text

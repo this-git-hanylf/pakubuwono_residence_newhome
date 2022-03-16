@@ -31,6 +31,7 @@ import {
   Animated,
   ImageBackground,
   RefreshControl,
+  ActivityIndicator,
 } from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useSelector} from 'react-redux';
@@ -71,16 +72,45 @@ const Home = props => {
     wait(2000).then(() => setRefreshing(false));
   }, []);
 
+  // useEffect(() => {
+  //   axios
+  //     .get('http://103.111.204.131/ifcaprop-api/api/about')
+  //     .then(({data}) => {
+  //       console.log('data images', data[0].images);
+  //       setData(data[0].images);
+  //       setLoading(false);
+  //     })
+  //     .catch(error => console.error(error))
+  //     .finally(() => setLoading(false));
+  // }, []);
+
   useEffect(() => {
     axios
       .get('http://103.111.204.131/ifcaprop-api/api/about')
       .then(({data}) => {
-        console.log('data', data[0]);
+        console.log('data', data);
         setData(data[0].images);
       })
       .catch(error => console.error(error))
       .finally(() => setLoading(false));
   }, []);
+
+  async function dataImage() {
+    try {
+      const res = await axios.get(
+        `http://103.111.204.131/ifcaprop-api/api/about`,
+      );
+      console.log('res image', res);
+      console.log('data images', res.data[0].images);
+      setData(res.data[0].images);
+      setLoading(false);
+      //  setDataDue(res.data.Data);
+      //  console.log('data get data due', getDataDue);
+    } catch (error) {
+      setErrors(error);
+      alert('ini alert image', hasError.toString());
+    }
+  }
 
   async function fetchDataDue() {
     try {
@@ -140,13 +170,14 @@ const Home = props => {
   });
 
   useEffect(() => {
-    console.log('galery', galery);
+    // console.log('galery', galery);
 
     console.log('datauser', user);
-    console.log('about', data);
+    // console.log('about', data);
     setTimeout(() => {
       fetchDataDue();
       // fetchAbout();
+      // dataImage();
       setLoading(false);
     }, 1000);
   }, []);
@@ -195,8 +226,10 @@ const Home = props => {
                 opacity: headerImageOpacity,
                 height: heightViewImg,
                 padding: 0,
+                flex: 1,
               },
             ]}>
+            {/* {loading == false ? ( */}
             <Swiper
               dotStyle={{
                 backgroundColor: BaseColor.dividerColor,
@@ -207,31 +240,101 @@ const Home = props => {
                 marginBottom: 8,
               }}
               // paginationStyle={{bottom: 0}}
-              loop={true}
+              // loop={true}
               // style={{
               //   height: (Utils.getWidthDevice() * 3) / 5,
               //   width: '100%',
               // }}
               style={{padding: 0}}
               autoplay={true}
-              // autoplayTimeout={3}
+              autoplayTimeout={5}
               activeDotColor={colors.primary}
               // removeClippedSubviews={false}
-              onIndexChanged={index => onSelect(index)}>
+              // onIndexChanged={index => null}
+              onIndexChanged={index => onSelect(index)}
+              // index={0}
+            >
               {data.map((item, key) => {
                 return (
-                  <Image
-                    key={key}
+                  <View
                     style={{
                       flex: 1,
-                      width: '100%',
-                      // borderRadius: 10,
-                    }}
-                    source={{uri: item.pict}}
-                  />
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      // backgroundColor: 'black',
+                    }}>
+                    <Image
+                      key={key}
+                      // key={'fast-' + `${item.id}`}
+                      // key={item.length}
+                      style={{
+                        flex: 1,
+                        width: '100%',
+                        // borderRadius: 10,
+                      }}
+                      source={{uri: item.pict}}
+                    />
+                    <Text style={{color: 'white'}}>{item.descs}</Text>
+                  </View>
                 );
               })}
+              {/* <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backgroundColor: 'black',
+                }}>
+                <Text>Hello Swiper</Text>
+              </View>
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backgroundColor: 'red',
+                }}>
+                <Text>Beautiful</Text>
+              </View>
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backgroundColor: 'blue',
+                }}>
+                <Text>And simple</Text>
+              </View>
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backgroundColor: 'yellow',
+                }}>
+                <Text>And simple</Text>
+              </View>
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backgroundColor: 'pink',
+                }}>
+                <Text>And simple</Text>
+              </View>
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backgroundColor: 'orange',
+                }}>
+                <Text>And simple</Text>
+              </View> */}
             </Swiper>
+            {/* // ) : ( // <ActivityIndicator />
+            // )} */}
           </Animated.View>
           {/* </ScrollView> */}
 
@@ -279,11 +382,11 @@ const Home = props => {
 
   return (
     <View style={{flex: 1}}>
-      <SafeAreaView
+      {/* <SafeAreaView
         style={BaseStyle.safeAreaView}
-        edges={['right', 'top', 'left']}>
-        {renderContent()}
-      </SafeAreaView>
+        edges={['right', 'top', 'left']}> */}
+      {renderContent()}
+      {/* </SafeAreaView> */}
     </View>
   );
 };

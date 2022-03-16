@@ -166,7 +166,7 @@ const DetailFacility = props => {
     const entity_cd = dataTowerUser.entity_cd;
     const project_no = dataTowerUser.project_no;
     const response = await axios(
-      'http://34.87.121.155:2121/apiwebpbi/api/fb_master-getFacilityTermsAndConditions/' +
+      'http://103.111.204.131/apiwebpbi/api/fb_master-getFacilityTermsAndConditions/' +
         entity_cd +
         '/' +
         project_no,

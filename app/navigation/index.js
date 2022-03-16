@@ -83,6 +83,7 @@ const Navigator = props => {
       );
       console.log('remoteMessage.data.type', remoteMessage.data.type);
       // navigation.navigate('Notification');
+
       setDataNotif(true);
       setisidataNotif(remoteMessage.notification);
     });
@@ -97,8 +98,8 @@ const Navigator = props => {
             remoteMessage.notification,
           );
           console.log('remoteMessage get initial notification', remoteMessage);
-          // setInitialRoute(remoteMessage.data.type); // e.g. "Settings"/
-          setInitialRoute('Notification');
+          setInitialRoute('Home'); // e.g. "Settings"/
+          // setInitialRoute('Notification', {params: remoteMessage.notification});
           setDataNotif(true);
           setisidataNotif(remoteMessage.notification);
           // navigation.navigate('Notification');
@@ -115,7 +116,7 @@ const Navigator = props => {
   }, []);
 
   const goToNotification = () => {
-    navigation.navigate('Notification');
+    // navigation.navigate('Notification');
   };
 
   if (loading) {

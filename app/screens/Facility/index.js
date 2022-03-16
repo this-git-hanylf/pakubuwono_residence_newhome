@@ -52,6 +52,7 @@ const Facility = props => {
   const [loading, setLoading] = useState(true);
   const [hasError, setErrors] = useState(false);
   const users = useSelector(state => getUser(state));
+  // console.log('users',)
   const [email, setEmail] = useState(users.user);
   const [dataTowerUser, setdataTowerUser] = useState([]);
   const [arrDataTowerUser, setArrDataTowerUser] = useState([]);
@@ -102,9 +103,9 @@ const Facility = props => {
   };
 
   useEffect(() => {
-    // getTower();
-    // getdata();
     getTower();
+    // getdata();
+    // getTower();
     // setTimeout(() => {
     //   // setLoading(false);
     //   getTower();
@@ -185,9 +186,6 @@ const Facility = props => {
 
           <View style={{flex: 1, padding: 15, paddingTop: 10}}>
             <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
-              {/* <View>
-                <Text>{data.title}</Text>
-              </View> */}
               {data?.map((item, index) => {
                 return (
                   <View key={index} style={{width: '50%', height: 290}}>
@@ -200,8 +198,8 @@ const Facility = props => {
                       }}
                       description={item.available}
                       title={item.title}
-                      // image={item.image}
-                      image={require('@assets/images/logo-tageline.png')}
+                      image={item.image}
+                      // image={require('@assets/images/avata-01.jpeg')}
                       // costPrice={item.costPrice}
                       // salePrice={item.salePrice}
                       // isFavorite={item.isFavorite}

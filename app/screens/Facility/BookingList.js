@@ -1,4 +1,4 @@
-import {Image, SafeAreaView, Header} from '@components';
+import {Image, SafeAreaView, Header, Tag, Text} from '@components';
 import Icon from '@components/Icon';
 // import LabelUpper2Row from '@components/Label/Upper2Row';
 import {BaseColor, Images, useTheme, BaseStyle} from '@config';
@@ -9,7 +9,7 @@ import {useTranslation} from 'react-i18next';
 import {
   ScrollView,
   View,
-  Text,
+  // Text,
   FlatList,
   // CheckBox,
   // Button,
@@ -17,6 +17,7 @@ import {
   TouchableOpacity,
   Dimensions,
   TouchableHighlight,
+  ActivityIndicator,
   TouchableWithoutFeedback,
 } from 'react-native';
 // // import { Checkbox } from '@react-native-community/checkbox';
@@ -60,7 +61,7 @@ const TABS = [
   {
     id: 5,
     title: 'Not Show',
-    status: 'W',
+    status: 'N',
   },
 ];
 
@@ -82,25 +83,31 @@ export default BookingList = props => {
   const [tabChoosed, setTabChoosed] = useState(TABS[0]);
 
   const getListBooking = () => {
+    // setSpinner(true);
     axios
       .get(`http://103.111.204.131/apiwebpbi/api/facility/book/all/` + email)
       .then(data => {
         // console.log('data book list', data.data.Data);
 
         const datas = data.data.Data;
-        // console.log('data package', datas);
-        setSpinner(true);
-        const dataFilter = datas.filter(data =>
-          // console.log(
-          //   'data filter',
-          //   data.status === tabChoosed.status ? data.status : null,
-          // ),
-          data.status === tabChoosed.status ? data : null,
-        );
-        console.log('datafilter', dataFilter);
+        console.log('data package', datas);
 
-        setdataBooking(dataFilter);
-        setSpinner(false);
+        if (datas != null) {
+          const dataFilter = datas.filter(data =>
+            // console.log(
+            //   'data filter',
+            //   data.status === tabChoosed.status ? data.status : null,
+            // ),
+            data.status === tabChoosed.status ? data : null,
+          );
+          console.log('datafilter', dataFilter);
+
+          setdataBooking(dataFilter);
+          setSpinner(false);
+        } else {
+          setdataBooking(datas);
+          setSpinner(false);
+        }
       })
       .catch(error => console.error(error))
       // .catch(error => console.error(error.response.data))
@@ -131,6 +138,8 @@ export default BookingList = props => {
                       ? BaseColor.redColor
                       : item.status == 'D'
                       ? BaseColor.blueColor
+                      : item.status == 'N'
+                      ? '#000'
                       : BaseColor.orangeColor,
                 }}>
                 # {item.reservation_no}
@@ -147,6 +156,8 @@ export default BookingList = props => {
                   ? 'Ongoing'
                   : item.status == 'D'
                   ? 'Done'
+                  : item.status == 'N'
+                  ? 'Not Show'
                   : null}{' '}
                 by {item.last_update_by}
                 {/* nanti name berubah pake kolom baru */}
@@ -239,24 +250,36 @@ export default BookingList = props => {
           <View key={tab.id} style={{flex: 1, padding: 2}}>
             <Tag
               primary={true}
+              // numberOfLines={1}
               style={{
                 height: 50,
                 width: 80,
+
                 backgroundColor:
                   tab.id == tabChoosed.id ? colors.primary : colors.background,
               }}
               textStyle={{
                 color:
                   tab.id == tabChoosed.id ? BaseColor.whiteColor : colors.text,
-                fontSize: 14,
+                fontSize: 15,
+                // flex: 1,
+                // flexWrap: 'wrap',
+                // alignSelf: 'center',
+                // alignItems: 'center',
+                // textAlign: 'center',s
+                textAlign: 'center',
               }}
+              _numberOfLines={0}
+              //_numberOfLines ini untuk mengubah wrap text di text tag
+
               onPress={() => setTabChoosed(tab)}>
               {/* <View style={{}}> */}
               <Text
                 style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignContent: 'space-between',
+                  color:
+                    tab.id == tabChoosed.id
+                      ? BaseColor.whiteColor
+                      : colors.text,
                 }}>
                 {tab.title}
               </Text>
@@ -271,7 +294,7 @@ export default BookingList = props => {
           <View>
             <ActivityIndicator size="large" color="#37BEB7" />
           </View>
-        ) : dataBooking == 0 || dataBooking == '' ? (
+        ) : dataBooking == 0 || dataBooking == '' || dataBooking == null ? (
           <View
             style={{flex: 1, justifyContent: 'center', alignSelf: 'center'}}>
             <Text>Data not available</Text>

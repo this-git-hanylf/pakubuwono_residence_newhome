@@ -91,6 +91,7 @@ export default BookingListDetail = props => {
   ];
 
   const getDetailList = async () => {
+    // fdura;
     const reservation_no = route.params.reservation_no;
     console.log(
       'url datalist detail',
@@ -106,11 +107,45 @@ export default BookingListDetail = props => {
         setDetailBooking(res.data.Data);
         const datalog = res.data.Data.datalog;
         let temp = datalog.map(datalog => {
-          return {
-            title: datalog.check_by_name,
-            time: moment(datalog.check_date).format('DD-MM-YYYY   hh:mm:ss A'),
-            description: datalog.remarks,
-          };
+          if (
+            datalog.status == 'B' ||
+            datalog.status == 'O' ||
+            datalog.status == 'N' ||
+            datalog.status == 'D' ||
+            datalog.status == 'C'
+          ) {
+            return {
+              title: datalog.check_by_name,
+              title2: null,
+              time: moment(datalog.check_date).format(
+                'DD-MM-YYYY   hh:mm:ss A',
+              ),
+              description: datalog.remarks,
+              reason:
+                datalog.reason == null || datalog.reason == ''
+                  ? null
+                  : 'Reason : ' + datalog.reason,
+            };
+          } else {
+            return {
+              title: datalog.check_by_name,
+              title2:
+                'Staff : ' +
+                datalog.staff_first_name +
+                ' ' +
+                datalog.staff_last_name,
+              time: moment(datalog.check_date).format(
+                'DD-MM-YYYY   hh:mm:ss A',
+              ),
+              description: datalog.remarks,
+              reason:
+                datalog.reason == null ||
+                datalog.reason == '-' ||
+                datalog.reason == ' '
+                  ? null
+                  : 'Reason : ' + datalog.reason,
+            };
+          }
         });
         console.log('datalog edited', temp);
         setDataLog(temp);
@@ -487,8 +522,11 @@ export default BookingListDetail = props => {
                         ? 'Ongoing'
                         : datas.status == 'D'
                         ? 'Done'
+                        : datas.status == 'N'
+                        ? 'Not Show'
                         : null}{' '}
-                      by {datas.last_update_by}
+                      by {datas.last_update_by || route.params.last_update_by}
+                      {/* ini berfungsi kalau datas.last update by nya kosong, jadinya ambil dari params list booking */}
                     </Text>
                   </View>
 
@@ -510,7 +548,9 @@ export default BookingListDetail = props => {
                   </View>
 
                   {/* ------ untuk partner  */}
-                  {onDetailBooking?.datapartner?.length != 0 ? (
+                  {onDetailBooking?.datapartner?.length != 0 ||
+                  datas.status == 'C' ||
+                  datas.status == 'N' ? (
                     <View
                       refreshControl={
                         <RefreshControl
@@ -522,8 +562,8 @@ export default BookingListDetail = props => {
                       }>
                       {/* <Text>{datapartner.staff_first_name}</Text> */}
                       {/* <View>{renderFilterPartner(onDetailBooking.datapartner)}</View> */}
-                      <Text>{userId}</Text>
-                      <Text>{datas.audit_user}</Text>
+                      {/* <Text>{userId}</Text>
+                      <Text>{datas.audit_user}</Text> */}
                       <View
                         style={{
                           //   paddingVertical: 20,
@@ -532,11 +572,31 @@ export default BookingListDetail = props => {
                           flexDirection: 'row',
                           justifyContent: 'space-between',
                         }}>
-                        <View style={{alignSelf: 'center'}}>
-                          <Text style={{fontWeight: 'bold'}}>
-                            Your Partners
-                          </Text>
-                        </View>
+                        {datas.status == 'C' || datas.status == 'N' ? null : (
+                          <View style={{alignSelf: 'center'}}>
+                            <Text style={{fontWeight: 'bold'}}>
+                              Your Partners
+                            </Text>
+                          </View>
+                        )}
+
+                        {datas.countpartner <= 0 ? (
+                          <Button
+                            onPress={() => onAddPartner()}
+                            style={{height: 60, width: 60}}>
+                            <IconIonicons
+                              name="person-add"
+                              size={20}
+                              color={BaseColor.whiteColor}
+                              style={{
+                                justifyContent: 'center',
+                                alignContent: 'center',
+                                alignItems: 'center',
+                                alignSelf: 'center',
+                              }}></IconIonicons>
+                            {/* <Text style={{fontSize: 14}}>Add Partner</Text> */}
+                          </Button>
+                        ) : null}
                       </View>
 
                       {/* <ScrollView> */}
@@ -564,10 +624,22 @@ export default BookingListDetail = props => {
 
                                 alignSelf: 'center',
                               }}>
-                              <Text style={{fontSize: 14, fontWeight: 'bold'}}>
+                              <Text
+                                style={{
+                                  fontSize: 14,
+                                  fontWeight: 'bold',
+                                }}>
                                 {data.staff_first_name} {data.staff_last_name}
                               </Text>
                               <Text>as a {data.position}</Text>
+                              <Text>
+                                Status :{' '}
+                                {data.confirm_status == 'U'
+                                  ? 'Unconfirm'
+                                  : data.confirm_status == 'W'
+                                  ? 'Waiting Confirm'
+                                  : 'Confirm'}
+                              </Text>
                             </View>
                           </View>
                         </View>
@@ -591,7 +663,7 @@ export default BookingListDetail = props => {
                         </View>
 
                         <Button
-                          onPress={() => onAddPartner()}
+                          onPress={() => onAddPartner(datapartner)}
                           style={{height: 60, width: 60}}>
                           <IconIonicons
                             name="person-add"
@@ -769,6 +841,7 @@ export default BookingListDetail = props => {
           }}
           style={{marginTop: 20, flex: 1, marginLeft: 10}}
           data={datalogEdited}
+          // data={dataDummy}
         />
       </View>
       <View>

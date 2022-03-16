@@ -38,7 +38,7 @@ const News = props => {
 
   useEffect(() => {
     axios
-      .get('http://34.87.121.155:8000/ifcaprop-api/api/news/')
+      .get('http://103.111.204.131/ifcaprop-api/api/news/')
       .then(({data}) => {
         console.log('defaultApp -> data', data.data[0].status);
         setData(data.data);
@@ -93,20 +93,22 @@ const News = props => {
               contentContainerStyle={styles.paddingFlatList}
               data={data}
               keyExtractor={(item, index) => index.toString()}
-              renderItem={({item, index}) => (
-                <NewsList
-                  loading={loading}
-                  image={{uri: `${item.url_image}`}}
-                  subtitle={item.news_descs}
-                  title={item.news_title}
-                  source={item.source}
-                  date={moment(item.date_created).startOf('hour').fromNow()}
-                  style={{
-                    marginBottom: index == data.length - 1 ? 0 : 15,
-                  }}
-                  onPress={goPostDetail(item)}
-                />
-              )}
+              renderItem={({item, index}) =>
+                item.status == 'Active' ? (
+                  <NewsList
+                    loading={loading}
+                    image={{uri: `${item.url_image}`}}
+                    subtitle={item.news_descs}
+                    title={item.news_title}
+                    source={item.source}
+                    date={moment(item.date_created).startOf('hour').fromNow()}
+                    style={{
+                      marginBottom: index == data.length - 1 ? 0 : 15,
+                    }}
+                    onPress={goPostDetail(item)}
+                  />
+                ) : null
+              }
             />
           ) : loading ? (
             <View>

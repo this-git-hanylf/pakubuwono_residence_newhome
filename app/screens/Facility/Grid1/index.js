@@ -23,9 +23,9 @@ const Grid1 = ({
   return (
     <TouchableOpacity style={[styles.grid1, style]} onPress={onPress}>
       <Image
-        // source={{uri: image}}
+        source={{uri: image}}
         // source={require('@assets/images/icon-helpdesk/newtiket.png')}
-        source={image}
+        // source={image}
         style={styles.imageBackgroundGrid1}
         imageStyle={{borderRadius: 8}}
       />
@@ -54,7 +54,7 @@ const Grid1 = ({
 };
 
 Grid1.propTypes = {
-  description: PropTypes.string,
+  description: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   title: PropTypes.string,
   style: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
   image: PropTypes.node.isRequired,
@@ -65,7 +65,7 @@ Grid1.propTypes = {
 };
 
 Grid1.defaultProps = {
-  description: {},
+  description: '',
   title: '',
   style: {},
   image: Images.eProduct,

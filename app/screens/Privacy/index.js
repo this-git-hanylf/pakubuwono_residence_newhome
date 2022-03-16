@@ -29,7 +29,7 @@ const Privacy = props => {
 
   useEffect(() => {
     axios
-      .get('http://34.87.121.155:8000/ifcaprop-api/api/privacy/01/01')
+      .get('http://103.111.204.131/ifcaprop-api/api/privacy/01/01')
       .then(({data}) => {
         console.log('data', data);
         setData(data[0]);

@@ -203,6 +203,7 @@ export default ChoosePartner = props => {
       const audit_user = users.UserId;
       console.log('audit_user', audit_user);
       const isChecked = true;
+      const status = route.params.status != 'W' ? route.params.status : 'W';
       const dataselected_partner = selectedpartner
         .filter(function (item) {
           return item.rowID;
@@ -212,8 +213,15 @@ export default ChoosePartner = props => {
           staff_last_name,
           staff_id,
           isChecked,
+          status,
         }) {
-          return {staff_first_name, staff_last_name, staff_id, isChecked};
+          return {
+            staff_first_name,
+            staff_last_name,
+            staff_id,
+            isChecked,
+            status,
+          };
         });
 
       const data = {
