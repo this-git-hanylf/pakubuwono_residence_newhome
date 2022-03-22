@@ -193,7 +193,8 @@ const AnnouceDetail = props => {
         style={[BaseStyle.safeAreaView]}
         forceInset={{top: 'always', bottom: 'always'}}>
         <Header
-          style={{width: '100%'}}
+          style={{width: '90%', alignSelf: 'center'}}
+          _numberOfLines={0}
           // title={t('Announce')}
           // renderLeft={() => {
           //   return (

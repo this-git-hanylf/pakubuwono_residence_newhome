@@ -25,6 +25,7 @@ export default function Header(props) {
     renderRightSecond,
     renderRight,
     barStyle,
+    _numberOfLines,
   } = props;
   const isDarkMode = useDarkMode();
 
@@ -54,7 +55,7 @@ export default function Header(props) {
       <View style={[styles.contentCenter, styleContentCenter]}>
         <Text
           headline
-          numberOfLines={1}
+          numberOfLines={_numberOfLines == 0 ? 0 : 1}
           style={{
             fontSize: 16,
             // alignSelf: 'center',
@@ -104,6 +105,7 @@ Header.propTypes = {
   title: PropTypes.string,
   subTitle: PropTypes.string,
   barStyle: PropTypes.string,
+  _numberOfLines: PropTypes.number,
 };
 
 Header.defaultProps = {
@@ -124,4 +126,5 @@ Header.defaultProps = {
   title: 'Title',
   subTitle: '',
   barStyle: '',
+  _numberOfLines: 10,
 };

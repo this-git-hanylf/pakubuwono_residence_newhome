@@ -166,7 +166,7 @@ const PackageDetail = props => {
                           paddingTop: 15,
                         }}>
                         Your Package has arrived at{' '}
-                        {item.status == 'P' ? 'Security' : 'TRO'}
+                        {item.status == 'P' ? 'Security' : 'Resident'}
                       </Text>
                     </View>
                     <View
@@ -348,18 +348,18 @@ const PackageDetail = props => {
                           style={{
                             borderWidth: 1,
                             borderColor: colors.primary,
-                            width: 200,
+                            width: 300,
                             height: 200,
                             marginTop: 10,
                           }}>
                           <Image
                             source={{uri: item.package_picture}}
                             style={{
-                              width: 200,
+                              width: '100%',
                               height: 200,
                               // marginTop: 10,
 
-                              resizeMode: 'center', //auto center dengan maksimal height width hardcode 200px
+                              resizeMode: 'cover', //auto center dengan maksimal height width hardcode 200px
                             }}></Image>
                         </View>
                       )}
@@ -437,57 +437,103 @@ const PackageDetail = props => {
                         Sign Photo
                       </Text>
 
-                      <View
-                        style={{
-                          borderWidth: 1,
-                          borderColor: colors.primary,
-                          width: '100%',
-                          height: 200,
-                          marginTop: 10,
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                          alignSelf: 'center',
-                          alignContent: 'center',
-                          //   flex: 1,
-                        }}>
-                        {/* <Text>sign resident{item.received_sign_resident}</Text> */}
-                        <Image
-                          source={{uri: item.received_sign_resident}}
+                      {item.received_photo_resident == null ||
+                      item.received_photo_resident == '' ? (
+                        <View
                           style={{
+                            borderWidth: 1,
+                            borderColor: colors.primary,
+                            width: 200,
+                            height: 200,
+                            marginTop: 10,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}>
+                          <Text
+                            style={{
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                            }}>
+                            No Image
+                          </Text>
+                        </View>
+                      ) : (
+                        <View
+                          style={{
+                            borderWidth: 1,
+                            borderColor: colors.primary,
                             width: '100%',
                             height: 200,
-                            // marginTop: 10,
+                            marginTop: 10,
                             justifyContent: 'center',
                             alignItems: 'center',
                             alignSelf: 'center',
+                            alignContent: 'center',
+                            //   flex: 1,
+                          }}>
+                          {/* <Text>sign resident{item.received_sign_resident}</Text> */}
 
-                            resizeMode: 'contain', //auto center dengan maksimal height width hardcode 200px
-                          }}></Image>
-                      </View>
+                          <Image
+                            source={{uri: item.received_sign_resident}}
+                            style={{
+                              width: '100%',
+                              height: 200,
+                              // marginTop: 10,
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                              alignSelf: 'center',
+
+                              resizeMode: 'contain', //auto center dengan maksimal height width hardcode 200px
+                            }}></Image>
+                        </View>
+                      )}
                     </View>
 
                     <View>
                       <Text style={{marginTop: 10, fontWeight: 'bold'}}>
                         Received Package Photo
                       </Text>
-                      <View
-                        style={{
-                          borderWidth: 1,
-                          borderColor: colors.primary,
-                          width: 200,
-                          height: 200,
-                          marginTop: 10,
-                        }}>
-                        <Image
-                          source={{uri: item.received_photo_resident}}
+
+                      {item.received_photo_resident == null ||
+                      item.received_photo_resident == '' ? (
+                        <View
                           style={{
+                            borderWidth: 1,
+                            borderColor: colors.primary,
                             width: 200,
                             height: 200,
-                            // marginTop: 10,
+                            marginTop: 10,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}>
+                          <Text
+                            style={{
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                            }}>
+                            No Image
+                          </Text>
+                        </View>
+                      ) : (
+                        <View
+                          style={{
+                            borderWidth: 1,
+                            borderColor: colors.primary,
+                            width: 300,
+                            height: 200,
+                            marginTop: 10,
+                          }}>
+                          <Image
+                            source={{uri: item.received_photo_resident}}
+                            style={{
+                              width: '100%',
+                              height: 200,
+                              // marginTop: 10,
 
-                            resizeMode: 'center', //auto center dengan maksimal height width hardcode 200px
-                          }}></Image>
-                      </View>
+                              resizeMode: 'cover', //auto center dengan maksimal height width hardcode 200px
+                            }}></Image>
+                        </View>
+                      )}
                     </View>
 
                     {/* --- CLOSE COURIR DETAIL ---- */}

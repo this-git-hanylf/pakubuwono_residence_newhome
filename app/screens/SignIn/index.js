@@ -68,6 +68,7 @@ const SignIn = props => {
       authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
       authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
+    console.log('enable apasih', enabled);
     if (enabled) {
       getFcmToken();
       console.log('Authorization status:', authStatus);

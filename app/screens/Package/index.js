@@ -95,7 +95,7 @@ const Package = props => {
       );
       const datas = res.data.Data;
       console.log('data package', datas);
-      if (datas != null || datas != '' || datas != 0) {
+      if (datas != null) {
         const dataFilter = datas.filter(data =>
           // console.log(
           //   'data filter',
@@ -103,6 +103,7 @@ const Package = props => {
           // ),
           data.status === tabChoosed.status ? data : null,
         );
+        console.log('datafilter', dataFilter);
         setDataPackage(dataFilter);
         setLoading(false);
       } else {
@@ -192,7 +193,7 @@ const Package = props => {
         ) : (
           <SafeAreaView style={[styles.paddingSrollView, {flex: 1}]}>
             {/* <ScrollView contentContainerStyle={styles.paddingSrollView}> */}
-            {dataPackage != null || dataPackage != '' || dataPackage != 0 ? (
+            {dataPackage != null ? (
               <FlatList
                 scrollEnabled={true}
                 contentContainerStyle={styles.paddingFlatList}
@@ -219,7 +220,7 @@ const Package = props => {
                           paddingTop: 15,
                         }}>
                         Your Package has arrived at{' '}
-                        {item.status == 'P' ? 'Security' : 'TRO'}
+                        {item.status == 'P' ? 'Security' : 'Resident'}
                       </Text>
                     </View>
                     <View>
@@ -302,7 +303,17 @@ const Package = props => {
                 )}
               />
             ) : (
-              <NotFound />
+              <View>
+                <View
+                  style={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    alignSelf: 'center',
+                  }}>
+                  <Text style={{paddingTop: 50}}>Not Available Data</Text>
+                </View>
+                <NotFound />
+              </View>
             )}
             {/* </ScrollView> */}
           </SafeAreaView>

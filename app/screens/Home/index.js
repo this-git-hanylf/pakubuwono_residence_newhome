@@ -32,6 +32,7 @@ import {
   ImageBackground,
   RefreshControl,
   ActivityIndicator,
+  Dimensions,
 } from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useSelector} from 'react-redux';
@@ -66,6 +67,8 @@ const Home = props => {
   const [data, setData] = useState([]);
 
   const [refreshing, setRefreshing] = useState(false);
+
+  const {width} = Dimensions.get('window');
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
@@ -229,39 +232,55 @@ const Home = props => {
                 flex: 1,
               },
             ]}>
-            {/* {loading == false ? ( */}
             <Swiper
-              dotStyle={{
-                backgroundColor: BaseColor.dividerColor,
-                marginBottom: 8,
-                padding: 0,
-              }}
-              activeDotStyle={{
-                marginBottom: 8,
-              }}
-              // paginationStyle={{bottom: 0}}
-              // loop={true}
-              // style={{
-              //   height: (Utils.getWidthDevice() * 3) / 5,
-              //   width: '100%',
-              // }}
-              style={{padding: 0}}
+              height={240}
+              onMomentumScrollEnd={
+                (e, state, context) => state.index
+                // console.log('index:', state.index)
+              }
               autoplay={true}
               autoplayTimeout={5}
-              activeDotColor={colors.primary}
-              // removeClippedSubviews={false}
-              // onIndexChanged={index => null}
-              onIndexChanged={index => onSelect(index)}
-              // index={0}
-            >
+              dot={
+                <View
+                  style={{
+                    backgroundColor: 'rgba(0,0,0,.2)',
+                    width: 5,
+                    height: 5,
+                    borderRadius: 4,
+                    marginLeft: 3,
+                    marginRight: 3,
+                    marginTop: 3,
+                    marginBottom: 3,
+                  }}
+                />
+              }
+              activeDot={
+                <View
+                  style={{
+                    backgroundColor: colors.primary,
+                    width: 8,
+                    height: 8,
+                    borderRadius: 4,
+                    marginLeft: 3,
+                    marginRight: 3,
+                    marginTop: 3,
+                    marginBottom: 3,
+                  }}
+                />
+              }
+              paginationStyle={{
+                bottom: -18,
+                // left: null,
+                // right: 10,
+              }}
+              loop>
               {data.map((item, key) => {
                 return (
                   <View
                     style={{
                       flex: 1,
                       justifyContent: 'center',
-                      alignItems: 'center',
-                      // backgroundColor: 'black',
+                      backgroundColor: 'transparent',
                     }}>
                     <Image
                       key={key}
@@ -269,73 +288,17 @@ const Home = props => {
                       // key={item.length}
                       style={{
                         flex: 1,
-                        width: '100%',
+                        width,
                         // borderRadius: 10,
                       }}
                       source={{uri: item.pict}}
                     />
-                    <Text style={{color: 'white'}}>{item.descs}</Text>
                   </View>
                 );
               })}
-              {/* <View
-                style={{
-                  flex: 1,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  backgroundColor: 'black',
-                }}>
-                <Text>Hello Swiper</Text>
-              </View>
-              <View
-                style={{
-                  flex: 1,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  backgroundColor: 'red',
-                }}>
-                <Text>Beautiful</Text>
-              </View>
-              <View
-                style={{
-                  flex: 1,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  backgroundColor: 'blue',
-                }}>
-                <Text>And simple</Text>
-              </View>
-              <View
-                style={{
-                  flex: 1,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  backgroundColor: 'yellow',
-                }}>
-                <Text>And simple</Text>
-              </View>
-              <View
-                style={{
-                  flex: 1,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  backgroundColor: 'pink',
-                }}>
-                <Text>And simple</Text>
-              </View>
-              <View
-                style={{
-                  flex: 1,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  backgroundColor: 'orange',
-                }}>
-                <Text>And simple</Text>
-              </View> */}
             </Swiper>
-            {/* // ) : ( // <ActivityIndicator />
-            // )} */}
           </Animated.View>
+
           {/* </ScrollView> */}
 
           {/* <News43

@@ -86,6 +86,8 @@ function BookingFacility({route}) {
   const isExpandInit = useState(false);
   const [isExpand, setIsExpand] = useState(false);
   const [isIconUp, setIconUp] = useState(false);
+  const [entity, setEntity] = useState('');
+  const [project_no, setProjectNo] = useState('');
 
   useEffect(() => {
     axios
@@ -202,15 +204,13 @@ function BookingFacility({route}) {
     );
   };
 
-  useEffect(() => {
-    // getTower();
-    // const getTower = () => {
-    const datas = {
+  //-----FOR GET ENTITY & PROJJECT
+  const getTower = async () => {
+    const data = {
       email: email,
+      //   email: 'haniyya.ulfah@ifca.co.id',
       app: 'O',
     };
-
-    // console.log('for  data daate', datas);
 
     const config = {
       headers: {
@@ -219,49 +219,58 @@ function BookingFacility({route}) {
         // token: "",
       },
     };
-    console.log(
-      'url api tower',
-      `http://103.111.204.131/apiwebpbi/api/getData/mysql/${datas.email}/${datas.app}`,
-    );
-    axios
+
+    await axios
       .get(
-        `http://103.111.204.131/apiwebpbi/api/getData/mysql/${datas.email}/${datas.app}`,
+        // `http://103.111.204.131/apisysadmin/api/getProject/${data.email}`,
+        `http://103.111.204.131/apiwebpbi/api/getData/mysql/${data.email}/${data.app}`,
         {
           config,
         },
       )
       .then(res => {
         const datas = res.data;
-        // console.log('tower entity projek', datas);
+
         const arrDataTower = datas.Data;
-        console.log('tower entity arrDataTower', arrDataTower[0]);
-        setdataTowerUser(arrDataTower[0]);
-        // getDateBook(arrDataTower[0]);
-
-        // getBooked(arrDataTower[0], databookdate, '');
-        // arrDataTower.map(dat => {
-        //   if (dat) {
-        //     setdataTowerUser(dat);
-        //     getDateBook(dat);
-
-        //     getBooked(dat);
-        //   }
-        // });
+        // let dataArr = {};
+        arrDataTower.map(dat => {
+          if (dat) {
+            console.log('data trower', dat.entity_cd);
+            setdataTowerUser(dat);
+            setEntity(dat.entity_cd);
+            setProjectNo(dat.project_no);
+            getDateBook(dat);
+            getdata();
+            // const jsonValue = JSON.stringify(dat);
+            //   setdataFormHelp(saveStorage);
+            // console.log('storage', saveStorage);
+            // dataArr.push(jsonValue);
+          }
+        });
+        // AsyncStorage.setItem('@DataTower', dataArr);
         setArrDataTowerUser(arrDataTower);
 
-        setTimeout(() => {
-          setSpinner(false);
-        }, 1000);
+        setSpinner(false);
+        // return res.data;
       })
-      // .catch(error => console.error(error))
-      .catch(error => console.error(error.response.data))
-      .finally(() => setLoading(false));
-    // };
-  }, []);
+      .catch(error => {
+        console.log('error get tower api', error);
+        // alert('error get');
+      });
+  };
 
   useEffect(() => {
-    getDateBook(dataTowerUser); // datatoweruser adalah paramaeter buat entity projek
-  }, [dataTowerUser]);
+    setTimeout(() => {
+      setLoading(false);
+      getTower(users);
+      // getdata();
+      // setSpinner(false);
+    }, 3000);
+  }, []);
+
+  // useEffect(() => {
+  //   getDateBook(dataTowerUser); // datatoweruser adalah paramaeter buat entity projek
+  // }, [dataTowerUser]);
 
   const getDateBook = async datas => {
     console.log('datas entioty,', datas);
@@ -284,7 +293,7 @@ function BookingFacility({route}) {
         // console.log('datas nih dipake buat entity projek', datas);
         setData(res.data);
         setDatabookDate(res.data);
-        getdata();
+
         getBooked(datas, res.data, '');
         setSpinner(false);
       })
@@ -295,7 +304,7 @@ function BookingFacility({route}) {
 
   const getdata = async () => {
     const entity_cd = dataTowerUser.entity_cd;
-    // console.log('next abis tower getdata', dataTowerUser);
+    console.log('next abis tower getdata', entity);
     const project_no = dataTowerUser.project_no;
     const obj_data = params;
     //ini bentuknya array, hany ambil yang array 0 aja, krn kayaknya sama semua deh facility_cd nya
@@ -311,17 +320,16 @@ function BookingFacility({route}) {
       'facility_cd=' +
       obj_data.facility_cd;
     // 'SB';
-    // console.log(
-    //   'params daata',
-    //   'http://103.111.204.131/apiwebpbi/api/facility/book/venue' +
-    //     params_api,
-    // );
+    console.log(
+      'params daata',
+      'http://103.111.204.131/apiwebpbi/api/facility/book/venue' + params_api,
+    );
     await axios
       .get(
         'http://103.111.204.131/apiwebpbi/api/facility/book/venue' + params_api,
       )
       .then(res => {
-        // console.log('ress facility book venue:', res.data);
+        console.log('ress facility book venue:', res.data);
         // setData(res.data);
         setDataVenue(res.data.data);
         // console.log('datavenue', res.data.data);
@@ -419,10 +427,10 @@ function BookingFacility({route}) {
               {data: dataBooked3},
               {data: dataBooked4},
             ) => {
-              console.log('res1: ', dataBooked1);
-              console.log('res2: ', dataBooked2);
-              console.log('res3: ', dataBooked3);
-              console.log('res4: ', dataBooked4);
+              // console.log('res1: ', dataBooked1);
+              // console.log('res2: ', dataBooked2);
+              // console.log('res3: ', dataBooked3);
+              // console.log('res4: ', dataBooked4);
 
               if (dataBooked1) {
                 setDataBooked1(dataBooked1);
@@ -443,7 +451,7 @@ function BookingFacility({route}) {
         .catch(error => console.error(error.response.data))
         .finally(
           () => setLoading(false),
-          setSpinnerHours(false),
+          // setSpinnerHours(false),
           // setSpinner(false),
         );
     } else {
@@ -521,15 +529,23 @@ function BookingFacility({route}) {
               {data: dataBooked3},
               {data: dataBooked4},
             ) => {
-              console.log('res1 created if: ', dataBooked1);
-              console.log('res2 created: ', dataBooked2);
-              console.log('res3 created: ', dataBooked3);
-              console.log('res4 created: ', dataBooked4);
+              // console.log('res1 created if: ', dataBooked1);
+              // console.log('res2 created: ', dataBooked2);
+              // console.log('res3 created: ', dataBooked3);
+              // console.log('res4 created: ', dataBooked4);
 
-              setDataBooked1(dataBooked1);
-              setDataBooked2(dataBooked2);
-              setDataBooked3(dataBooked3);
-              setDataBooked4(dataBooked4);
+              if (dataBooked1) {
+                setDataBooked1(dataBooked1);
+              }
+              if (dataBooked2) {
+                setDataBooked2(dataBooked2);
+              }
+              if (dataBooked3) {
+                setDataBooked3(dataBooked3);
+              }
+              if (dataBooked4) {
+                setDataBooked4(dataBooked4);
+              }
             },
           ),
           setSpinnerHours(false),
@@ -537,7 +553,7 @@ function BookingFacility({route}) {
         .catch(error => console.error(error.response.data))
         .finally(
           () => setLoading(false),
-          setSpinnerHours(false),
+          // setSpinnerHours(false),
           // setSpinner(false),
         );
     }
@@ -546,7 +562,7 @@ function BookingFacility({route}) {
   useEffect(() => {
     setTimeout(() => {
       setSpinnerHours(false);
-    }, 10000);
+    }, 5000);
   }, []);
 
   const onChangeOption = option => {
@@ -746,7 +762,7 @@ function BookingFacility({route}) {
                     {dataBooked1.close_book}
                   </Text>
                 )}
-                {tab.id == 1 && dataBooked1?.slot_hours != ''
+                {tab.id == 1 && dataBooked1.close_status == 'Y'
                   ? dataBooked1?.slot_hours.map &&
                     dataBooked1?.slot_hours.map((items, indexs) => (
                       <View
@@ -823,31 +839,38 @@ function BookingFacility({route}) {
                               {items.datapartner != ''
                                 ? items.datapartner.map(
                                     (itemdatapartner, keys) => (
-                                      <View key={keys}>
-                                        {console.log(
-                                          'itemdata partner',
-                                          itemdatapartner,
-                                        )}
-                                        <Text>
-                                          Partner :{' '}
-                                          {itemdatapartner.staff_first_name}{' '}
-                                          {itemdatapartner.staff_last_name}
-                                        </Text>
+                                      console.log(
+                                        'itemdata partner untuk status',
+                                        itemdatapartner,
+                                      ),
+                                      (
+                                        <View key={keys}>
+                                          {console.log(
+                                            'itemdata partner',
+                                            itemdatapartner,
+                                          )}
+                                          <Text>
+                                            Partner :{' '}
+                                            {itemdatapartner.staff_first_name}{' '}
+                                            {itemdatapartner.staff_last_name}
+                                          </Text>
 
-                                        <Text>
-                                          Status :{' '}
-                                          {itemdatapartner.staff_unconfirmed}
-                                          {itemdatapartner.confirm_status == 'W'
-                                            ? 'Waiting Confirm'
-                                            : itemdatapartner.confirm_status ==
-                                              'U'
-                                            ? 'Unconfirm'
-                                            : 'Confirm'}
-                                        </Text>
-                                        {/* <Text style={{width: 150}}>
+                                          <Text>
+                                            Status :{' '}
+                                            {itemdatapartner.staff_unconfirmed}
+                                            {itemdatapartner.confirm_status ==
+                                            'W'
+                                              ? 'Waiting Confirm'
+                                              : itemdatapartner.confirm_status ==
+                                                'U'
+                                              ? 'Unconfirm'
+                                              : 'Confirm'}
+                                          </Text>
+                                          {/* <Text style={{width: 150}}>
                                           as a {itemdatapartner.position}
                                         </Text> */}
-                                      </View>
+                                        </View>
+                                      )
                                     ),
                                   )
                                 : null}
@@ -930,7 +953,8 @@ function BookingFacility({route}) {
                         )}
                       </View>
                     ))
-                  : tab.id == 1 && (
+                  : tab.id == 1 &&
+                    dataBooked1.close_status == 'N' && (
                       <View
                         style={{
                           flex: 1,
@@ -977,7 +1001,7 @@ function BookingFacility({route}) {
                     {dataBooked2.close_book}
                   </Text>
                 )}
-                {tab.id == 2 && dataBooked2?.slot_hours != ''
+                {tab.id == 2 && dataBooked2.close_status == 'Y'
                   ? dataBooked2.slot_hours.map &&
                     dataBooked2.slot_hours.map((items, indexs) => (
                       <View
@@ -1132,7 +1156,8 @@ function BookingFacility({route}) {
                         )}
                       </View>
                     ))
-                  : tab.id == 2 && (
+                  : tab.id == 2 &&
+                    dataBooked2.close_status == 'N' && (
                       <View
                         style={{
                           flex: 1,
@@ -1179,7 +1204,7 @@ function BookingFacility({route}) {
                     {dataBooked3.close_book}
                   </Text>
                 )}
-                {tab.id == 3 && dataBooked3?.slot_hours != ''
+                {tab.id == 3 && dataBooked3 != ''
                   ? dataBooked3.slot_hours.map &&
                     dataBooked3.slot_hours.map((items, indexs) => (
                       <View
@@ -1381,7 +1406,7 @@ function BookingFacility({route}) {
                     {dataBooked4.close_book}
                   </Text>
                 )}
-                {tab.id == 4 && dataBooked4?.slot_hours != ''
+                {tab.id == 4 && dataBooked4 != ''
                   ? dataBooked4.slot_hours.map &&
                     dataBooked4.slot_hours.map((items, indexs) => (
                       <View

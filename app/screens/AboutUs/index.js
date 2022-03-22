@@ -81,7 +81,7 @@ const AboutUs = props => {
             }}
           />
         </View>
-        <View style={{padding: 20}}>
+        <View style={{paddingTop: 3}}>
           <Text
             headline
             semibold

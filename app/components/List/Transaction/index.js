@@ -21,6 +21,7 @@ const ListTransaction = ({
   date = '',
   status = '',
   price = '',
+  lot_no = '',
   onPress = () => {},
 }) => {
   const {colors} = useTheme();
@@ -37,7 +38,7 @@ const ListTransaction = ({
       </View>
       <View style={{flex: 1}}>
         <Text subhead style={styles.text}>
-          {doc_no}
+          {lot_no} - {doc_no}
         </Text>
         <Text footnote light style={[styles.text, {marginTop: 5}]}>
           {due_date}
@@ -66,6 +67,7 @@ ListTransaction.propTypes = {
   doc_no: PropTypes.string,
   price: PropTypes.string,
   onPress: PropTypes.func,
+  lot_no: PropTypes.string,
 };
 
 export default ListTransaction;
