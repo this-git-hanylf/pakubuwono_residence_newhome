@@ -535,7 +535,9 @@ const EProductDetail = props => {
             marginBottom: 8,
           }}
           paginationStyle={{bottom: 0}}
-          loop={false}
+          loop={true}
+          autoplayTimeout={5}
+          autoplay={true}
           activeDotColor={colors.primary}
           removeClippedSubviews={false}
           onIndexChanged={index => onSelect(index)}>
@@ -546,7 +548,7 @@ const EProductDetail = props => {
                 style={{flex: 1}}
                 activeOpacity={1}
                 onPress={() =>
-                  navigation.navigate('PreviewImage', {images: images})
+                  navigation.navigate('PreviewImages', {images: galery})
                 }>
                 <Image
                   key={key}

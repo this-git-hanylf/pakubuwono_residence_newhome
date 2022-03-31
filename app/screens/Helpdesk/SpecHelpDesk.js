@@ -60,6 +60,10 @@ export default function SpecHelpDesk() {
   const [isDisabled, setDisabled] = useState(false);
   const [tenant_no, setTenantNo] = useState('');
 
+  const [defaulTower, setDefaultTower] = useState(false);
+  const [defaultDebtor, setDefaultDebtor] = useState(false);
+  const [defaultLotNo, setDefaultLotNo] = useState(false);
+
   //-----FOR GET ENTITY & PROJJECT
   const getTower = async () => {
     const data = {
@@ -88,7 +92,26 @@ export default function SpecHelpDesk() {
         const datas = res.data;
 
         const arrDataTower = datas.Data;
-        // let dataArr = {};
+        console.log('data tower ada berapa', arrDataTower.length);
+
+        // arrDataTower.length > 1
+        if (arrDataTower.length > 1) {
+          setDefaultTower(false);
+        } else {
+          setDefaultTower(true);
+          setCheckedEntity(true);
+          setEntity(arrDataTower[0].entity_cd);
+          setProjectNo(arrDataTower[0].project_no);
+          setDb_Profile(arrDataTower[0].db_profile);
+          const params = {
+            entity_cd: arrDataTower[0].entity_cd,
+            project_no: arrDataTower[0].project_no,
+            db_profile: arrDataTower[0].db_profile,
+          };
+          console.log('params for debtor tower default', params);
+          getDebtor(params);
+        }
+
         arrDataTower.map(dat => {
           if (dat) {
             setdataTowerUser(dat);
@@ -98,20 +121,23 @@ export default function SpecHelpDesk() {
             // dataArr.push(jsonValue);
           }
         });
-        // AsyncStorage.setItem('@DataTower', dataArr);
+        // console.log('arrdatatower yang 1 aja default', arrDataTower);
         setArrDataTowerUser(arrDataTower);
 
         setSpinner(false);
+        // let dataArr = {};
+
         // return res.data;
       })
       .catch(error => {
         console.log('error get tower api', error);
-        alert('error get');
+        // alert('error get');
       });
   };
 
   //-----FOR GET DEBTOR
   const getDebtor = async data => {
+    // console.log(object)
     console.log('data for debtor', data);
 
     const params =
@@ -143,13 +169,40 @@ export default function SpecHelpDesk() {
         const datas = res.data;
         const dataDebtors = datas.Data;
         console.log('res debtor', dataDebtors);
+        console.log('ada berapa length debtor', dataDebtors.length);
+
+        if (dataDebtors.length > 1) {
+          setDefaultDebtor(false);
+        } else {
+          setDefaultDebtor(true);
+          setDebtor(dataDebtors[0].debtor_acct);
+          setTenantNo(dataDebtors[0].tenant_no);
+          settextDebtor(
+            dataDebtors[0].debtor_acct + ' - ' + dataDebtors[0].name,
+          );
+          settextNameDebtor(dataDebtors[0].name);
+          const params = {
+            entity_cd: data.entity_cd,
+            project_no: data.project_no,
+            tenant_no: dataDebtors[0].tenant_no,
+          };
+          console.log('params for lotno default', params);
+
+          // setCheckedEntity(true);
+
+          getLot(params, '');
+          setSpinner(false);
+          // console.log('params for debtor tower default', params);
+          // getDebtor(params);
+        }
+
         setDataDebtor(dataDebtors);
 
         // return res.data;
       })
       .catch(error => {
         console.log('error get tower api', error.response);
-        alert('error get');
+        // alert('error get');
       });
   };
 
@@ -181,19 +234,19 @@ export default function SpecHelpDesk() {
     setTenantNo(index.tenant_no);
     settextDebtor(index.debtor_acct + ' - ' + index.name);
     settextNameDebtor(index.name);
-    getLot(index.tenant_no);
+    getLot('', index.tenant_no);
     //   }
     // });
     setSpinner(false);
   };
 
-  const getLot = async data => {
+  const getLot = async (data, tenantno) => {
     console.log('tenant_no lot', data);
     const params = {
-      entity_cd: entity,
-      project_no: project_no,
+      entity_cd: entity || data.entity_cd,
+      project_no: project_no || data.project_no,
       email: email,
-      tenant_no: data,
+      tenant_no: tenantno || data.tenant_no,
     };
     const config = {
       headers: {
@@ -214,9 +267,25 @@ export default function SpecHelpDesk() {
         config,
       })
       .then(res => {
-        console.log('datalotno', res);
+        // console.log('datalotno', res);
         const datas = res.data;
         const dataLotno = datas.Data;
+        console.log('datalotno', dataLotno);
+
+        console.log('ada berapa length debtor', dataLotno.length);
+        // console.log(object)
+
+        if (dataLotno.length > 1) {
+          setDefaultLotNo(false);
+        } else {
+          setDefaultLotNo(true);
+          setLotno(dataLotno[0].lot_no);
+          // this.setState({textLot: lot});
+          getFloor(dataLotno[0].lot_no);
+          setSpinner(false);
+          // console.log('params for debtor tower default', params);
+          // getDebtor(params);
+        }
 
         setDataLotno(dataLotno);
 
@@ -224,7 +293,7 @@ export default function SpecHelpDesk() {
       })
       .catch(error => {
         console.log('error get lotno api', error.response);
-        alert('error get');
+        // alert('error get');
       });
   };
 
@@ -330,6 +399,11 @@ export default function SpecHelpDesk() {
                   <PlaceholderLine width={100} noMargin style={{height: 40}} />
                 </Placeholder>
               </View>
+            ) : defaulTower ? (
+              <CheckBox
+                checked={checkedEntity}
+                title={arrDataTowerUser[0].project_descs}
+                onPress={() => setCheckedEntity(!checkedEntity)}></CheckBox>
             ) : (
               arrDataTowerUser.map((data, index) => (
                 <CheckBox

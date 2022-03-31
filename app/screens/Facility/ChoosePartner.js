@@ -1,5 +1,5 @@
 import {
-  Image,
+  // Image,
   ListMenuIcon,
   ListOptionSelected,
   LotNoSelectOption,
@@ -24,6 +24,7 @@ import {
   // Modal,
   TouchableOpacity,
   Dimensions,
+  Image,
 } from 'react-native';
 // import { Checkbox } from '@react-native-community/checkbox';
 import CheckBox from '@react-native-community/checkbox';
@@ -91,9 +92,9 @@ export default ChoosePartner = props => {
           reservation_no,
       );
       if (res) {
-        // console.log('res post get partners edit', res);
         const resPartner = res.data.Data;
         setPartner(resPartner); //akan ditambah ischecklis
+        console.log('res post get partners edit', resPartner);
         setPartnerItems(resPartner);
         setSpinner(false);
       }
@@ -149,6 +150,7 @@ export default ChoosePartner = props => {
                 <TouchableOpacity
                   onPress={() => chooseCoba(item)}
                   style={{width: 110}}>
+                  <Text>{item.url_picture}</Text>
                   <Image
                     source={{uri: item.url_picture}}
                     style={{
@@ -283,12 +285,15 @@ export default ChoosePartner = props => {
                     handleChangePartner(item.rowID);
                   }}
                 />
+
                 <TouchableOpacity
                   onPress={() => chooseCoba(item)}
                   style={{width: 110}}>
+                  {/* <Text>{item.url_picture}</Text> */}
                   <Image
                     source={{uri: item.url_picture}}
                     style={{
+                      // flex: 1,
                       width: 60,
                       height: 60,
                       borderRadius: 50,
@@ -547,24 +552,25 @@ export default ChoosePartner = props => {
               {/* {renderFlatListPartner(partners)} */}
             </View>
           </ScrollView>
+          <View style={{marginBottom: 0}}>
+            <Button
+              small
+              style={{
+                marginTop: 10,
+                marginHorizontal: 5,
+                marginBottom: 20,
+                // flex: 1,
+                // position: 'absolute',
+              }}
+              onPress={() => {
+                bookFacility();
+              }}>
+              <Text style={{textAlign: 'center'}}>{t('Choose Partner')}</Text>
+            </Button>
+          </View>
         </ScrollView>
       </View>
-      <View>
-        <Button
-          small
-          style={{
-            marginTop: 10,
-            marginHorizontal: 5,
-            marginBottom: 20,
-            // flex: 1,
-            // position: 'absolute',
-          }}
-          onPress={() => {
-            bookFacility();
-          }}>
-          <Text style={{textAlign: 'center'}}>{t('Choose Partner')}</Text>
-        </Button>
-      </View>
+
       <ScrollView>
         <ModalProduct
           // colorChoosedInit={colorChoosed}

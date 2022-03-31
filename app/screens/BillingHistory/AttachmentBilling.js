@@ -54,7 +54,7 @@ const AttachmentBilling = props => {
     // console.log('params api attach', 'http://103.111.204.131/apiwebpbi/api/getDataAttach/IFCAPB/${entity_cd}/${project_no}/${debtor_acct}')
     try {
       const res = await axios.get(
-        `http://103.111.204.131/apiwebpbi/api/getDataAttach/IFCAPB/${entity_cd}/${project_no}/${debtor_acct}/${doc_no}`,
+        `http://34.87.121.155:2121/apiwebpbi/api/getDataAttach/IFCAPB/${entity_cd}/${project_no}/${debtor_acct}/${doc_no}`,
       );
       console.log('res atatchment billing', res.data.Data);
       setAttachment(res.data.Data);
@@ -72,7 +72,7 @@ const AttachmentBilling = props => {
 
   const renderItem = ({item, index}) => {
     return (
-      <Card key={index} style={{paddingVertical: 20}}>
+      <Card key={index}>
         <TouchableOpacity
           onPress={() => {
             openAttach(item);
@@ -105,7 +105,7 @@ const AttachmentBilling = props => {
       style={BaseStyle.safeAreaView}
       edges={['right', 'top', 'left']}>
       <Header
-        title={t('Attachment Invoice')}
+        title={t('Attachment Billing')}
         renderLeft={() => {
           return (
             <Icon
@@ -120,49 +120,28 @@ const AttachmentBilling = props => {
           navigation.goBack();
         }}
       />
-      {attachment == null ? (
-        <View
-          style={{
-            flex: 1,
-
-            justifyContent: 'center',
-          }}>
-          <Text
-            style={{
-              justifyContent: 'center',
-              alignContent: 'center',
-              alignItems: 'center',
-              alignSelf: 'center',
-              fontSize: 16,
-              marginTop: 10,
-            }}>
-            Not Available Attachment Invoice
-          </Text>
-        </View>
-      ) : (
-        <View style={{flex: 1}}>
-          <FlatList
-            //   key={key}
-            showsHorizontalScrollIndicator={false}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{
-              paddingHorizontal: 20,
-            }}
-            //   numColumns={getTotalCol()}
-            refreshControl={
-              <RefreshControl
-                colors={[colors.primary]}
-                tintColor={colors.primary}
-                refreshing={refreshing}
-                onRefresh={() => {}}
-              />
-            }
-            data={attachment}
-            keyExtractor={item => item.rowid}
-            renderItem={renderItem}
-          />
-        </View>
-      )}
+      <View style={{flex: 1}}>
+        <FlatList
+          //   key={key}
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{
+            paddingHorizontal: 20,
+          }}
+          //   numColumns={getTotalCol()}
+          refreshControl={
+            <RefreshControl
+              colors={[colors.primary]}
+              tintColor={colors.primary}
+              refreshing={refreshing}
+              onRefresh={() => {}}
+            />
+          }
+          data={attachment}
+          keyExtractor={item => item.rowid}
+          renderItem={renderItem}
+        />
+      </View>
     </SafeAreaView>
   );
 };

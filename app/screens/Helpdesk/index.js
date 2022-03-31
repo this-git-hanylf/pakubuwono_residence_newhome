@@ -28,80 +28,80 @@ import styles from './styles';
 import ModalDropdown_debtor from '@components/ModalDropdown_debtor';
 import ModalDropdown_lotno from '@components/ModalDropdown_lotno';
 
-const Friends = () => {
-  const {t, i18n} = useTranslation();
-  const {colors} = useTheme();
-  const [keyword, setKeyword] = useState('');
-  const [friends, setFriends] = useState(FFriends);
-  const navigation = useNavigation();
+// const Friends = () => {
+//   const {t, i18n} = useTranslation();
+//   const {colors} = useTheme();
+//   const [keyword, setKeyword] = useState('');
+//   const [friends, setFriends] = useState(FFriends);
+//   const navigation = useNavigation();
 
-  //   const filterCategory = text => {
-  //     console.log('text filter', text);
-  //     setKeyword(text);
-  //     if (text) {
-  //       setFriends(
-  //         FFriends.filter(
-  //           item =>
-  //             haveChildren(item.name, text) || haveChildren(item.total, text),
-  //         ),
-  //       );
-  //     } else {
-  //       setFriends(FFriends);
-  //     }
-  //   };
+//   //   const filterCategory = text => {
+//   //     console.log('text filter', text);
+//   //     setKeyword(text);
+//   //     if (text) {
+//   //       setFriends(
+//   //         FFriends.filter(
+//   //           item =>
+//   //             haveChildren(item.name, text) || haveChildren(item.total, text),
+//   //         ),
+//   //       );
+//   //     } else {
+//   //       setFriends(FFriends);
+//   //     }
+//   //   };
 
-  const onSend = () => {
-    navigation.navigate('FSendMoney');
-  };
+//   const onSend = () => {
+//     navigation.navigate('FSendMoney');
+//   };
 
-  return (
-    <View style={{flex: 1, paddingHorizontal: 20}}>
-      {/* <View
-        style={{
-          paddingTop: 15,
-          paddingBottom: 20,
-        }}>
-        <TextInput
-          onChangeText={filterCategory}
-          placeholder={t('name_username_or_email')}
-          value={keyword}
-          icon={
-            <TouchableOpacity onPress={() => filterCategory('')}>
-              <Icon name="times" size={16} color={BaseColor.grayColor} />
-            </TouchableOpacity>
-          }
-        />
-      </View> */}
-      <FlatList
-        showsHorizontalScrollIndicator={false}
-        showsVerticalScrollIndicator={false}
-        data={friends}
-        keyExtractor={item => item.id}
-        renderItem={({item, index}) => (
-          <ListTextButton
-            image={item.image}
-            name={item.name}
-            description={item.total}
-            componentRight={
-              <Tag
-                onPress={e => {
-                  e.stopPropagation();
-                  onSend(item);
-                }}
-                outline
-                style={{
-                  paddingHorizontal: 20,
-                  backgroundColor: colors.background,
-                }}>
-                {`${t('send')}`}
-              </Tag>
-            }
-          />
-        )}
-      />
-    </View>
-  );
-};
+//   return (
+//     <View style={{flex: 1, paddingHorizontal: 20}}>
+//       {/* <View
+//         style={{
+//           paddingTop: 15,
+//           paddingBottom: 20,
+//         }}>
+//         <TextInput
+//           onChangeText={filterCategory}
+//           placeholder={t('name_username_or_email')}
+//           value={keyword}
+//           icon={
+//             <TouchableOpacity onPress={() => filterCategory('')}>
+//               <Icon name="times" size={16} color={BaseColor.grayColor} />
+//             </TouchableOpacity>
+//           }
+//         />
+//       </View> */}
+//       <FlatList
+//         showsHorizontalScrollIndicator={false}
+//         showsVerticalScrollIndicator={false}
+//         data={friends}
+//         keyExtractor={item => item.id}
+//         renderItem={({item, index}) => (
+//           <ListTextButton
+//             image={item.image}
+//             name={item.name}
+//             description={item.total}
+//             componentRight={
+//               <Tag
+//                 onPress={e => {
+//                   e.stopPropagation();
+//                   onSend(item);
+//                 }}
+//                 outline
+//                 style={{
+//                   paddingHorizontal: 20,
+//                   backgroundColor: colors.background,
+//                 }}>
+//                 {`${t('send')}`}
+//               </Tag>
+//             }
+//           />
+//         )}
+//       />
+//     </View>
+//   );
+// };
 
 export default function Helpdesk() {
   const {t, i18n} = useTranslation();
@@ -122,10 +122,10 @@ export default function Helpdesk() {
     {key: '2', icon: 'bell'},
   ];
   const [search, setSearch] = useState('');
-  const renderScene = SceneMap({
-    newticket: Friends,
-    status: Friends,
-  });
+  // const renderScene = SceneMap({
+  //   newticket: Friends,
+  //   status: Friends,
+  // });
 
   useEffect(() => {
     setTimeout(() => {

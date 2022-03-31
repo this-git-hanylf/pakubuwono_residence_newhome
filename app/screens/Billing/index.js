@@ -9,10 +9,8 @@ import {
   Transaction2Col,
   Icon,
   Tag,
-  TextInput,
   Price3Col,
   ListTransactionExpand,
-  Button,
 } from '@components';
 import {BaseStyle, useTheme} from '@config';
 import {FRecentTransactions, FHotNews} from '@data';
@@ -20,11 +18,8 @@ import {useNavigation, useRoute} from '@react-navigation/core';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {enableExperimental} from '@utils';
-import ModalDropdown_debtor from '@components/ModalDropdown_debtor';
 
 import moment from 'moment';
-
-import Modal from 'react-native-modal';
 
 import {
   ScrollView,
@@ -41,6 +36,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import axios from 'axios';
 import numFormat from '../../components/numFormat';
 import CurrencyFormatter from '../../components/CurrencyFormatter';
+import {ActivityIndicator} from 'react-native-paper';
 
 const Billing = ({
   isCenter = false,
@@ -59,28 +55,17 @@ const Billing = ({
   const [bill, setBill] = useState([]);
   const [data, setData] = useState([]);
   const [dataCurrent, setDataCurrent] = useState([]);
-
+  console.log('user,', user);
   const [dataTowerUser, setdataTowerUser] = useState([]);
   const [arrDataTowerUser, setArrDataTowerUser] = useState([]);
 
   const [email, setEmail] = useState(user.user);
-
-  // const [urlApi, seturlApi] = useState(client);
-  const [checkedEntity, setCheckedEntity] = useState(false);
-  const [dataDebtor, setDataDebtor] = useState([]);
   const [entity, setEntity] = useState('');
   const [project_no, setProjectNo] = useState('');
   const [db_profile, setDb_Profile] = useState('');
   const [spinner, setSpinner] = useState(true);
-
-  const [debtor, setDebtor] = useState('');
-  const [textDebtor, settextDebtor] = useState('');
-  const [textNameDebtor, settextNameDebtor] = useState('');
   const [loading, setLoading] = useState(true);
-  const [tenant_no, setTenantNo] = useState('');
-  const [attachment, setAttachment] = useState('');
-  const [modalSuccessVisible, showModalSuccess] = useState(false);
-  const [message, setMessage] = useState('');
+  const [loadingInvoice, setLoadingInvoice] = useState(true);
 
   const TABS = [
     {
@@ -142,7 +127,7 @@ const Billing = ({
             //   setdataFormHelp(saveStorage);
             // console.log('storage', saveStorage);
             // dataArr.push(jsonValue);
-            getDebtor(dat);
+            // getDebtor(dat);
           }
         });
         // AsyncStorage.setItem('@DataTower', dataArr);
@@ -157,84 +142,35 @@ const Billing = ({
       });
   };
 
-  const getDebtor = async data => {
-    console.log('data for debtor', data);
-
-    const params =
-      '?' +
-      'entity_cd=' +
-      data.entity_cd +
-      '&' +
-      'project_no=' +
-      data.project_no +
-      '&' +
-      'email=' +
-      email;
-
-    console.log('data for', params);
-
-    const config = {
-      headers: {
-        accept: 'application/json',
-        'Content-Type': 'application/json',
-        token: '',
-      },
-    };
-    await axios
-      .post('http://103.111.204.131/apiwebpbi/api/csentry-getDebtor' + params, {
-        config,
-      })
-      .then(res => {
-        // console.log('res', res);
-        const datas = res.data;
-        const dataDebtors = datas.Data;
-        console.log('res debtor', dataDebtors);
-        setDataDebtor(dataDebtors);
-
-        // return res.data;
-      })
-      .catch(error => {
-        console.log('error get tower api', error.response);
-        alert('error get');
-      });
-  };
-
   useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-      getTower(user);
-      // setSpinner(false);
-    }, 3000);
+    getTower(user);
+    setLoading(false);
+    // setTimeout(() => {
+    //   setLoading(false);
+    //   getTower(user);
+    //   // setSpinner(false);
+    // }, 3000);
   }, []);
-
-  const handleChangeModal = ({data, index}) => {
-    console.log('index,', index);
-
-    setDebtor(index.debtor_acct);
-    setTenantNo(index.tenant_no);
-    settextDebtor(index.debtor_acct + ' - ' + index.name);
-    getAttachment(index);
-    setSpinner(false);
-  };
 
   // Make function to call the api
   async function fetchData() {
     try {
       const res = await axios.get(
-        `http://103.111.204.131/apiwebpbi/api/getDataDue/IFCAPB/${user.user}`,
+        `http://103.111.204.131/apiwebpbi/api/getDataDueSummary/IFCAPB/${user.user}`,
       );
       console.log('res datacurrent', res.data.Data);
       setDataCurrent(res.data.Data);
+      setLoadingInvoice(false);
       // console.log('DATA DUE DATE -->', dataCurrent);
     } catch (error) {
-      setErrors(error);
+      setErrors(error.ressponse.data);
       // alert(hasError.toString());
     }
   }
 
   // ----- ini gak kepake kan? ga ada yang panggil const sum
   const sum =
-    dataCurrent != null
+    dataCurrent != 0
       ? dataCurrent.reduceRight((max, bills) => {
           return (max += parseInt(bills.mbal_amt));
         }, 0)
@@ -244,12 +180,13 @@ const Billing = ({
   async function fetchDataCurrent() {
     try {
       const res = await axios.get(
-        `http://103.111.204.131/apiwebpbi/api/getDataCurrent/IFCAPB/${user.user}`,
+        `http://103.111.204.131/apiwebpbi/api/getDataCurrentSummary/IFCAPB/${user.user}`,
       );
       setData(res.data.Data);
-      console.log('fetchDataCurrent', data);
+      console.log('data not due', data);
+      setLoadingInvoice(false);
     } catch (error) {
-      setErrors(error);
+      setErrors(error.ressponse.data);
       // alert(hasError.toString());
     }
   }
@@ -259,62 +196,12 @@ const Billing = ({
     fetchDataCurrent();
   }, []);
 
-  const getAttachment = async data => {
-    const entity_cd = entity;
-    const project = project_no;
-    const debtor_acct = data.debtor_acct;
-    setDebtor(debtor_acct);
-    console.log('entity', entity_cd);
-    console.log('project', project);
-    console.log('debtor', debtor_acct);
-
-    // console.log('params api attach', 'http://103.111.204.131/apiwebpbi/api/getDataAttach/IFCAPB/${entity_cd}/${project_no}/${debtor_acct}')
-    try {
-      const res = await axios.get(
-        `http://103.111.204.131/apiwebpbi/api/getDataAttach/IFCAPB/${entity_cd}/${project_no}/${debtor_acct}`,
-      );
-      console.log('res atatchment billing', res.data.Data);
-      setAttachment(res.data.Data);
-    } catch (error) {
-      console.log('error attach get', error);
-      setErrors(error);
-      // alert(hasError.toString());
-    }
-  };
-
-  const clickAttach = data => {
-    console.log('data params attach', data);
-    if (debtor == '') {
-      // alert('Please choose debtor first');
-      setMessage('Please choose debtor first');
-      showModalSuccess(true);
-    } else {
-      if (data == '' || data == null) {
-        // alert('no pdf here');
-        setMessage('File Attachment not found for this debtor account.');
-        showModalSuccess(true);
-      } else {
-        console.log('url pdf', data[0].link_url);
-        const url_attach = data[0].link_url;
-        openAttachment(url_attach);
-      }
-    }
-  };
-
-  const openAttachment = url_attach => {
-    navigation.navigate('AttachmentBilling', url_attach);
-  };
-
-  const onCloseModal = () => {
-    showModalSuccess(false);
-  };
-
   return (
     <SafeAreaView
       style={[BaseStyle.safeAreaView, {flex: 1}]}
       edges={['right', 'top', 'left']}>
       <Header
-        title={t('Billing')}
+        title={t('Invoice')}
         renderLeft={() => {
           return (
             <Icon
@@ -355,12 +242,13 @@ const Billing = ({
             </View>
           ))}
         </View>
+
         <View style={{flex: 1, paddingHorizontal: 20}}>
-          {tab.id == 1 && dataCurrent != null
-            ? dataCurrent.map(item => (
+          {tab.id == 1 && dataCurrent != 0
+            ? dataCurrent.map((item, key) => (
                 <ListTransactionExpand
                   onPress={() => navigation.navigate('FHistoryDetail')}
-                  key={item.id}
+                  // key={item.id}
                   tower={item.tower}
                   name={item.name}
                   trx_type={item.trx_type}
@@ -373,20 +261,26 @@ const Billing = ({
                   debtor_acct={item.debtor_acct}
                   entity_cd={entity}
                   project_no={project_no}
+                  email={user.user}
+                  key={key}
                 />
               ))
-            : tab.id == 1 && (
-                <View
-                  style={{
-                    flex: 1,
-                    // height: '100%',
-                    marginTop: '70%',
-                    // justifyContent: 'center',
-                    // alignContent: 'center',
-                    // alignItems: 'center',
-                    // alignSelf: 'center',
-                  }}>
-                  {/* <IconFontisto
+            : tab.id == 1 &&
+              (loadingInvoice ? (
+                <ActivityIndicator />
+              ) : (
+                tab.id == 1 && (
+                  <View
+                    style={{
+                      flex: 1,
+                      // height: '100%',
+                      marginTop: '70%',
+                      // justifyContent: 'center',
+                      // alignContent: 'center',
+                      // alignItems: 'center',
+                      // alignSelf: 'center',
+                    }}>
+                    {/* <IconFontisto
                     name="holiday-village"
                     size={40}
                     color={colors.primary}
@@ -396,26 +290,28 @@ const Billing = ({
                       alignItems: 'center',
                       alignSelf: 'center',
                     }}></IconFontisto> */}
-                  <Text
-                    style={{
-                      justifyContent: 'center',
-                      alignContent: 'center',
-                      alignItems: 'center',
-                      alignSelf: 'center',
-                      fontSize: 16,
-                      marginTop: 10,
-                    }}>
-                    Sorry! Data not available.
-                  </Text>
-                </View>
-              )}
+                    <Text
+                      style={{
+                        justifyContent: 'center',
+                        alignContent: 'center',
+                        alignItems: 'center',
+                        alignSelf: 'center',
+                        fontSize: 16,
+                        marginTop: 10,
+                      }}>
+                      Sorry! Data not available.
+                    </Text>
+                  </View>
+                )
+              ))}
         </View>
         <View style={{flex: 1, paddingHorizontal: 20}}>
           {tab.id == 2 && data != null
-            ? data.map(item => (
+            ? data.map((item, key) => (
                 <ListTransactionExpand
-                  onPress={() => alert('attach')}
-                  key={item.id}
+                  key={key}
+                  onPress={() => navigation.navigate('FHistoryDetail')}
+                  // key={item.id}
                   tower={item.tower}
                   name={item.name}
                   trx_type={item.trx_type}
@@ -428,20 +324,25 @@ const Billing = ({
                   debtor_acct={item.debtor_acct}
                   entity_cd={entity}
                   project_no={project_no}
+                  email={user.user}
                 />
               ))
-            : tab.id == 2 && (
-                <View
-                  style={{
-                    flex: 1,
-                    // height: '100%',
-                    marginTop: '70%',
-                    // justifyContent: 'center',
-                    // alignContent: 'center',
-                    // alignItems: 'center',
-                    // alignSelf: 'center',
-                  }}>
-                  {/* <IconFontisto
+            : tab.id == 2 &&
+              (loadingInvoice ? (
+                <ActivityIndicator />
+              ) : (
+                tab.id == 2 && (
+                  <View
+                    style={{
+                      flex: 1,
+                      // height: '100%',
+                      marginTop: '70%',
+                      // justifyContent: 'center',
+                      // alignContent: 'center',
+                      // alignItems: 'center',
+                      // alignSelf: 'center',
+                    }}>
+                    {/* <IconFontisto
                     name="holiday-village"
                     size={40}
                     color={colors.primary}
@@ -451,67 +352,20 @@ const Billing = ({
                       alignItems: 'center',
                       alignSelf: 'center',
                     }}></IconFontisto> */}
-                  <Text
-                    style={{
-                      justifyContent: 'center',
-                      alignContent: 'center',
-                      alignItems: 'center',
-                      alignSelf: 'center',
-                      fontSize: 16,
-                      marginTop: 10,
-                    }}>
-                    Sorry! Data not available.
-                  </Text>
-                </View>
-              )}
-        </View>
-
-        <View>
-          <Modal
-            isVisible={modalSuccessVisible}
-            style={{height: '100%'}}
-            onBackdropPress={() => showModalSuccess(false)}>
-            <View
-              style={{
-                // flex: 1,
-
-                // alignContent: 'center',
-                padding: 10,
-                backgroundColor: '#fff',
-                // height: ,
-                borderRadius: 8,
-              }}>
-              <View style={{alignItems: 'center'}}>
-                <Text
-                  style={{
-                    fontSize: 16,
-                    fontWeight: 'bold',
-                    color: colors.primary,
-                    marginBottom: 10,
-                  }}>
-                  {'Warning!'}
-                </Text>
-                <Text>{message}</Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'flex-end',
-                }}>
-                <Button
-                  style={{
-                    marginTop: 10,
-                    // marginBottom: 10,
-
-                    width: 70,
-                    height: 40,
-                  }}
-                  onPress={() => onCloseModal()}>
-                  <Text style={{fontSize: 13}}>{t('OK')}</Text>
-                </Button>
-              </View>
-            </View>
-          </Modal>
+                    <Text
+                      style={{
+                        justifyContent: 'center',
+                        alignContent: 'center',
+                        alignItems: 'center',
+                        alignSelf: 'center',
+                        fontSize: 16,
+                        marginTop: 10,
+                      }}>
+                      Sorry! Data not available.
+                    </Text>
+                  </View>
+                )
+              ))}
         </View>
       </ScrollView>
     </SafeAreaView>

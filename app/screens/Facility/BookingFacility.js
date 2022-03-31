@@ -240,13 +240,14 @@ function BookingFacility({route}) {
             setEntity(dat.entity_cd);
             setProjectNo(dat.project_no);
             getDateBook(dat);
-            getdata();
+            getdata(dat);
             // const jsonValue = JSON.stringify(dat);
             //   setdataFormHelp(saveStorage);
             // console.log('storage', saveStorage);
             // dataArr.push(jsonValue);
           }
         });
+
         // AsyncStorage.setItem('@DataTower', dataArr);
         setArrDataTowerUser(arrDataTower);
 
@@ -263,7 +264,7 @@ function BookingFacility({route}) {
     setTimeout(() => {
       setLoading(false);
       getTower(users);
-      // getdata();
+
       // setSpinner(false);
     }, 3000);
   }, []);
@@ -293,7 +294,7 @@ function BookingFacility({route}) {
         // console.log('datas nih dipake buat entity projek', datas);
         setData(res.data);
         setDatabookDate(res.data);
-
+        // getdata();
         getBooked(datas, res.data, '');
         setSpinner(false);
       })
@@ -302,10 +303,10 @@ function BookingFacility({route}) {
       .finally(() => setLoading(false));
   };
 
-  const getdata = async () => {
-    const entity_cd = dataTowerUser.entity_cd;
-    console.log('next abis tower getdata', entity);
-    const project_no = dataTowerUser.project_no;
+  const getdata = async datas => {
+    const entity_cd = datas.entity_cd;
+    console.log('entity dari setentity', entity);
+    const project_no = datas.project_no;
     const obj_data = params;
     //ini bentuknya array, hany ambil yang array 0 aja, krn kayaknya sama semua deh facility_cd nya
     // console.log('obj data', obj_data);

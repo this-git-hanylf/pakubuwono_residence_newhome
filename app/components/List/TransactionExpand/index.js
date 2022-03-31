@@ -1,4 +1,4 @@
-import Text from '@components/Text';
+import {Text, Button} from '@components';
 import ListTransaction from '@components/List/Transaction';
 import PropTypes from 'prop-types';
 import React, {useState, Fragment, useEffect} from 'react';
@@ -6,9 +6,11 @@ import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import styles from './styles';
 import {useTheme} from '@config';
 import numFormat from '../../numFormat';
-import axios from 'axios';
 import {useNavigation, useRoute} from '@react-navigation/core';
+import Modal from 'react-native-modal';
 import {useTranslation} from 'react-i18next';
+import axios from 'axios';
+import {ActivityIndicator} from 'react-native-paper';
 
 const TransactionExpand = ({
   style = {
@@ -38,6 +40,7 @@ const TransactionExpand = ({
   debtor_acct = '',
   entity_cd = '',
   project_no = '',
+  email = '',
   ListTransactionProps = {
     icon: 'exchange-alt',
     name: name,
@@ -51,6 +54,7 @@ const TransactionExpand = ({
     debtor_acct: debtor_acct,
     entity_cd: entity_cd,
     project_no: project_no,
+    email: email,
   },
   isExpandInit = false,
 }) => {
@@ -61,12 +65,50 @@ const TransactionExpand = ({
   const [message, setMessage] = useState('');
   const [hasError, setErrors] = useState(false);
   const {t} = useTranslation();
+  const [datadetailDateDue, setDetailDateDue] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const clickAttachment = data => {
-    console.log('data fior attach', data);
+  const detailDateDue = async () => {
+    try {
+      const res = await axios.get(
+        `http://103.111.204.131/apiwebpbi/api/getDataDue/IFCAPB/${email}/${entity_cd}/${project_no}/${debtor_acct}/${doc_no}`,
+      );
+      setDetailDateDue(res.data.Data);
+      console.log('detail date due -->', res.data.Data);
+      setLoading(false);
+    } catch (error) {
+      setErrors(error);
+      // alert(hasError.toString());
+    }
+  };
+
+  const sumTotal =
+    datadetailDateDue != 0
+      ? datadetailDateDue.reduceRight((max, bills) => {
+          return (max += parseInt(bills.mbal_amt));
+        }, 0)
+      : null;
+  const math_total = Math.floor(sumTotal);
+  const replaceTotal = math_total
+    .toFixed()
+    .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+  console.log('sum detail mbal mont', sumTotal);
+  console.log('replace total', replaceTotal);
+
+  // useEffect(() => {
+  //   detailDateDue();
+  // }, []);
+
+  const clickExpand = () => {
+    console.log('expand di klik');
+    setIsExpand(!isExpand);
+    detailDateDue();
+  };
+
+  const clickAttachment = () => {
     const params = {
-      entity_cd: data.entity_cd,
-      project_no: data.project_no,
+      entity_cd: entity_cd,
+      project_no: project_no,
       debtor_acct: debtor_acct,
       doc_no: doc_no,
     };
@@ -79,6 +121,10 @@ const TransactionExpand = ({
     // } else {
 
     // }
+  };
+
+  const onCloseModal = () => {
+    showModalSuccess(false);
   };
 
   return (
@@ -97,8 +143,11 @@ const TransactionExpand = ({
           },
         ])}
         {...ListTransactionProps}
-        onPress={() => setIsExpand(!isExpand)}
+        onPress={() => clickExpand()}
       />
+      <Button style={{height: 35}} onPress={() => clickAttachment()}>
+        <Text style={{color: '#fff', fontSize: 14}}>Attachment</Text>
+      </Button>
       {isExpand && (
         <View
           style={StyleSheet.flatten([
@@ -106,72 +155,89 @@ const TransactionExpand = ({
             isExpand && {
               borderBottomWidth: 1,
               borderBottomColor: colors.border,
+              marginTop: 15,
             },
           ])}>
-          <View style={[styles.container, style.paddingTop]}>
+          {loading ? (
+            <ActivityIndicator color={colors.primary} style={{marginTop: 20}} />
+          ) : datadetailDateDue != 0 ? (
             <View>
-              <Text subhead blod style={styles.title}>
-                {doc_no}
-              </Text>
-              <Text subhead thin style={styles.title}>
-                {doc_date}
-              </Text>
-              <Text
-                Bold
-                footnote
-                grayColor
-                numberOfLines={2}
-                style={styles.content}>
-                {descs}
-              </Text>
-            </View>
-            <View style={styles.viewRight}>
-              <Text subhead Bold style={styles.title}>
-                Total
-              </Text>
-              <Text headline>{mbal_amt}</Text>
+              {datadetailDateDue.map((item, key) => (
+                <View key={key}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      width: '100%',
+                      // paddingHorizontal: 10,
+                      paddingVertical: 5,
+                    }}>
+                    <View style={{width: '50%', paddingLeft: 10}}>
+                      <Text subhead>{item.descs}</Text>
+                    </View>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
 
-              <TouchableOpacity
-                onPress={() =>
-                  clickAttachment({entity_cd, project_no, debtor_acct})
-                }>
-                <Text
-                  style={{color: colors.primary, fontSize: 15, paddingTop: 10}}
-                  bold>
-                  Attachment
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
+                        width: '35%',
+                      }}>
+                      <Text>Rp. </Text>
+                      <Text subhead>
+                        {item.mbal_amt.replace(
+                          /(\d)(?=(\d{3})+(?!\d))/g,
+                          '$1.',
+                        )}
+                        {/* 100.000.000.00 */}
+                      </Text>
+                      {/* <Text subhead>{numFormat(item.mbal_amt)}</Text> */}
+                    </View>
+                  </View>
+                </View>
+              ))}
+              <View
+                style={{
+                  borderTopWidth: 0.5,
+                  borderStyle: 'dashed',
+                  borderColor: colors.primary,
+                  marginLeft: 9,
+                }}></View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  width: '100%',
+                  // paddingHorizontal: 10,
+                  paddingVertical: 5,
+                }}>
+                <View style={{width: '50%', paddingLeft: 10}}>
+                  <Text subhead bold style={{fontSize: 16}}>
+                    Total
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
 
-          {/* <View style={[styles.container, style]}>
-            <View>
-              <Text subhead light style={styles.title}>
-                {feeTitle}
-              </Text>
-              <Text headline>{feeValue}</Text>
+                    width: '35%',
+                  }}>
+                  <Text subhead bold style={{fontSize: 16}}>
+                    Rp.{' '}
+                  </Text>
+                  <Text subhead bold style={{fontSize: 16}}>
+                    {replaceTotal}.00
+                    {/* 100.000.000.00 */}
+                  </Text>
+                  {/* <Text subhead>{numFormat(item.mbal_amt)}</Text> */}
+                </View>
+              </View>
             </View>
-            <View style={styles.viewRight}>
-              <Text subhead light style={styles.title}>
-                {costTitle}
-              </Text>
-              <Text headline>{costValue}</Text>
+          ) : (
+            <View style={{alignSelf: 'center'}}>
+              <Text>Not have data detail </Text>
             </View>
-          </View>
-          <View style={[styles.container, style]}>
-            <View>
-              <Text subhead light style={styles.title}>
-                {changeTitle}
-              </Text>
-              <Text headline>{changeValue}</Text>
-            </View>
-            <View style={styles.viewRight}>
-              <Text subhead light style={styles.title}>
-                {currentTitle}
-              </Text>
-              <Text headline>{currentValue}</Text>
-            </View>
-          </View> */}
+          )}
         </View>
       )}
     </View>
@@ -184,6 +250,7 @@ TransactionExpand.propTypes = {
   tradingPairValue: PropTypes.string,
   priceTitle: PropTypes.string,
   price: PropTypes.string,
+  email: PropTypes.string,
   lot_no: PropTypes.string,
   debtor_acct: PropTypes.string,
   entity_cd: PropTypes.string,
@@ -196,7 +263,6 @@ TransactionExpand.propTypes = {
   changeValue: PropTypes.string,
   currentTitle: PropTypes.string,
   currentValue: PropTypes.string,
-  lot_no: PropTypes.string,
 };
 
 export default TransactionExpand;

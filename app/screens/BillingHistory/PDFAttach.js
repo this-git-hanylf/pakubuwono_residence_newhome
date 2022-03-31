@@ -43,7 +43,7 @@ const PDFAttach = props => {
       style={BaseStyle.safeAreaView}
       edges={['right', 'top', 'left']}>
       <Header
-        title={t('Attachment Invoice')}
+        title={t('Attachment Billing')}
         renderLeft={() => {
           return (
             <Icon

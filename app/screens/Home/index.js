@@ -63,6 +63,7 @@ const Home = props => {
   const [heightHeader, setHeightHeader] = useState(Utils.heightHeader());
   const scrollY = useRef(new Animated.Value(0)).current;
   const [getDataDue, setDataDue] = useState([]);
+  const [getDataHistory, setDataHistory] = useState([]);
   const [hasError, setErrors] = useState(false);
   const [data, setData] = useState([]);
 
@@ -111,20 +112,32 @@ const Home = props => {
       //  console.log('data get data due', getDataDue);
     } catch (error) {
       setErrors(error);
-      alert('ini alert image', hasError.toString());
+      // alert('ini alert image', hasError.toString());
     }
   }
 
   async function fetchDataDue() {
     try {
       const res = await axios.get(
-        `http://103.111.204.131/apiwebpbi/api/getDataDue/IFCAPB/${user.user}`,
+        `http://103.111.204.131/apiwebpbi/api/getDataDueSummary/IFCAPB/${user.user}`,
       );
       setDataDue(res.data.Data);
-      console.log('data get data due', getDataDue);
+      console.log('data get data due', res.data.Data);
     } catch (error) {
-      setErrors(error.ressponse.data);
-      alert(hasError.toString());
+      setErrors(error);
+      // alert(hasError.toString());
+    }
+  }
+  async function fetchDataHistory() {
+    try {
+      const res = await axios.get(
+        `http://103.111.204.131/apiwebpbi/api/getSummaryHistory/IFCAPB/${user.user}`,
+      );
+      setDataHistory(res.data.Data);
+      console.log('data get history', res.data.Data);
+    } catch (error) {
+      setErrors(error);
+      // alert(hasError.toString());
     }
   }
 
@@ -132,7 +145,7 @@ const Home = props => {
 
   //TOTAL
   const sum =
-    getDataDue == null
+    getDataDue == 0
       ? 0
       : getDataDue.reduceRight((max, bills) => {
           return (max += parseInt(bills.mbal_amt));
@@ -140,15 +153,33 @@ const Home = props => {
 
   console.log('sum', sum);
 
+  const sumHistory =
+    getDataHistory == null
+      ? 0
+      : getDataHistory.reduceRight((max, bills) => {
+          return (max += parseInt(bills.mdoc_amt));
+        }, 0);
+
+  console.log('sumHistory', sumHistory);
+
   //LENGTH
   const onSelect = indexSelected => {};
 
   const unique =
-    getDataDue == null ? 0 : [...new Set(getDataDue.map(item => item.doc_no))];
+    getDataDue == 0 ? 0 : [...new Set(getDataDue.map(item => item.doc_no))];
   console.log('unique', unique);
 
   const invoice = unique.length;
   console.log('invoice', invoice);
+
+  const uniqueHistory =
+    getDataHistory == null
+      ? 0
+      : [...new Set(getDataHistory.map(item => item.doc_no))];
+  console.log('uniqueHistory', uniqueHistory);
+
+  const invoiceHistory = uniqueHistory.length;
+  console.log('invoiceHistory', invoiceHistory);
 
   const headerBackgroundColor = scrollY.interpolate({
     inputRange: [0, 140],
@@ -179,6 +210,7 @@ const Home = props => {
     // console.log('about', data);
     setTimeout(() => {
       fetchDataDue();
+      fetchDataHistory();
       // fetchAbout();
       // dataImage();
       setLoading(false);
@@ -222,7 +254,7 @@ const Home = props => {
             }}
           /> */}
           {/* <V style={{paddingTop: 10}}> */}
-          <Animated.View
+          {/* <Animated.View
             style={[
               styles.headerImageStyle,
               {
@@ -234,9 +266,8 @@ const Home = props => {
             ]}>
             <Swiper
               height={240}
-              onMomentumScrollEnd={
-                (e, state, context) => state.index
-                // console.log('index:', state.index)
+              onMomentumScrollEnd={(e, state, context) =>
+                console.log('index:', state.index)
               }
               autoplay={true}
               autoplayTimeout={5}
@@ -281,7 +312,8 @@ const Home = props => {
                       flex: 1,
                       justifyContent: 'center',
                       backgroundColor: 'transparent',
-                    }}>
+                    }}
+                    key={key}>
                     <Image
                       key={key}
                       // key={'fast-' + `${item.id}`}
@@ -297,6 +329,74 @@ const Home = props => {
                 );
               })}
             </Swiper>
+          </Animated.View> */}
+
+          <Animated.View
+            style={[
+              styles.headerImageStyle,
+              {
+                opacity: headerImageOpacity,
+                height: heightViewImg,
+                // flex: 1,
+              },
+            ]}>
+            <Swiper
+              dotStyle={{
+                backgroundColor: BaseColor.dividerColor,
+                marginBottom: 8,
+              }}
+              activeDotStyle={{
+                marginBottom: 8,
+              }}
+              paginationStyle={{
+                bottom: -18,
+                // left: null,
+                // right: 10,
+              }}
+              loop={true}
+              autoplayTimeout={5}
+              autoplay={true}
+              activeDotColor={colors.primary}
+              removeClippedSubviews={false}
+              onIndexChanged={index => onSelect(index)}>
+              {data.map((item, key) => {
+                return (
+                  <View
+                    style={{
+                      flex: 1,
+                      justifyContent: 'center',
+                      backgroundColor: 'transparent',
+                    }}
+                    key={key}>
+                    <Image
+                      key={key}
+                      // key={'fast-' + `${item.id}`}
+                      // key={item.length}
+                      style={{
+                        flex: 1,
+                        width,
+                        // borderRadius: 10,
+                      }}
+                      source={{uri: `${item.pict}`}}
+                    />
+                  </View>
+                  // <TouchableOpacity
+                  //   key={key}
+                  //   style={{flex: 1}}
+                  //   activeOpacity={1}
+                  //   onPress={() =>
+                  //     navigation.navigate('PreviewImages', {images: data})
+                  //   }>
+                  //   <Image
+                  //     key={key}
+                  //     style={{flex: 1, width: '100%'}}
+                  //     // source={{uri: `${item.pict}`}}
+                  //     source={{uri: item.pict}}
+                  //   />
+                  // </TouchableOpacity>
+                );
+              })}
+            </Swiper>
           </Animated.View>
 
           {/* </ScrollView> */}
@@ -307,14 +407,20 @@ const Home = props => {
             style={{marginTop: 1}}
             title={mainNews.title}
           /> */}
-          <View style={{flexDirection: 'row', marginVertical: 15, padding: 20}}>
-            <View style={{flex: 1, paddingRight: 7}}>
+          <View
+            style={{
+              flexDirection: 'row',
+              marginVertical: 15,
+              paddingHorizontal: 20,
+              paddingVertical: 15,
+            }}>
+            {/* <View style={{flex: 1, paddingRight: 7}}>
               <CardReport06
                 style={{backgroundColor: colors.primary, borderRadius: 25}}
                 icon="arrow-up"
-                title="Invoice Due"
-                // price="$0.68"
-                percent={invoice == undefined ? 0 : invoice}
+                title="Invoice Outstanding"
+                price={invoice == undefined ? 0 : invoice}
+                percent={numFormat(sum)}
                 onPress={() => navigation.navigate('Billing')}
               />
             </View>
@@ -322,10 +428,30 @@ const Home = props => {
               <CardReport06
                 style={{backgroundColor: colors.primary, borderRadius: 25}}
                 icon="arrow-up"
-                title="Total"
-                // price="$0.68"
+                title="Invoice History"
+                price={invoiceHistory == undefined ? 0 : invoiceHistory}
+                percent={numFormat(sumHistory)}
+                onPress={() => navigation.navigate('BillingHistory')}
+              />
+            </View> */}
+            <View style={{flex: 1, paddingRight: 7}}>
+              <CardReport06
+                style={{backgroundColor: colors.primary, borderRadius: 25}}
+                icon="arrow-up"
+                title="Invoice Outstanding"
+                price={invoice == undefined ? 0 : invoice}
                 percent={numFormat(sum)}
                 onPress={() => navigation.navigate('Billing')}
+              />
+            </View>
+            <View style={{flex: 1, paddingLeft: 7}}>
+              <CardReport06
+                style={{backgroundColor: colors.primary, borderRadius: 25}}
+                icon="arrow-up"
+                title="Invoice History"
+                price={invoiceHistory == undefined ? 0 : invoiceHistory}
+                percent={numFormat(sumHistory)}
+                onPress={() => navigation.navigate('BillingHistory')}
               />
             </View>
           </View>

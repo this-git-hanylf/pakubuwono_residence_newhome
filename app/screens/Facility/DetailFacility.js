@@ -401,6 +401,7 @@ const DetailFacility = props => {
               )}
             </Swiper>
           </Animated.View>
+
           <View style={styles.paddingSrollView}>{data && detail}</View>
         </ScrollView>
       )}

@@ -663,7 +663,7 @@ export default BookingListDetail = props => {
                         </View>
 
                         <Button
-                          onPress={() => onAddPartner(datapartner)}
+                          onPress={() => onAddPartner()}
                           style={{height: 60, width: 60}}>
                           <IconIonicons
                             name="person-add"
