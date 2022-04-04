@@ -70,6 +70,8 @@ import BookingListDetail from '../screens/Facility/BookingListDetail';
 import ChoosePartner from '../screens/Facility/ChoosePartner';
 import ChooseEditPartner from '../screens/Facility/ChooseEditPartner';
 
+import {tabBarIconHaveNoty} from './components';
+
 const Stack = createStackNavigator();
 
 export const WalletTabScreens = {
@@ -85,6 +87,13 @@ export const WalletTabScreens = {
     options: {
       title: 'Emergency',
       tabBarIcon: ({color}) => tabBarIcon({color, name: 'phone'}),
+    },
+  },
+  NotificationScreen: {
+    component: Notification,
+    options: {
+      title: 'Notification',
+      tabBarIcon: ({color}) => tabBarIconHaveNoty({color, name: 'bell'}),
     },
   },
   ProfileScreen: {

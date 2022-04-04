@@ -118,7 +118,7 @@ const Detail = dataTiketPassProp => {
       })
       .catch(error => {
         console.log('error get tower api', error);
-        alert('error get');
+        // alert('error get');
       });
   };
 
@@ -164,7 +164,7 @@ const Detail = dataTiketPassProp => {
       })
       .catch(error => {
         console.log('err data multi', error);
-        alert('error nih');
+        // alert('error nih');
       });
   };
 
@@ -557,7 +557,7 @@ const Feedback = () => {
       })
       .catch(error => {
         console.log('error get tower api', error);
-        alert('error get');
+        // alert('error get');
       });
   };
 

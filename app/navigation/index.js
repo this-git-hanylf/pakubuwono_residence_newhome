@@ -75,46 +75,6 @@ const Navigator = props => {
     onProcess();
   }, []);
 
-  useEffect(() => {
-    messaging().onNotificationOpenedApp(remoteMessage => {
-      console.log(
-        'Notification caused app to open from background state:',
-        remoteMessage.notification,
-      );
-      console.log('remoteMessage.data.type', remoteMessage.data.type);
-      // navigation.navigate('Notification');
-
-      setDataNotif(true);
-      setisidataNotif(remoteMessage.notification);
-    });
-
-    // Check whether an initial notification is available
-    messaging()
-      .getInitialNotification()
-      .then(remoteMessage => {
-        if (remoteMessage) {
-          console.log(
-            'Notification caused app to open from quit state:',
-            remoteMessage.notification,
-          );
-          console.log('remoteMessage get initial notification', remoteMessage);
-          setInitialRoute('Home'); // e.g. "Settings"/
-          // setInitialRoute('Notification', {params: remoteMessage.notification});
-          setDataNotif(true);
-          setisidataNotif(remoteMessage.notification);
-          // navigation.navigate('Notification');
-        }
-        setLoading(false);
-      });
-
-    messaging().setBackgroundMessageHandler(function (payload) {
-      console.log('Message received: ', payload);
-      console.log('PAYLOAD DATA->>>', payload.data);
-      const parsedJSON = JSON.parse(payload.data['json-data']);
-      console.log('Actions:', parsedJSON);
-    });
-  }, []);
-
   const goToNotification = () => {
     // navigation.navigate('Notification');
   };

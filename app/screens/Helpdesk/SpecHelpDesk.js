@@ -336,7 +336,7 @@ export default function SpecHelpDesk() {
       })
       .catch(error => {
         console.log('error get floor api', error.response);
-        alert('error get');
+        // alert('error get');
       });
   };
 

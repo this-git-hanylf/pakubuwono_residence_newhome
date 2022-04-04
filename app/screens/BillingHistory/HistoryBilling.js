@@ -13,6 +13,7 @@ import {
   Tag,
   Price3Col,
   ListTransactionExpand,
+  Button,
 } from '@components';
 import {BaseStyle, useTheme} from '@config';
 
@@ -77,6 +78,24 @@ function HistoryBilling({route}) {
     fetchData();
   }, []);
 
+  const clickAttachment = () => {
+    const param = {
+      entity_cd: params.entity_cd,
+      project_no: params.project_no,
+      debtor_acct: params.debtor_acct,
+      doc_no: params.doc_no,
+    };
+    console.log('params for click attach]', param);
+    navigation.navigate('AttachmentBilling', param);
+    // if (data.debtor_acct == '') {
+    //   // alert('Please Choose Debtor First');
+    //   setMessage('Please choose debtor first');
+    //   showModalSuccess(true);
+    // } else {
+
+    // }
+  };
+
   return (
     <>
       <SafeAreaView
@@ -108,6 +127,11 @@ function HistoryBilling({route}) {
                 <Text semibold style={styles.subTitle}>
                   {params.name}
                 </Text>
+                <View>
+                  <Text semibold style={styles.subTitle}>
+                    Doc date : {params.doc_date}
+                  </Text>
+                </View>
               </View>
               <View style={styles.logo}>
                 <ImageBackground
@@ -120,17 +144,36 @@ function HistoryBilling({route}) {
 
             {dataCurrent.map((item, key) => (
               <View style={styles.blockTime} key={key}>
+                <View style={styles.blockFrom}>
+                  <View style={styles.contentWrapper}>
+                    <Text
+                      headline
+                      semibold
+                      numberOfLines={2}
+                      style={styles.title}>
+                      {item.descs}
+                    </Text>
+                  </View>
+                  <View semibold style={styles.contentWrapper}>
+                    <Text style={styles.title}>{numFormat(item.mdoc_amt)}</Text>
+                  </View>
+                </View>
+              </View>
+            ))}
+
+            {/* {dataCurrent.map((item, key) => (
+              <View style={styles.blockTime} key={key}>
                 <View style={styles.time}>
                   <View style={styles.contentWrapper}>
                     <Text semibold numberOfLines={2}>
                       {moment(item.doc_date).format('DD/MM/YY')}
                     </Text>
                   </View>
-                  {/* <View style={styles.contentWrapper}>
+                  <View style={styles.contentWrapper}>
                   <Text semibold>
                     {moment(item.due_date).format('DD/MM/YY')}
                   </Text>
-                </View> */}
+                </View>
                 </View>
                 <View style={styles.lineHori}>
                   <View style={[styles.dot, styles.dotBorder]}></View>
@@ -152,7 +195,7 @@ function HistoryBilling({route}) {
                   </View>
                 </View>
               </View>
-            ))}
+            ))} */}
 
             <BlockLine />
             <View style={styles.blockCode}>
@@ -182,6 +225,11 @@ function HistoryBilling({route}) {
                 </View>
               </View>
             </View>
+          </View>
+          <View style={{marginHorizontal: 20, paddingBottom: 20}}>
+            <Button style={{height: 35}} onPress={() => clickAttachment()}>
+              <Text style={{color: '#fff', fontSize: 14}}>Attachment</Text>
+            </Button>
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -283,7 +331,7 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
   },
   lineHori: {
-    flexDirection: 'column',
+    // flexDirection: 'column',
     alignItems: 'center',
     paddingHorizontal: 20,
   },

@@ -35,7 +35,7 @@ import {
   Dimensions,
 } from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import getUser from '../../selectors/UserSelectors';
 import HeaderCard from './HeaderCard';
 import HeaderHome from './HeaderHome';
@@ -45,6 +45,10 @@ import Categories from './Categories';
 import axios from 'axios';
 import * as Utils from '@utils';
 import numFormat from '../../components/numFormat';
+import messaging from '@react-native-firebase/messaging';
+import {notifikasi_nbadge, actionTypes} from '../../actions/NotifActions';
+import apiCall from '../../config/ApiActionCreator';
+import getNotifRed from '../../selectors/NotifSelectors';
 
 const wait = timeout => {
   return new Promise(resolve => setTimeout(resolve, timeout));
@@ -60,13 +64,17 @@ const Home = props => {
   const [list, setList] = useState(HomeListData);
   const [loading, setLoading] = useState(true);
   const user = useSelector(state => getUser(state));
+  const notif = useSelector(state => getNotifRed(state));
+  console.log('cobanotif di home', notif);
+  // const email = user.user;
+  const [email, setEmail] = useState(user.user);
   const [heightHeader, setHeightHeader] = useState(Utils.heightHeader());
   const scrollY = useRef(new Animated.Value(0)).current;
   const [getDataDue, setDataDue] = useState([]);
   const [getDataHistory, setDataHistory] = useState([]);
   const [hasError, setErrors] = useState(false);
   const [data, setData] = useState([]);
-
+  const dispatch = useDispatch();
   const [refreshing, setRefreshing] = useState(false);
 
   const {width} = Dimensions.get('window');
@@ -89,32 +97,78 @@ const Home = props => {
   // }, []);
 
   useEffect(() => {
-    axios
-      .get('http://103.111.204.131/ifcaprop-api/api/about')
-      .then(({data}) => {
-        console.log('data', data);
-        setData(data[0].images);
-      })
-      .catch(error => console.error(error))
-      .finally(() => setLoading(false));
+    messaging().onNotificationOpenedApp(remoteMessage => {
+      console.log(
+        'Notification caused app to open from background state:',
+        remoteMessage.notification,
+      );
+      navigation.navigate('Notification', remoteMessage);
+    });
+
+    // Check whether an initial notification is available
+    messaging()
+      .getInitialNotification()
+      .then(remoteMessage => {
+        if (remoteMessage) {
+          console.log(
+            'Notification caused app to open from quit state:',
+            remoteMessage.notification,
+          );
+          navigation.navigate('Notification', remoteMessage);
+        }
+        setLoading(false);
+      });
   }, []);
 
-  async function dataImage() {
-    try {
-      const res = await axios.get(
-        `http://103.111.204.131/ifcaprop-api/api/about`,
-      );
-      console.log('res image', res);
-      console.log('data images', res.data[0].images);
-      setData(res.data[0].images);
-      setLoading(false);
-      //  setDataDue(res.data.Data);
-      //  console.log('data get data due', getDataDue);
-    } catch (error) {
-      setErrors(error);
-      // alert('ini alert image', hasError.toString());
-    }
-  }
+  //untuk load badge notif
+  useEffect(() => {
+    dispatch(
+      apiCall(
+        `http://103.111.204.131/apiwebpbi/api/notification?email=${email}&entity_cd=01&project_no=01`,
+      ),
+    );
+  }, []);
+
+  // useEffect(() => {
+  //   axios
+  //     .get('http://103.111.204.131/ifcaprop-api/api/about')
+  //     .then(({data}) => {
+  //       console.log('data', data);
+  //       setData(data[0].images);
+  //     })
+  //     .catch(error => console.error(error))
+  //     .finally(() => setLoading(false));
+  // }, []);
+
+  const dataImage = async () => {
+    // try {
+    //   console.log('hit api images');
+    //   const res = await axios.get(
+    //     `http://34.87.121.155:2121/apiwebpbi/api/about/image`,
+    //   );
+    //   console.log('res image', res);
+    //   console.log('data images', res.data[0].images);
+    //   setData(res.data[0].images);
+    //   setLoading(false);
+    //   //  setDataDue(res.data.Data);
+    //   //  console.log('data get data due', getDataDue);
+    // } catch (error) {
+    //   setErrors(error);
+    //   // alert('ini alert image', hasError.toString());
+    // }
+    await axios
+      .get(`http://103.111.204.131/apiwebpbi/api/about/image`)
+      .then(res => {
+        console.log('res image', res.data.data);
+        // console.log('data images', res.data[0].images);
+        setData(res.data.data);
+        // return res.data;
+      })
+      .catch(error => {
+        console.log('error get about us image', error);
+        // alert('error get');
+      });
+  };
 
   async function fetchDataDue() {
     try {
@@ -205,6 +259,8 @@ const Home = props => {
 
   useEffect(() => {
     // console.log('galery', galery);
+    // getDataImage();
+    dataImage();
 
     console.log('datauser', user);
     // console.log('about', data);
@@ -213,6 +269,7 @@ const Home = props => {
       fetchDataHistory();
       // fetchAbout();
       // dataImage();
+
       setLoading(false);
     }, 1000);
   }, []);
@@ -331,6 +388,14 @@ const Home = props => {
             </Swiper>
           </Animated.View> */}
 
+          {/* ngetes data image null apa ngga
+           */}
+
+          {/* {data != null || data != 0 || data != '' ? (
+            <Text>ada data image disini</Text>
+          ) : (
+            <Text>gak ke load imagenya</Text>
+          )} */}
           <Animated.View
             style={[
               styles.headerImageStyle,
@@ -349,7 +414,7 @@ const Home = props => {
                 marginBottom: 8,
               }}
               paginationStyle={{
-                bottom: -18,
+                bottom: -20,
                 // left: null,
                 // right: 10,
               }}

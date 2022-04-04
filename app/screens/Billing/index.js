@@ -263,6 +263,7 @@ const Billing = ({
                   project_no={project_no}
                   email={user.user}
                   key={key}
+                  tab_id={1}
                 />
               ))
             : tab.id == 1 &&
@@ -325,6 +326,7 @@ const Billing = ({
                   entity_cd={entity}
                   project_no={project_no}
                   email={user.user}
+                  tab_id={2}
                 />
               ))
             : tab.id == 2 &&

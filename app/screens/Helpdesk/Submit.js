@@ -269,22 +269,31 @@ export default function SubmitHelpdesk({route, props}) {
       width: 500,
       height: 500,
 
-      multiple: true,
+      multiple: false,
     })
       .then(image => {
         console.log('received image', image);
-        for (var i = 0; i < image.length; i++) {
-          setImage({
-            image: [
-              {
-                uri: image[i].path,
-                width: image[i].width,
-                height: image[i].height,
-                mime: image[i].mime,
-              },
-            ],
-          });
-        }
+        setImage([
+          {
+            uri: image.path,
+            width: image.width,
+            height: image.height,
+            mime: image.mime,
+          },
+        ]);
+        // for (var i = 0; i < image.length; i++) {
+        //   // setImage({
+        //   //   image: [
+        //   //     {
+        //   //       uri: image[i].path,
+        //   //       width: image[i].width,
+        //   //       height: image[i].height,
+        //   //       mime: image[i].mime,
+        //   //     },
+        //   //   ],
+        //   // });
+
+        // }
       })
       .catch(e => console.log('tag', e));
   };
@@ -306,7 +315,11 @@ export default function SubmitHelpdesk({route, props}) {
     bodyData.append('email', passProp.dataDebtor.email);
     bodyData.append('entity_cd', passProp.entity_cd);
     bodyData.append('project_no', passProp.project_no);
-    bodyData.append('reportdate', '04 Nov 2021 08:47');
+    // bodyData.append('reportdate', '04 Nov 2021 08:47');
+    bodyData.append(
+      'reportdate',
+      moment(new Date()).format('DD MMMM YYYY h:mm'),
+    );
     bodyData.append('takenby', 'Bagus');
     bodyData.append('lotno', passProp.lot_no.lot_no);
     bodyData.append('debtoracct', passProp.dataDebtor.debtor_acct);
@@ -318,7 +331,10 @@ export default function SubmitHelpdesk({route, props}) {
     bodyData.append('reqby', passProp.reportName);
     bodyData.append('contactno', passProp.contactNo);
     bodyData.append('audit_user', passProp.data.audit_user);
-    bodyData.append('responddate', '04 Nov 2021 08:47');
+    bodyData.append(
+      'responddate',
+      moment(new Date()).format('DD MMMM YYYY h:mm'),
+    );
     bodyData.append('userfile', {
       uri: image[0].uri,
       name: 'image.jpg',
@@ -328,26 +344,26 @@ export default function SubmitHelpdesk({route, props}) {
     // navigation.navigate('Helpdesk');
     // setMessage('res pesan');
     // showModalSuccess(true);
-    return fetch(
-      'http://103.111.204.131/apiwebpbi/api/csentry-saveTicketWithImage',
-      {
-        method: 'post',
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-        body: bodyData,
-      },
-    )
-      .then(res => {
-        return res.json().then(resJson => {
-          // alert(resJson.Pesan);
-          setMessage(resJson.Pesan);
-          showModalSuccess(true);
-        });
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    // return fetch(
+    //   'http://103.111.204.131/apiwebpbi/api/csentry-saveTicketWithImage',
+    //   {
+    //     method: 'post',
+    //     headers: {
+    //       'Content-Type': 'multipart/form-data',
+    //     },
+    //     body: bodyData,
+    //   },
+    // )
+    //   .then(res => {
+    //     return res.json().then(resJson => {
+    //       // alert(resJson.Pesan);
+    //       setMessage(resJson.Pesan);
+    //       showModalSuccess(true);
+    //     });
+    //   })
+    //   .catch(err => {
+    //     console.log(err);
+    //   });
   }
 
   const removePhoto = async key => {

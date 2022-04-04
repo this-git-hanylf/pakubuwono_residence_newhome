@@ -165,7 +165,7 @@ export default function ViewHistoryDetail({route}) {
       })
       .catch(error => {
         console.log('error get tower api', error);
-        alert('error get');
+        // alert('error get');
       });
   };
 
@@ -210,7 +210,7 @@ export default function ViewHistoryDetail({route}) {
       })
       .catch(error => {
         console.log('err data multi', error);
-        alert('error nih');
+        // alert('error nih');
       });
   };
 
@@ -248,7 +248,7 @@ export default function ViewHistoryDetail({route}) {
       })
       .catch(error => {
         console.log('err data multi', error);
-        alert('error nih');
+        // alert('error nih');
       });
   };
 
