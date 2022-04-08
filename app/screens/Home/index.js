@@ -64,10 +64,11 @@ const Home = props => {
   const [list, setList] = useState(HomeListData);
   const [loading, setLoading] = useState(true);
   const user = useSelector(state => getUser(state));
+  console.log('user dihome', user);
   const notif = useSelector(state => getNotifRed(state));
   console.log('cobanotif di home', notif);
   // const email = user.user;
-  const [email, setEmail] = useState(user.user);
+  const [email, setEmail] = useState(user != null ? user.user : '');
   const [heightHeader, setHeightHeader] = useState(Utils.heightHeader());
   const scrollY = useRef(new Animated.Value(0)).current;
   const [getDataDue, setDataDue] = useState([]);
@@ -141,21 +142,6 @@ const Home = props => {
   // }, []);
 
   const dataImage = async () => {
-    // try {
-    //   console.log('hit api images');
-    //   const res = await axios.get(
-    //     `http://34.87.121.155:2121/apiwebpbi/api/about/image`,
-    //   );
-    //   console.log('res image', res);
-    //   console.log('data images', res.data[0].images);
-    //   setData(res.data[0].images);
-    //   setLoading(false);
-    //   //  setDataDue(res.data.Data);
-    //   //  console.log('data get data due', getDataDue);
-    // } catch (error) {
-    //   setErrors(error);
-    //   // alert('ini alert image', hasError.toString());
-    // }
     await axios
       .get(`http://103.111.204.131/apiwebpbi/api/about/image`)
       .then(res => {

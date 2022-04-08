@@ -344,26 +344,26 @@ export default function SubmitHelpdesk({route, props}) {
     // navigation.navigate('Helpdesk');
     // setMessage('res pesan');
     // showModalSuccess(true);
-    // return fetch(
-    //   'http://103.111.204.131/apiwebpbi/api/csentry-saveTicketWithImage',
-    //   {
-    //     method: 'post',
-    //     headers: {
-    //       'Content-Type': 'multipart/form-data',
-    //     },
-    //     body: bodyData,
-    //   },
-    // )
-    //   .then(res => {
-    //     return res.json().then(resJson => {
-    //       // alert(resJson.Pesan);
-    //       setMessage(resJson.Pesan);
-    //       showModalSuccess(true);
-    //     });
-    //   })
-    //   .catch(err => {
-    //     console.log(err);
-    //   });
+    return fetch(
+      'http://103.111.204.131/apiwebpbi/api/csentry-saveTicketWithImage',
+      {
+        method: 'post',
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        body: bodyData,
+      },
+    )
+      .then(res => {
+        return res.json().then(resJson => {
+          // alert(resJson.Pesan);
+          setMessage(resJson.Pesan);
+          showModalSuccess(true);
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   const removePhoto = async key => {
@@ -434,6 +434,14 @@ export default function SubmitHelpdesk({route, props}) {
           onChangeText={val => setTextLocation(val)}
           placeholder="Choose Location"
           editable={false}
+          style={{
+            color: '#555',
+            fontSize: 14,
+            borderColor: '#000',
+            borderWidth: 0.5,
+            borderRadius: 10,
+            marginHorizontal: 20,
+          }}
           value={textLocation}></TextInput>
       </TouchableOpacity>
 

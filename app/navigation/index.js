@@ -26,6 +26,7 @@ import Notification from '../screens/Notification';
 import getUser from '../selectors/UserSelectors';
 import Skip from '../screens/Skip';
 import EProductDetail from '../screens/EProductDetail';
+import ResetPassword from '../screens/ResetPassword';
 import messaging from '@react-native-firebase/messaging';
 
 const Navigator = props => {
@@ -106,6 +107,7 @@ const Navigator = props => {
             ) : (
               <RootStack.Screen name="Notification" component={Notification} />
             )}
+            <RootStack.Screen name="ResetPassword" component={ResetPassword} />
             <RootStack.Screen name="Skip" component={Skip} />
             <RootStack.Screen
               name="EProductDetail"

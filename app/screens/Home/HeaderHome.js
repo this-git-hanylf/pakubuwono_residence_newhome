@@ -23,7 +23,7 @@ const HeaderHome = props => {
         <View>
           {/* <Image source={Images.trip4} style={{width: '100%', height: 135}} /> */}
           <Image
-            source={require('../../assets/images/logo_about_us.jpg')}
+            source={require('../../assets/images/logo_at_home.jpeg')}
             style={{
               height: 50,
               width: 150,

@@ -116,30 +116,36 @@ export default function CategoryHelp({route}) {
       setLoading(false);
       getTower(users);
       getDataStorage();
+      defaultLocation();
       // getCategoryHelp;
       // setSpinner(false);
     }, 3000);
   }, []);
 
-  const handleSetRadio = (checked, type) => {
-    setSpinner(true);
-    // console.log('dataTowerUser', dataTowerUser);
-    // console.log('type', type);
-    // setTypeLocation(type);
-    if (type === 'P') {
-      //   console.log('type p');
-      //   getCategoryHelp();
-      setTypeLocation('P');
-      getTower(users);
-      getCategoryHelp(type);
-    } else {
-      setTypeLocation('U');
-      //   console.log('type u');
-      getTower(users);
-      getCategoryHelp(type);
-      //   getCategoryHelp(type);
-    }
+  const defaultLocation = () => {
+    getTower(users);
+    getCategoryHelp('U');
   };
+  // const handleSetRadio = (checked, type) => {
+  //   // setSpinner(true);
+  //   setTypeLocation('U');
+  //   //   console.log('type u');
+  //   getTower(users);
+  //   getCategoryHelp(type);
+  //   // if (type === 'P') {
+  //   //   //   console.log('type p');
+  //   //   //   getCategoryHelp();
+  //   //   setTypeLocation('P');
+  //   //   getTower(users);
+  //   //   getCategoryHelp(type);
+  //   // } else {
+  //   //   setTypeLocation('U');
+  //   //   //   console.log('type u');
+  //   //   getTower(users);
+  //   //   getCategoryHelp(type);
+  //   //   //   getCategoryHelp(type);
+  //   // }
+  // };
 
   const getCategoryHelp = async type => {
     const params = {
@@ -181,6 +187,7 @@ export default function CategoryHelp({route}) {
   };
 
   const handleClick = async (data, index) => {
+    // console.log('data group code?', data.group_cd);
     console.log('category_grop_cd', data.category_group_cd);
     console.log('loc_type', data.location_type);
     console.log('passprops', passProp);
@@ -245,8 +252,9 @@ export default function CategoryHelp({route}) {
           Choose Location Type
         </Text>
 
-        <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
-          <View style={{flexDirection: 'row'}}>
+        <View style={{flexDirection: 'row'}}>
+          {/* <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}> */}
+          {/* <View style={{flexDirection: 'row'}}>
             <RadioButton
               color={BaseColor.hijau_pkbw}
               //   uncheckedColor={'blue'}
@@ -258,14 +266,15 @@ export default function CategoryHelp({route}) {
             <Text headline style={{alignSelf: 'center', fontWeight: 'normal'}}>
               Public Area
             </Text>
-          </View>
-          <View style={{flexDirection: 'row'}}>
+          </View> */}
+          <View style={{flexDirection: 'row', marginTop: 10}}>
             <RadioButton
               color={BaseColor.hijau_pkbw}
               value="U"
-              status={typeLocation == 'U' ? 'checked' : 'unchecked'}
+              // status={typeLocation == 'U' ? 'checked' : 'unchecked'}
+              status={'checked'}
               // onPress={() => setTypeLocation('U')}
-              onPress={() => handleSetRadio(true, 'U')}
+              // onPress={() => handleSetRadio(true, 'U')}
             />
             <Text headline style={{alignSelf: 'center', fontWeight: 'normal'}}>
               Unit
@@ -273,7 +282,7 @@ export default function CategoryHelp({route}) {
           </View>
         </View>
         <View style={{marginTop: 20}}>
-          {!typeLocation ? (
+          {/* {!typeLocation ? (
             <Text
               headline
               style={{
@@ -284,7 +293,9 @@ export default function CategoryHelp({route}) {
               }}>
               Choose Location Type First
             </Text>
-          ) : spinner ? (
+          ) : */}
+
+          {spinner ? (
             <View>
               {/* <Spinner visible={this.state.spinner} /> */}
               <Placeholder style={{marginVertical: 4, paddingHorizontal: 10}}>

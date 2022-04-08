@@ -27,21 +27,38 @@ const AboutUs = props => {
 
   const [data, setData] = useState([]);
 
-  useEffect(() => {
-    axios
-      .get('http://103.111.204.131/ifcaprop-api/api/about')
-      .then(({data}) => {
-        console.log('data', data);
-        setData(data[0]);
+  // useEffect(() => {
+  //   axios
+  //     .get('http://103.111.204.131/ifcaprop-api/api/about')
+  //     .then(({data}) => {
+  //       console.log('data', data);
+  //       setData(data[0]);
+  //     })
+  //     .catch(error => console.error(error))
+  //     .finally(() => setLoading(false));
+  // }, []);
+
+  const dataAbout = async () => {
+    await axios
+      .get(`http://103.111.204.131/apiwebpbi/api/about`)
+      .then(res => {
+        console.log('res image', res.data.data);
+        // console.log('data images', res.data[0].images);
+
+        setData(res.data[0]);
+        // return res.data;
       })
-      .catch(error => console.error(error))
-      .finally(() => setLoading(false));
-  }, []);
+      .catch(error => {
+        console.log('error get about us', error);
+        // alert('error get');
+      });
+  };
 
   useEffect(() => {
     console.log('datauser', data);
     setTimeout(() => {
       setLoading(false);
+      dataAbout();
     }, 1000);
   }, []);
 
