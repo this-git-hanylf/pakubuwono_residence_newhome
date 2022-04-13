@@ -6939,6 +6939,11 @@ react-native-select-dropdown@^1.4.0:
   resolved "https://registry.yarnpkg.com/react-native-select-dropdown/-/react-native-select-dropdown-1.8.0.tgz#18f30972244678d1e1e191d166627900bd85ff0d"
   integrity sha512-Sb2ETrh/cAVPncT0Lq9S+hDmilQ3CfMDo0jgkymPQJ5yBY0TMBfvgNTbiI3/Z/W8CLX/wV81BWOEQb5x2ogJfw==
 
+react-native-signature-canvas@^4.3.0:
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/react-native-signature-canvas/-/react-native-signature-canvas-4.3.0.tgz#8f47e2671522664a66049a220613012c738fa3b2"
+  integrity sha512-RgAUmgHmPeZWAKwYcLqFYRKm2kL1q/yHd2CHUch1nLuVd82D+HCjIQ8WOdJSjWfgss3llRU4PBvnjU0aEhj8DQ==
+
 react-native-size-matters@^0.3.1:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/react-native-size-matters/-/react-native-size-matters-0.3.1.tgz#24d0cfc335a2c730f6d58bd7b43ea5a41be4b49f"

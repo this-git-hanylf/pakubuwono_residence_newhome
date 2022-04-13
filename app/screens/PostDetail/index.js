@@ -30,6 +30,15 @@ import {PlaceholderLine, Placeholder} from '@components';
 import {Button} from '../../components';
 import RenderHtml from 'react-native-render-html';
 import moment from 'moment';
+const url = 'https://awesome.contents.com/';
+const title = 'Awesome Contents';
+const message = 'Please check this out.';
+
+const options = {
+  title,
+  url,
+  message,
+};
 const PostDetail = props => {
   const {navigation, route} = props;
   const {t} = useTranslation();
@@ -65,9 +74,16 @@ const PostDetail = props => {
   };
 
   const onShare = async () => {
+    console.log('options', options);
+    const htmlnews = item.news_descs.replace(/<\/?[^>]+(>|$;)/gi, '');
+
+    const htmlnewsnbsp = htmlnews.replace(/&nbsp;/g, ' ');
+
+    const htmlnewsquot = htmlnewsnbsp.replace(/&quot;/g, '');
+
     try {
       const result = await Share.share({
-        message: item.news_descs,
+        message: htmlnewsquot,
         title: item.news_title,
         url: item.source,
       });

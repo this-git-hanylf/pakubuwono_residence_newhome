@@ -194,7 +194,7 @@ export default function ViewHistoryDetail({route}) {
         {config},
       )
       .then(res => {
-        // console.log('res tiket multi', res.data);
+        console.log('res tiket multi', res.data);
         const resTiketMulti = res.data.Data[0];
         const resImageMulti = res.data.DataImage; //
         const resDataAction = res.data.DataAction; //diisi oleh engineer,
@@ -549,6 +549,17 @@ export default function ViewHistoryDetail({route}) {
                       </View>
                     </View>
                   </View>
+                  {
+                    dataTiketMulti.status == 'R' ? null : (
+                      // {/* jika status approval di sv_entry hd = N, maka muncul tombol need approve. kalo status approval = Y berarti sudah diapprove */}
+                      <Button
+                        onPress={() => navigation.navigate('ScreenSignature')}>
+                        <Text>Need Approve</Text>
+                      </Button>
+                    )
+                    // {/* klik need approve munculin tempat tanda tangan, lalu save. save ke table apa? api nya sudah ada belum ya? save dalam bentuk apa ya? image? */}
+                    //   {/* set save data ke table sv entry hd, ubah status_approval, name_approval = nama user login, date_approval = tanggal dia tanda tangan, link_url = url image tanda tangan */}
+                  }
 
                   <View style={{marginTop: 20}}>
                     <Text style={{fontWeight: 'bold', fontSize: 14}}>
@@ -581,7 +592,6 @@ export default function ViewHistoryDetail({route}) {
                       );
                     })}
                   </View>
-
                   <View style={{marginTop: 20}}>
                     <Text style={{fontWeight: 'bold', fontSize: 14}}>
                       Gallery of Solved
@@ -615,7 +625,6 @@ export default function ViewHistoryDetail({route}) {
                       );
                     })}
                   </View>
-
                   {/* //contoh bikin signature  dtaro  sini */}
                   {/* {
                     (dataTiketMulti.status == 'A',

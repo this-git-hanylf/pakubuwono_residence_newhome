@@ -72,6 +72,8 @@ import ChooseEditPartner from '../screens/Facility/ChooseEditPartner';
 
 import {tabBarIconHaveNoty} from './components';
 
+import ScreenSignature from '../screens/Helpdesk/ScreenSignature';
+
 const Stack = createStackNavigator();
 
 export const WalletTabScreens = {
@@ -396,6 +398,11 @@ function MainStack() {
       <Stack.Screen
         name="ResetPassword"
         component={ResetScreen}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="ScreenSignature"
+        component={ScreenSignature}
         options={{headerShown: false}}
       />
     </Stack.Navigator>
