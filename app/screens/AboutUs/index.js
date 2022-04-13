@@ -16,10 +16,12 @@ import {ScrollView, View} from 'react-native';
 import styles from './styles';
 import {useTranslation} from 'react-i18next';
 import axios from 'axios';
+import {useDarkMode} from 'react-native-dark-mode';
 
 const AboutUs = props => {
   const {navigation} = props;
   const {colors} = useTheme();
+  const isDarkMode = useDarkMode();
   const {t} = useTranslation();
   const [loading, setLoading] = useState(true);
 
@@ -117,7 +119,13 @@ const AboutUs = props => {
               {data.about_us?.replace(/<\/?[^>]+(>|$;)/gi, '')}
             </Text>
           </View> */}
-          <View style={styles.address}>
+          <View
+            style={[
+              styles.address,
+              {
+                backgroundColor: isDarkMode ? BaseColor.grayColor : '#f5f5f5',
+              },
+            ]}>
             <Text
               semibold
               style={{
