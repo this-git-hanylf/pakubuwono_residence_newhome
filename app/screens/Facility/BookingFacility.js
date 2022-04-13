@@ -775,13 +775,15 @@ function BookingFacility({route}) {
                             justifyContent: 'space-between',
                             alignContent: 'space-between',
                             borderRadius: 15,
-                            borderColor: '#dbdbdb',
+                            // borderColor: '#dbdbdb',
+                            borderBottomColor: colors.text,
                             borderBottomWidth: 1,
                           },
                           !isExpand && {
                             borderBottomWidth: 1,
 
-                            borderBottomColor: colors.border,
+                            borderBottomColor: colors.text,
+                            // borderColor: '#dbdbdb',
                           },
                         ])}>
                         <Text key={items.id} bold>

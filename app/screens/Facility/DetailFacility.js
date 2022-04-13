@@ -205,7 +205,7 @@ const DetailFacility = props => {
         </Text>
 
         <View style={styles.specifications}>
-          <Text style={{fontSize: 16}}>
+          <Text style={{fontSize: 16, color: BaseColor.grayColor}}>
             Status :{' '}
             <Text style={{color: colors.primary, fontWeight: 'bold'}}>
               Open
@@ -293,6 +293,16 @@ const DetailFacility = props => {
                 <RenderHtml
                   source={{html: dataTerms.description}}
                   contentWidth={width}
+                  tagsStyles={{
+                    span: {fontSize: 16},
+                    p: {fontSize: 16, color: colors.text},
+                    li: {fontSize: 16, color: colors.text},
+                    ol: {fontSize: 16, color: colors.text},
+                  }}
+                  classesStyles={{
+                    'ql-size-large': {fontSize: 16, color: 'red'},
+                    'ql-size-small': {fontSize: 12, color: 'yellow'},
+                  }}
                 />
               </View>
             ))}

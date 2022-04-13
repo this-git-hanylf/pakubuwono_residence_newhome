@@ -105,7 +105,9 @@ const ModalProduct = props => {
           ))}
         </View> */}
             <View style={{paddingVertical: 20}}>
-              <Text style={{fontSize: 16}}>Detail Partners</Text>
+              <Text style={{fontSize: 16, color: colors.text}}>
+                Detail Partners
+              </Text>
             </View>
 
             <View key={item.rowID}>
@@ -120,15 +122,30 @@ const ModalProduct = props => {
               />
 
               <Text
-                style={{alignSelf: 'center', fontSize: 20, fontWeight: 'bold'}}>
+                style={{
+                  alignSelf: 'center',
+                  fontSize: 20,
+                  fontWeight: 'bold',
+                  color: colors.text,
+                }}>
                 {item.staff_first_name} {item.staff_last_name}
               </Text>
               <Text
-                style={{alignSelf: 'center', fontSize: 14, fontWeight: 'bold'}}>
+                style={{
+                  color: colors.text,
+                  alignSelf: 'center',
+                  fontSize: 14,
+                  fontWeight: 'bold',
+                }}>
                 {item.sex}
               </Text>
               <Text
-                style={{alignSelf: 'center', fontSize: 16, fontWeight: 'bold'}}>
+                style={{
+                  color: colors.text,
+                  alignSelf: 'center',
+                  fontSize: 16,
+                  fontWeight: 'bold',
+                }}>
                 {item.position}
                 {/* {item.ballboy == 1
                 ? 'Ballboy'
@@ -150,7 +167,7 @@ const ModalProduct = props => {
                 onPress={onApply}
                 // onItems={item}
               >
-                {t('Choose')}
+                {t('Back')}
               </Button>
             </View>
 

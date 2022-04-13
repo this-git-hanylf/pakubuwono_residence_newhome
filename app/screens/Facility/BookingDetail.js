@@ -46,6 +46,7 @@ import {EPostListData, ESortOption} from '@data';
 import * as Utils from '@utils';
 
 import SegmentControl from 'react-native-segment-control';
+import {color} from 'react-native-elements/dist/helpers';
 
 const dataProduk = [
   {id: 1, txt: 'first check', isChecked: false},
@@ -391,12 +392,20 @@ export default BookingDetail = props => {
                   justifyContent: 'space-between',
                 }}>
                 <CheckBox
-                  style={{justifyContent: 'center', alignSelf: 'center'}}
+                  style={{
+                    justifyContent: 'center',
+                    alignSelf: 'center',
+                    // backgroundColor: colors.primary,
+                    // borderRadius: 20,
+                  }}
+                  tintColors={colors.primary}
+                  tintColor={colors.primary}
                   value={item.isChecked}
                   onChange={() => {
                     handleChangePartner(item.rowID);
                   }}
                 />
+
                 <TouchableOpacity
                   onPress={() => chooseCoba(item)}
                   style={{width: 110}}>
@@ -449,6 +458,8 @@ export default BookingDetail = props => {
                   }}>
                   <CheckBox
                     style={{justifyContent: 'center', alignSelf: 'center'}}
+                    tintColors={colors.primary}
+                    tintColor={colors.primary}
                     value={item.isChecked}
                     onChange={() => {
                       handleChangePartner(item.rowID);
@@ -507,6 +518,8 @@ export default BookingDetail = props => {
                   }}>
                   <CheckBox
                     style={{justifyContent: 'center', alignSelf: 'center'}}
+                    tintColors={colors.primary}
+                    tintColor={colors.primary}
                     value={item.isChecked}
                     onChange={() => {
                       handleChangePartner(item.rowID);
@@ -565,6 +578,8 @@ export default BookingDetail = props => {
                   }}>
                   <CheckBox
                     style={{justifyContent: 'center', alignSelf: 'center'}}
+                    tintColors={colors.primary}
+                    tintColor={colors.primary}
                     value={item.isChecked}
                     onChange={() => {
                       handleChangePartner(item.rowID);
@@ -753,16 +768,16 @@ export default BookingDetail = props => {
     <View style={{flex: 1}}>
       <Header
         title={t('Booking Detail')}
-        // renderLeft={() => {
-        //   return (
-        //     <Icon
-        //       name="angle-left"
-        //       size={20}
-        //       color={colors.primary}
-        //       enableRTL={true}
-        //     />
-        //   );
-        // }}
+        renderLeft={() => {
+          return (
+            <Icon
+              name="angle-left"
+              size={20}
+              color={colors.primary}
+              enableRTL={true}
+            />
+          );
+        }}
         onPressLeft={() => {
           navigation.goBack();
         }}
