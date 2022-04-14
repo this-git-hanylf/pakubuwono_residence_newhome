@@ -55,6 +55,8 @@ export default function ScreenSignature({route}) {
   const [keyword, setKeyword] = useState('');
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
+  const paramsItem = route.params;
+  console.log('params items', paramsItem);
 
   const [dataTowerUser, setdataTowerUser] = useState([]);
   const [arrDataTowerUser, setArrDataTowerUser] = useState([]);
@@ -77,61 +79,35 @@ export default function ScreenSignature({route}) {
   const handleOK = async signature => {
     console.log(signature);
 
-    // var Base64Code = signature.split('data:image/png;base64,'); //base64Image is my image base64 string
-    // // console.log('basecode', Base64Code);
-    // const dirs = RNFetchBlob.fs.dirs;
-
-    // var path = dirs.DCIMDir + '/image.png';
-    // console.log('path', path);
-
-    // const datas = await RNFetchBlob.fs.writeFile(path, Base64Code[0], 'base64');
-    // console.log(datas[1], 'data');
-
-    // const imgwrap = RNFetchBlob.wrap(Base64Code);
-    //   console.log('imgrwrap', imgwrap);
-
-    //  var image_data = json.qr.split('data:image/png;base64,');
-    //       const image_datas = image_data[1];
-
-    //        const fs = fetch_blob.fs;
-    //        const dirs = fetch_blob.fs.dirs;
-    //        const file_path = dirs.DCIMDir + '/bigjpg.png';
-
-    //        // json.qr is base64 string "data:image/png;base64,..."
-
-    //        var image_data = json.qr.split('data:image/png;base64,');
-    //        image_data = image_data[1];
-
-    //        RNFS.writeFile(file_path, image_data, 'base64').catch(error => {
-    //          alert(JSON.stringify(error));
-    //        });
-
-    //    RNFetchBlob.fetch(
-    //      'POST',
-    //      'https://content.dropboxapi.com/2/files/upload',
-    //      {
-    //        // dropbox upload headers
-    //        Authorization: 'Bearer access-token...',
-    //        'Dropbox-API-Arg': JSON.stringify({
-    //          path: '/img-from-react-native.png',
-    //          mode: 'add',
-    //          autorename: true,
-    //          mute: false,
-    //        }),
-    //        'Content-Type': 'application/octet-stream',
-    //        // Change BASE64 encoded data to a file path with prefix `RNFetchBlob-file://`.
-    //        // Or simply wrap the file path with RNFetchBlob.wrap().
-    //      },
-    //      RNFetchBlob.wrap(PATH_TO_THE_FILE),
-    //    )
-    //      .then(res => {
-    //        console.log(res.text());
-    //      })
-    //      .catch(err => {
-    //        // error handling ..
-    //      });
-
     setSign(signature);
+
+    const data = {
+      dataSign: signature,
+
+      name_approval: paramsItem.name,
+
+      report_no: paramsItem.report_no,
+    };
+
+    console.log('data save signature', data);
+    const config = {
+      headers: {
+        accept: 'application/json',
+        'Content-Type': 'application/json',
+        token: '',
+      },
+    };
+    await axios
+      .post('http://103.111.204.131/apiwebpbi/api/csallticket-savesign', data, {
+        config,
+      })
+      .then(res => {
+        console.log('res save signature', res.data);
+      })
+      .catch(error => {
+        console.log('error get tower api', error.response.data);
+        alert('error get');
+      });
   };
 
   const handleEmpty = () => {
