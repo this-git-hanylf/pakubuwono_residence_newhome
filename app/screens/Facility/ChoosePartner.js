@@ -43,6 +43,7 @@ import getUser from '../../selectors/UserSelectors';
 import {EPostListData, ESortOption} from '@data';
 
 import SegmentControl from 'react-native-segment-control';
+import {RadioButton} from 'react-native-paper';
 import * as Utils from '@utils';
 
 export default ChoosePartner = props => {
@@ -280,6 +281,8 @@ export default ChoosePartner = props => {
                 }}>
                 <CheckBox
                   style={{justifyContent: 'center', alignSelf: 'center'}}
+                  tintColors={colors.primary}
+                  tintColor={colors.primary}
                   value={item.isChecked}
                   onChange={() => {
                     handleChangePartner(item.rowID);
@@ -341,6 +344,8 @@ export default ChoosePartner = props => {
                   <CheckBox
                     style={{justifyContent: 'center', alignSelf: 'center'}}
                     value={item.isChecked}
+                    tintColors={colors.primary}
+                    tintColor={colors.primary}
                     onChange={() => {
                       handleChangePartner(item.rowID);
                     }}
@@ -399,6 +404,8 @@ export default ChoosePartner = props => {
                   <CheckBox
                     style={{justifyContent: 'center', alignSelf: 'center'}}
                     value={item.isChecked}
+                    tintColors={colors.primary}
+                    tintColor={colors.primary}
                     onChange={() => {
                       handleChangePartner(item.rowID);
                     }}
@@ -457,6 +464,8 @@ export default ChoosePartner = props => {
                   <CheckBox
                     style={{justifyContent: 'center', alignSelf: 'center'}}
                     value={item.isChecked}
+                    tintColors={colors.primary}
+                    tintColor={colors.primary}
                     onChange={() => {
                       handleChangePartner(item.rowID);
                     }}

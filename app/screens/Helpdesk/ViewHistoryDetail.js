@@ -577,7 +577,7 @@ export default function ViewHistoryDetail({route}) {
                                 color: BaseColor.whiteColor,
                                 fontSize: 14,
                               }}>
-                              Show Signature
+                              Signature Approved
                             </Text>
                           </Button>
                         )}

@@ -11,9 +11,11 @@ import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import Modal from 'react-native-modal';
 import styles from './styles';
 import ModalSelector from 'react-native-modal-selector';
+import {useDarkMode} from 'react-native-dark-mode';
 
 const ModalDropdown_debtor = props => {
   const {colors} = useTheme();
+  const isDarkMode = useDarkMode();
   const {t} = useTranslation();
   const cardColor = colors.card;
   const {options, onApply, onSelectFilter, ...attrs} = props;
@@ -21,13 +23,16 @@ const ModalDropdown_debtor = props => {
   return (
     <View {...attrs}>
       {props.label && (
-        <Text style={{color: '#000'}}>{`Select ${props.label}`}</Text>
+        <Text
+          style={{
+            color: isDarkMode ? '#fff' : '#000',
+          }}>{`Select ${props.label}`}</Text>
       )}
 
       <ModalSelector
         data={props.data}
         optionTextStyle={{color: '#333'}}
-        selectedItemTextStyle={{color: '#3C85F1'}}
+        selectedItemTextStyle={{color: isDarkMode ? colors.primary : '#3C85F1'}}
         accessible={true}
         keyExtractor={item => item.debtor_acct}
         labelExtractor={item => item.debtor_acct + ` - ` + item.name} //khusus untuk debtor
@@ -36,11 +41,12 @@ const ModalDropdown_debtor = props => {
           props.onChange(option);
         }}>
         <TextInput
-          style={[{colors: '#000'}, _styles.input]}
+          style={[{color: isDarkMode ? 'red' : '#000'}, _styles.input]}
+          inputStyle={{color: isDarkMode ? 'grey' : colors.text}}
           onFocus={() => this.selector.open()}
           placeholder={props.label}
           editable={false}
-          placeholderTextColor="#a9a9a9"
+          placeholderTextColor={isDarkMode ? 'grey' : '#a9a9a9'}
           value={props.value}
         />
       </ModalSelector>

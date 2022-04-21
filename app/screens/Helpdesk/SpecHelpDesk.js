@@ -27,10 +27,12 @@ import styles from './styles';
 import ModalDropdown_debtor from '@components/ModalDropdown_debtor';
 import ModalDropdown_lotno from '@components/ModalDropdown_lotno';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useDarkMode} from 'react-native-dark-mode';
 
 export default function SpecHelpDesk() {
   const {t, i18n} = useTranslation();
   const {colors} = useTheme();
+  const isDarkMode = useDarkMode();
   const [keyword, setKeyword] = useState('');
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
@@ -391,7 +393,10 @@ export default function SpecHelpDesk() {
 
         <View style={[styles.subWrap, {paddingBottom: 0, marginBottom: 10}]}>
           <View>
-            <Text style={{color: '#3f3b38', fontSize: 14}}>Choose Project</Text>
+            <Text
+              style={{color: isDarkMode ? '#fff' : '#3f3b38', fontSize: 14}}>
+              Choose Project
+            </Text>
             {spinner ? (
               <View>
                 {/* <Spinner visible={this.state.spinner} /> */}
@@ -432,7 +437,7 @@ export default function SpecHelpDesk() {
 
             <Text
               style={{
-                color: '#3f3b38',
+                color: isDarkMode ? '#fff' : '#3f3b38',
                 fontSize: 14,
                 marginBottom: 0,
                 paddingBottom: 0,
@@ -463,7 +468,7 @@ export default function SpecHelpDesk() {
             <View style={{marginTop: 0}}>
               <Text
                 style={{
-                  color: '#3f3b38',
+                  color: isDarkMode ? '#fff' : '#3f3b38',
                   fontSize: 14,
                   marginBottom: 0,
                   paddingBottom: 0,
@@ -482,7 +487,7 @@ export default function SpecHelpDesk() {
             <View style={{marginTop: 15}}>
               <Text
                 style={{
-                  color: '#3f3b38',
+                  color: isDarkMode ? '#fff' : '#3f3b38',
                   fontSize: 14,
                   marginBottom: 0,
                   paddingBottom: 0,

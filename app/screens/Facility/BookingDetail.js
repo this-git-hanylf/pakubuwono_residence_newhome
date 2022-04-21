@@ -47,6 +47,7 @@ import * as Utils from '@utils';
 
 import SegmentControl from 'react-native-segment-control';
 import {color} from 'react-native-elements/dist/helpers';
+import {RadioButton} from 'react-native-paper';
 
 const dataProduk = [
   {id: 1, txt: 'first check', isChecked: false},
@@ -97,6 +98,8 @@ export default BookingDetail = props => {
 
   const [allFilter, setallFilter] = useState('All');
   const [coachFilter, setcoachFilter] = useState('');
+
+  const [cekpartner, setcekpartner] = useState('all');
 
   const getLotNo = async () => {
     try {
@@ -254,6 +257,8 @@ export default BookingDetail = props => {
   };
 
   const handleChangePartner = rowID => {
+    console.log('rowid partmer', rowID);
+
     let temp = partners.map(partners => {
       if (rowID === partners.rowID) {
         return {...partners, isChecked: !partners.isChecked};
@@ -391,6 +396,21 @@ export default BookingDetail = props => {
                   flex: 1,
                   justifyContent: 'space-between',
                 }}>
+                {/* <View style={{flexDirection: 'row'}}>
+                  <RadioButton
+                    color={BaseColor.hijau_pkbw}
+                    //   uncheckedColor={'blue'}
+                    value={item.isChecked}
+                    status={item.isChecked ? 'checked' : 'unchecked'}
+                    // onPress={() => }
+                    onPress={() => handleChangePartner(item.rowID)}
+                  />
+                  <RadioButton
+                    value="all"
+                    status={cekpartner === 'all' ? 'checked' : 'unchecked'}
+                    onPress={() => handleChangePartner(item.rowID)}
+                  />
+                </View> */}
                 <CheckBox
                   style={{
                     justifyContent: 'center',

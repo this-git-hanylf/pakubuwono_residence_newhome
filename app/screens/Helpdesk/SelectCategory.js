@@ -36,6 +36,7 @@ import styles from './styles';
 
 import {RadioButton} from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useDarkMode} from 'react-native-dark-mode';
 
 export default function SelectCategory({route}) {
   const {t, i18n} = useTranslation();
@@ -61,6 +62,7 @@ export default function SelectCategory({route}) {
   //   console.log('passProps urutan ketiga', passProp);
   //   const [passProp, setPassProps] = useState();
   const [passPropStorage, setPassPropStorage] = useState();
+  const isDarkMode = useDarkMode();
 
   const styleItem = {
     ...styles.profileItem,
@@ -137,7 +139,7 @@ export default function SelectCategory({route}) {
       //   category_group: 'CS',
       //   location_type: 'U', //ini nanti pake radiobutton
       // category_group: passProp.category_group_cd,
-      group_cd: passProp.category_group_cd, //hanya beda kolom sajaa, tetapi isi sama
+      // group_cd: passProp.category_group_cd, //hanya beda kolom sajaa, tetapi isi sama
 
       location_type: passProp.location_type, //ini nanti pake radiobutton
     };
@@ -285,7 +287,7 @@ export default function SelectCategory({route}) {
                 <TextInput
                   placeholder="Search Category"
                   style={{
-                    color: '#555',
+                    color: isDarkMode ? '#fff' : '#555',
                     fontSize: 14,
                     borderColor: '#000',
                     borderWidth: 0.5,

@@ -83,7 +83,8 @@ const PostDetail = props => {
 
     try {
       const result = await Share.share({
-        message: htmlnewsquot,
+        message: item.source,
+        // message: htmlnewsquot, //coba diganti sama source url yang tercantum di web
         title: item.news_title,
         url: item.source,
       });

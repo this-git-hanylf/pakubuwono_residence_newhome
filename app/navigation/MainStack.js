@@ -73,6 +73,7 @@ import ChooseEditPartner from '../screens/Facility/ChooseEditPartner';
 import {tabBarIconHaveNoty} from './components';
 
 import ScreenSignature from '../screens/Helpdesk/ScreenSignature';
+import Store from '../screens/Store';
 
 const Stack = createStackNavigator();
 
@@ -403,6 +404,11 @@ function MainStack() {
       <Stack.Screen
         name="ScreenSignature"
         component={ScreenSignature}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Store"
+        component={Store}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

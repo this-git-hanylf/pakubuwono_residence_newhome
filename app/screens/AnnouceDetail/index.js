@@ -137,7 +137,7 @@ const AnnouceDetail = props => {
               return (
                 <TouchableOpacity
                   key={key}
-                  style={{flex: 1}}
+                  // style={{flex: 1, width: '100%'}}
                   activeOpacity={1}
                   onPress={() =>
                     navigation.navigate('PreviewImages', {images: images})
@@ -145,11 +145,12 @@ const AnnouceDetail = props => {
                   <Image
                     key={key}
                     style={{
-                      flex: 1,
-                      width: '100%',
-                      height: 400,
+                      // flex: 1,
+                      // width: 800,
+                      height: 500,
                       marginTop: 20,
                     }}
+                    resizeMode="contain"
                     source={{uri: `${item.pict}`}}
                   />
                 </TouchableOpacity>
@@ -193,7 +194,10 @@ const AnnouceDetail = props => {
         style={[BaseStyle.safeAreaView]}
         forceInset={{top: 'always', bottom: 'always'}}>
         <Header
-          style={{width: '90%', alignSelf: 'center'}}
+          style={{
+            width: '90%',
+            alignSelf: 'center',
+          }}
           _numberOfLines={0}
           // title={t('Announce')}
           // renderLeft={() => {

@@ -11,10 +11,12 @@ import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import Modal from 'react-native-modal';
 import styles from './styles';
 import ModalSelector from 'react-native-modal-selector';
+import {useDarkMode} from 'react-native-dark-mode';
 
 const ModalDropdown_lotno = props => {
   const {colors} = useTheme();
   const {t} = useTranslation();
+  const isDarkMode = useDarkMode();
   const cardColor = colors.card;
   const {options, onApply, onSelectFilter, ...attrs} = props;
 
@@ -23,10 +25,14 @@ const ModalDropdown_lotno = props => {
       {props.data == null ? (
         <View {...attrs}>
           {props.label && (
-            <Text style={{color: '#000'}}>{`Select ${props.label}`}</Text>
+            <Text
+              style={{
+                color: isDarkMode ? '#fff' : '#000',
+              }}>{`Select ${props.label}`}</Text>
           )}
           <TextInput
             style={[{colors: '#000'}, _styles.input]}
+            inputStyle={{color: isDarkMode ? 'grey' : colors.text}}
             onFocus={() => this.selector.open()}
             placeholder={'LotNo not Available. Please choose another Debtor.'}
             editable={false}
@@ -37,12 +43,17 @@ const ModalDropdown_lotno = props => {
       ) : (
         <View {...attrs}>
           {props.label && (
-            <Text style={{color: '#000'}}>{`Select ${props.label}`}</Text>
+            <Text
+              style={{
+                color: isDarkMode ? '#fff' : '#000',
+              }}>{`Select ${props.label}`}</Text>
           )}
           <ModalSelector
             data={props.data}
             optionTextStyle={{color: '#333'}}
-            selectedItemTextStyle={{color: '#3C85F1'}}
+            selectedItemTextStyle={{
+              color: isDarkMode ? colors.primary : '#3C85F1',
+            }}
             accessible={true}
             keyExtractor={item => item.lot_no}
             labelExtractor={item => item.lot_no} //khusus untuk lotno
@@ -52,10 +63,11 @@ const ModalDropdown_lotno = props => {
             }}>
             <TextInput
               style={[{colors: '#000'}, _styles.input]}
+              inputStyle={{color: isDarkMode ? 'grey' : colors.text}}
               onFocus={() => this.selector.open()}
               placeholder={props.label}
               editable={false}
-              placeholderTextColor="#a9a9a9"
+              placeholderTextColor={isDarkMode ? 'grey' : '#a9a9a9'}
               value={props.value}
             />
           </ModalSelector>
