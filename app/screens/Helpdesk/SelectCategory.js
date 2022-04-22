@@ -226,7 +226,7 @@ export default function SelectCategory({route}) {
     //      category_group_cd: data.category_group_cd,
     //      location_type: data.location_type,
     //    };
-    navigation.navigate('SubmitHelpdesk', {saveStorage});
+    // navigation.navigate('SubmitHelpdesk', {saveStorage});
     //    navigation.navigate('SelectCategory', {
     //      // screen: 'Settings',
     //      params: passProp,

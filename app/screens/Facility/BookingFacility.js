@@ -789,11 +789,31 @@ function BookingFacility({route}) {
                         <Text key={items.id} bold>
                           {items.jam}
                         </Text>
+                        <Text>{items.status_avail}</Text>
                         {/* <Text key={items.id} bold>
                         {time.jam > items.jam
                           ? 'lebih dari jam'
                           : 'kurang dari jam'}
                       </Text> */}
+
+                        {items.status_avail == 'N' && items.reason != '' ? (
+                          <View>
+                            <Text
+                              bold
+                              style={{
+                                width: 250,
+                              }}>
+                              {items.reason}
+                            </Text>
+                          </View>
+                        ) : null}
+
+                        {isExpandReason &&
+                          (items.reason != '' ? (
+                            <Text key={indexs}>
+                              {items.reason} {indexs}
+                            </Text>
+                          ) : null)}
 
                         <View>
                           {items.databook != ''
@@ -932,7 +952,12 @@ function BookingFacility({route}) {
                         ) : (
                           <TouchableOpacity
                             style={{marginRight: 5}}
-                            onPress={() => setExpandIcon(indexs)}>
+                            // onPress={() => setExpandIcon(indexs)}
+                            onPress={indexs =>
+                              items.reason != ''
+                                ? setExpandIconReason(indexs)
+                                : setExpandIcon(indexs)
+                            }>
                             {/* {console.log('boolean apasi ini', indexs)} */}
                             <View
                               style={{

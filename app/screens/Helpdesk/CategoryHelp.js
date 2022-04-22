@@ -1,12 +1,12 @@
 import {
   Text,
-  TextInput,
+  // TextInput,
   // CheckBox,
   PlaceholderLine,
   Placeholder,
   Button,
   SafeAreaView,
-  RefreshControl,
+  // RefreshControl,
   Header,
   Icon,
 } from '@components';
@@ -24,6 +24,8 @@ import {
   Platform,
   TouchableHighlight,
   ScrollView,
+  TextInput,
+  RefreshControl,
 } from 'react-native';
 
 import {useSelector} from 'react-redux';
@@ -34,6 +36,7 @@ import styles from './styles';
 
 import {RadioButton} from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useDarkMode} from 'react-native-dark-mode';
 
 export default function CategoryHelp({route}) {
   const {t, i18n} = useTranslation();
@@ -55,6 +58,12 @@ export default function CategoryHelp({route}) {
   const [typeLocation, setTypeLocation] = useState('');
   const [passPropStorage, setPassPropStorage] = useState();
   const [passProp, setpassProp] = useState(route.params.saveStorage);
+  const [entity_cd, setEntity] = useState('');
+  const [project_no, setProjectNo] = useState('');
+  const [arrayholder, setArrayHolder] = useState([]);
+  const isDarkMode = useDarkMode();
+  const [loadingMore, setLoadingMore] = useState(true);
+  const [allLoaded, setAllLoaded] = useState(true);
   //   console.log('passprop kategori help', passProp);
   const styleItem = {
     ...styles.profileItem,
@@ -91,6 +100,7 @@ export default function CategoryHelp({route}) {
             setdataTowerUser(dat);
           }
         });
+
         setArrDataTowerUser(arrDataTower);
         setSpinner(false);
 
@@ -117,9 +127,20 @@ export default function CategoryHelp({route}) {
       getTower(users);
       getDataStorage();
       defaultLocation();
+      searchFilterFunction();
+
       // getCategoryHelp;
       // setSpinner(false);
     }, 3000);
+  }, []);
+  useEffect(() => {
+    setTimeout(() => {
+      setSpinner(false);
+    }, 3000);
+  }, []);
+
+  useEffect(() => {
+    // initialiseList();
   }, []);
 
   const defaultLocation = () => {
@@ -147,10 +168,26 @@ export default function CategoryHelp({route}) {
   //   // }
   // };
 
+  const searchFilterFunction = text => {
+    setSpinner(true);
+    console.log('text', text);
+
+    const newData = arrayholder.filter(item => {
+      const itemData = `${item.descs.toUpperCase()}`;
+      const textData = text;
+      return itemData.indexOf(textData) > -1;
+    });
+    console.log('new data', newData);
+    setDataCategory(newData);
+    setSpinner(false);
+  };
+
   const getCategoryHelp = async type => {
     const params = {
-      entity: dataTowerUser.entity_cd,
-      project: dataTowerUser.project_no,
+      // entity: dataTowerUser.entity_cd || passProp.entity_cd,
+      // project: dataTowerUser.project_no || passProp.project_no,
+      entity_cd: dataTowerUser.entity_cd || passProp.entity_cd,
+      project_no: dataTowerUser.project_no || passProp.project_no,
       location_type: type, //ini nanti pake radiobutton
     };
     console.log('params category', params);
@@ -165,18 +202,21 @@ export default function CategoryHelp({route}) {
 
     await axios
       .post(
-        'http://103.111.204.131/apiwebpbi/api/csentry-getCategoryHelp',
+        // 'http://103.111.204.131/apiwebpbi/api/csentry-getCategoryHelp',
+        'http://103.111.204.131/apiwebpbi/api/csentry-getCategoryDetail',
         params,
         {
           config,
         },
       )
       .then(res => {
+        // console.log('res coba detail', res.data.Data);
         const datas = res.data;
         const dataCategorys = datas.Data;
-        console.log('data kategori', dataCategorys);
+        // console.log('data kategori', dataCategorys);
 
         setDataCategory(dataCategorys);
+        setArrayHolder(dataCategorys);
         setSpinner(false);
         // return res.data;
       })
@@ -192,14 +232,16 @@ export default function CategoryHelp({route}) {
     console.log('loc_type', data.location_type);
     console.log('passprops', passProp);
     const saveParams = {
-      //   ...passPropStorage,
-      passProp,
-      category_group_cd: data.category_group_cd,
-      location_type: data.location_type,
+      // passProp,
+      // category_group_cd: data.category_group_cd,
+      // location_type: data.location_type,
+      ...passPropStorage, //ini untuk langsung ke submit, krn screen select category di skip
+      data, //ini untuk langsung ke submit, krn screen select category di skip
     };
     const saveStorage = {
       ...passPropStorage,
       //   ...passProp,
+      data,
       category_group_cd: data.category_group_cd,
       location_type: data.location_type,
     };
@@ -212,17 +254,77 @@ export default function CategoryHelp({route}) {
     const jsonValueNullLocation = JSON.stringify('');
     await AsyncStorage.setItem('@locationStorage', jsonValueNullLocation);
 
-    navigation.navigate('SelectCategory', {
+    // navigation.navigate('SelectCategory', {
+    //   // screen: 'Settings',
+    //   saveParams,
+    // }); //ini di skip krn mau langsung gapake category, jadi langsung ke submit
+    navigation.navigate('SubmitHelpdesk', {
       // screen: 'Settings',
-      saveParams,
+      // saveParams,
+      saveStorage,
     });
   };
 
-  //    const onCategoryPress = cat => {
-  //        this.setState({isDisabled: true}, () => {
-  //          this.goToScreen('screen.SelectCategory', cat);
-  //        });
-  //      };
+  const initialiseList = async () => {
+    // [for testing purposes] reset AsyncStorage on every app refresh
+    await AsyncStorage.removeItem('saved_list');
+    // get current persisted list items (will be null if above line is not removed)
+    const curItems = await AsyncStorage.getItem('saved_list');
+    if (curItems === null) {
+      // no current items in AsyncStorage - fetch initial items
+      json = fetchResults(0);
+      // set initial list in AsyncStorage
+      await AsyncStorage.setItem('saved_list', JSON.stringify(json));
+    } else {
+      // current items exist - format as a JSON object
+      json = JSON.parse(curItems);
+    }
+    // update Redux store (Redux will ignore if `json` is same as current list items)
+    dispatch({
+      type: 'UPDATE_LIST_RESULTS',
+      items: json,
+    });
+  };
+
+  const loadMoreResults = async info => {
+    console.log('info ini apa', info);
+    //if already loading more, or all loaded, return
+    if (loadingMore || allLoaded) return;
+    // set loading more (also updates footer text)
+    setLoadingMore(true);
+    // get next results
+    // const newItems = fetchResults(totalItems);
+    // mimic server-side API request and delay execution for 1 second
+    await delay(1000);
+    if (newItems.length === 0) {
+      // if no new items were fetched, set all loaded to true to prevent further requests
+      setAllLoaded(true);
+    } else {
+      // process the newly fetched items
+      // await persistResults(newItems);
+    }
+    // load more complete, set loading more to false
+    setLoadingMore(false);
+  };
+
+  // const persistResults = async newItems => {
+  //   // get current persisted list items
+  //   const curItems = await AsyncStorage.getItem('saved_list');
+  //   // format as a JSON object
+  //   let json = curItems === null ? {} : JSON.parse(curItems);
+  //   // add new items to json object
+  //   for (let item of newItems) {
+  //     json.push(item);
+  //   }
+  //   // persist updated item list
+  //   await AsyncStorage.setItem('saved_list', JSON.stringify(json));
+  //   // update Redux store
+  //   dispatch({
+  //     type: 'UPDATE_LIST_RESULTS',
+  //     items: json,
+  //   });
+  // };
+
   return (
     <SafeAreaView
       style={BaseStyle.safeAreaView}
@@ -303,11 +405,25 @@ export default function CategoryHelp({route}) {
               </Placeholder>
             </View>
           ) : (
-            <ScrollView style={{marginHorizontal: 10}}>
+            <View style={{marginHorizontal: 10}}>
               {/* <Text headline style={{fontWeight: 'normal', paddingTop: 20}}>
                 Choose Category
               </Text> */}
-              {dataCategory.map((data, index) => (
+              <TextInput
+                placeholder="Search Category"
+                style={{
+                  color: isDarkMode ? '#fff' : '#555',
+                  fontSize: 14,
+                  borderColor: '#000',
+                  borderWidth: 0.5,
+                  borderRadius: 10,
+                }}
+                // onChangeText={this.handleSearch}
+                onChangeText={text => searchFilterFunction(text.toUpperCase())}
+                autoCorrect={false}
+              />
+
+              {/* {dataCategory.map((data, index) => (
                 // <ScrollView>
                 <View key={index}>
                   <TouchableOpacity
@@ -324,8 +440,33 @@ export default function CategoryHelp({route}) {
                   </TouchableOpacity>
                 </View>
                 // </ScrollView>
-              ))}
-            </ScrollView>
+              ))} */}
+
+              <FlatList
+                data={dataCategory}
+                keyExtractor={item => item.rowID}
+                onEndReachedThreshold={0.01}
+                onEndReached={info => {
+                  loadMoreResults(info);
+                }}
+                renderItem={({item, index}) => (
+                  <View key={index}>
+                    <TouchableOpacity
+                      style={styleItem}
+                      onPress={() => handleClick(item, index)}>
+                      <Text body1>{item.descs}</Text>
+                      <Icon
+                        name="angle-right"
+                        size={18}
+                        color={colors.primary}
+                        style={{marginLeft: 5}}
+                        enableRTL={true}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                )}
+              />
+            </View>
           )}
         </View>
       </View>

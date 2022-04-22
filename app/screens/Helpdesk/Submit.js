@@ -178,14 +178,14 @@ export default function SubmitHelpdesk({route, props}) {
     setTimeout(() => {
       const passProps = passProp;
       console.log('props dari select category ke submit', passProps);
-      let titles = '';
-      if (passProps.complain_type == 'C') {
-        titles = 'Complain';
-      } else if (passProps.complain_type == 'R') {
-        titles = 'Request';
-      } else {
-        titles = 'Application';
-      }
+      let titles = 'Requested';
+      // if (passProps.complain_type == 'C') {
+      //   titles = 'Complain';
+      // } else if (passProps.complain_type == 'R') {
+      //   titles = 'Request';
+      // } else {
+      //   titles = 'Application';
+      // }
       const group_cd = users.Group;
       const reportdate = moment(new Date()).format('DD MMMM YYYY h:mm');
       console.log('group_cd', group_cd);
@@ -305,7 +305,7 @@ export default function SubmitHelpdesk({route, props}) {
   function submitTicket() {
     console.log('getdata storage,', passPropStorage);
     const passProps = passProp;
-    console.log('passprops', passProps);
+    console.log('passprops', passProp);
     const body = passPropStorage;
 
     // const fileImg = image.uri.replace('file://', '');
