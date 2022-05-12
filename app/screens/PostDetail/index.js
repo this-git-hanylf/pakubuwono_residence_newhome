@@ -24,15 +24,19 @@ import {
   Share,
   TouchableOpacity,
   View,
+  Platform,
 } from 'react-native';
 import styles from './styles';
 import {PlaceholderLine, Placeholder} from '@components';
 import {Button} from '../../components';
 import RenderHtml from 'react-native-render-html';
 import moment from 'moment';
+import {Dimensions} from 'react-native';
 const url = 'https://awesome.contents.com/';
 const title = 'Awesome Contents';
 const message = 'Please check this out.';
+
+import DeviceInfo from 'react-native-device-info';
 
 const options = {
   title,
@@ -40,6 +44,8 @@ const options = {
   message,
 };
 const PostDetail = props => {
+  const isTablet = DeviceInfo.isTablet();
+  console.log('istablet', isTablet);
   const {navigation, route} = props;
   const {t} = useTranslation();
   const {colors} = useTheme();
@@ -125,6 +131,13 @@ const PostDetail = props => {
     useNativeDriver: true,
   });
 
+  const heightViewImgTab = scrollY.interpolate({
+    inputRange: [0, 350 - heightHeader],
+    outputRange: [350, heightHeader],
+    // extrapolate: "clamp",
+    useNativeDriver: true,
+  });
+
   const renderPlaceholder = () => {
     let holders = Array.from(Array(5));
 
@@ -185,10 +198,13 @@ const PostDetail = props => {
               useNativeDriver: false,
             },
           )}>
-          <View style={{height: 230 - heightHeader}} />
+          <View
+            style={{height: isTablet ? 250 - heightHeader : 240 - heightHeader}}
+          />
           <View
             style={{
               marginVertical: 10,
+              marginTop: isTablet ? 250 : 0,
               paddingHorizontal: 20,
             }}>
             <Text medium caption1 grayColor>
@@ -205,16 +221,22 @@ const PostDetail = props => {
       </SafeAreaView>
       <Animated.View
         style={[
-          styles.headerImageStyle,
+          isTablet ? styles.headerImageStyle : styles.headerImageStyle,
           {
             opacity: headerImageOpacity,
-            height: heightViewImg,
+            height: isTablet ? heightViewImgTab : heightViewImg,
           },
         ]}>
         <Image
           source={{uri: `${url_image}`}}
-          style={{height: '100%', width: '100%'}}
+          style={{
+            height: isTablet ? Dimensions.get('window').height / 2.5 : '100%',
+            width: isTablet ? Dimensions.get('window').width : '100%',
+
+            // resizeMode: 'cover',
+          }}
         />
+
         {/* <TouchableOpacity
           style={[styles.viewIcon, {backgroundColor: colors.primaryLight}]}
           onPress={() => {

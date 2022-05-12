@@ -85,6 +85,7 @@ function BookingFacility({route}) {
   const [dataBooked4, setDataBooked4] = useState([]);
   const isExpandInit = useState(false);
   const [isExpand, setIsExpand] = useState(false);
+  const [isExpandReason, setIsExpandReason] = useState(false);
   const [isIconUp, setIconUp] = useState(false);
   const [entity, setEntity] = useState('');
   const [project_no, setProjectNo] = useState('');
@@ -386,7 +387,7 @@ function BookingFacility({route}) {
           '&' +
           'book_date=' +
           // '2021-12-15' +
-          databookdates[2].book_date +
+          databookdates[0].book_date +
           '&id=1',
       );
       let endpoints = [
@@ -595,6 +596,12 @@ function BookingFacility({route}) {
     setIconUp(indexs ? !isIconUp : isIconUp);
   };
 
+  const setExpandIconReason = indexs => {
+    console.log('indexs', indexs);
+    setIsExpandReason(!isExpandReason);
+    setIconUp(indexs ? !isIconUp : isIconUp);
+  };
+
   return (
     <SafeAreaView
       style={[BaseStyle.safeAreaView, {flex: 1}]}
@@ -785,35 +792,22 @@ function BookingFacility({route}) {
                             borderBottomColor: colors.text,
                             // borderColor: '#dbdbdb',
                           },
+                          !isExpandReason && {
+                            borderBottomWidth: 1,
+
+                            borderBottomColor: colors.text,
+                            // borderColor: '#dbdbdb',
+                          },
                         ])}>
                         <Text key={items.id} bold>
                           {items.jam}
                         </Text>
-                        <Text>{items.status_avail}</Text>
+                        {/* <Text>{items.status_avail}</Text> */}
                         {/* <Text key={items.id} bold>
                         {time.jam > items.jam
                           ? 'lebih dari jam'
                           : 'kurang dari jam'}
                       </Text> */}
-
-                        {items.status_avail == 'N' && items.reason != '' ? (
-                          <View>
-                            <Text
-                              bold
-                              style={{
-                                width: 250,
-                              }}>
-                              {items.reason}
-                            </Text>
-                          </View>
-                        ) : null}
-
-                        {isExpandReason &&
-                          (items.reason != '' ? (
-                            <Text key={indexs}>
-                              {items.reason} {indexs}
-                            </Text>
-                          ) : null)}
 
                         <View>
                           {items.databook != ''
@@ -899,6 +893,25 @@ function BookingFacility({route}) {
                                 : null}
                             </View>
                           )}
+
+                          {items.status_avail == 'N' && items.reason != '' ? (
+                            <View>
+                              <Text
+                                bold
+                                style={{
+                                  width: 250,
+                                }}>
+                                {items.reason}
+                              </Text>
+                            </View>
+                          ) : null}
+
+                          {isExpandReason &&
+                            (items.reason != '' ? (
+                              <Text key={indexs}>
+                                {items.reason} {indexs}
+                              </Text>
+                            ) : null)}
                         </View>
 
                         {(items.status_avail == 'Y' && time.jam < items.jam) ||
@@ -1022,7 +1035,7 @@ function BookingFacility({route}) {
                 </Placeholder>
               </View>
             ) : (
-              <View style={{flex: 1, paddingHorizontal: 20}}>
+              <View style={{flex: 1, paddingHorizontal: 5}}>
                 {tab.id == 2 && (
                   <Text style={{fontStyle: 'italic'}}>
                     Open Booking : {dataBooked2.open_book} -{' '}
@@ -1034,15 +1047,30 @@ function BookingFacility({route}) {
                     dataBooked2.slot_hours.map((items, indexs) => (
                       <View
                         key={indexs}
-                        style={{
-                          paddingVertical: 15,
-                          flexDirection: 'row',
-                          justifyContent: 'space-between',
-                          alignContent: 'space-between',
-                          borderRadius: 15,
-                          borderColor: '#dbdbdb',
-                          borderBottomWidth: 1,
-                        }}>
+                        style={StyleSheet.flatten([
+                          {
+                            paddingVertical: 15,
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            alignContent: 'space-between',
+                            borderRadius: 15,
+                            // borderColor: '#dbdbdb',
+                            borderBottomColor: colors.text,
+                            borderBottomWidth: 1,
+                          },
+                          !isExpand && {
+                            borderBottomWidth: 1,
+
+                            borderBottomColor: colors.text,
+                            // borderColor: '#dbdbdb',
+                          },
+                          !isExpandReason && {
+                            borderBottomWidth: 1,
+
+                            borderBottomColor: colors.text,
+                            // borderColor: '#dbdbdb',
+                          },
+                        ])}>
                         <Text key={items.id} bold>
                           {items.jam}
                         </Text>
@@ -1124,6 +1152,25 @@ function BookingFacility({route}) {
                                 : null}
                             </View>
                           )}
+
+                          {items.status_avail == 'N' && items.reason != '' ? (
+                            <View>
+                              <Text
+                                bold
+                                style={{
+                                  width: 250,
+                                }}>
+                                {items.reason}
+                              </Text>
+                            </View>
+                          ) : null}
+
+                          {isExpandReason &&
+                            (items.reason != '' ? (
+                              <Text key={indexs}>
+                                {items.reason} {indexs}
+                              </Text>
+                            ) : null)}
                         </View>
 
                         {items.status_avail == 'Y' ||
@@ -1160,7 +1207,12 @@ function BookingFacility({route}) {
                         ) : (
                           <TouchableOpacity
                             style={{marginRight: 5}}
-                            onPress={() => setExpandIcon(indexs)}>
+                            // onPress={() => setExpandIcon(indexs)}
+                            onPress={indexs =>
+                              items.reason != ''
+                                ? setExpandIconReason(indexs)
+                                : setExpandIcon(indexs)
+                            }>
                             {/* {console.log('boolean apasi ini', indexs)} */}
                             <View
                               style={{
@@ -1225,27 +1277,42 @@ function BookingFacility({route}) {
                 </Placeholder>
               </View>
             ) : (
-              <View style={{flex: 1, paddingHorizontal: 20}}>
+              <View style={{flex: 1, paddingHorizontal: 5}}>
                 {tab.id == 3 && (
                   <Text style={{fontStyle: 'italic'}}>
                     Open Booking : {dataBooked3.open_book} -{' '}
                     {dataBooked3.close_book}
                   </Text>
                 )}
-                {tab.id == 3 && dataBooked3 != ''
+                {tab.id == 3 && dataBooked3.close_status == 'Y'
                   ? dataBooked3.slot_hours.map &&
                     dataBooked3.slot_hours.map((items, indexs) => (
                       <View
                         key={indexs}
-                        style={{
-                          paddingVertical: 15,
-                          flexDirection: 'row',
-                          justifyContent: 'space-between',
-                          alignContent: 'space-between',
-                          borderRadius: 15,
-                          borderColor: '#dbdbdb',
-                          borderBottomWidth: 1,
-                        }}>
+                        style={StyleSheet.flatten([
+                          {
+                            paddingVertical: 15,
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            alignContent: 'space-between',
+                            borderRadius: 15,
+                            // borderColor: '#dbdbdb',
+                            borderBottomColor: colors.text,
+                            borderBottomWidth: 1,
+                          },
+                          !isExpand && {
+                            borderBottomWidth: 1,
+
+                            borderBottomColor: colors.text,
+                            // borderColor: '#dbdbdb',
+                          },
+                          !isExpandReason && {
+                            borderBottomWidth: 1,
+
+                            borderBottomColor: colors.text,
+                            // borderColor: '#dbdbdb',
+                          },
+                        ])}>
                         <Text key={items.id} bold>
                           {items.jam}
                         </Text>
@@ -1327,6 +1394,25 @@ function BookingFacility({route}) {
                                 : null}
                             </View>
                           )}
+
+                          {items.status_avail == 'N' && items.reason != '' ? (
+                            <View>
+                              <Text
+                                bold
+                                style={{
+                                  width: 250,
+                                }}>
+                                {items.reason}
+                              </Text>
+                            </View>
+                          ) : null}
+
+                          {isExpandReason &&
+                            (items.reason != '' ? (
+                              <Text key={indexs}>
+                                {items.reason} {indexs}
+                              </Text>
+                            ) : null)}
                         </View>
 
                         {items.status_avail == 'Y' ||
@@ -1363,7 +1449,12 @@ function BookingFacility({route}) {
                         ) : (
                           <TouchableOpacity
                             style={{marginRight: 5}}
-                            onPress={() => setExpandIcon(indexs)}>
+                            // onPress={() => setExpandIcon(indexs)}
+                            onPress={indexs =>
+                              items.reason != ''
+                                ? setExpandIconReason(indexs)
+                                : setExpandIcon(indexs)
+                            }>
                             {/* {console.log('boolean apasi ini', indexs)} */}
                             <View
                               style={{
@@ -1387,7 +1478,8 @@ function BookingFacility({route}) {
                         )}
                       </View>
                     ))
-                  : tab.id == 3 && (
+                  : tab.id == 3 &&
+                    dataBooked3.close_status == 'N' && (
                       <View
                         style={{
                           flex: 1,
@@ -1427,27 +1519,42 @@ function BookingFacility({route}) {
                 </Placeholder>
               </View>
             ) : (
-              <View style={{flex: 1, paddingHorizontal: 20}}>
+              <View style={{flex: 1, paddingHorizontal: 5}}>
                 {tab.id == 4 && (
                   <Text style={{fontStyle: 'italic'}}>
                     Open Booking : {dataBooked4.open_book} -{' '}
                     {dataBooked4.close_book}
                   </Text>
                 )}
-                {tab.id == 4 && dataBooked4 != ''
+                {tab.id == 4 && dataBooked4.close_status == 'Y'
                   ? dataBooked4.slot_hours.map &&
                     dataBooked4.slot_hours.map((items, indexs) => (
                       <View
                         key={indexs}
-                        style={{
-                          paddingVertical: 15,
-                          flexDirection: 'row',
-                          justifyContent: 'space-between',
-                          alignContent: 'space-between',
-                          borderRadius: 15,
-                          borderColor: '#dbdbdb',
-                          borderBottomWidth: 1,
-                        }}>
+                        style={StyleSheet.flatten([
+                          {
+                            paddingVertical: 15,
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            alignContent: 'space-between',
+                            borderRadius: 15,
+                            // borderColor: '#dbdbdb',
+                            borderBottomColor: colors.text,
+                            borderBottomWidth: 1,
+                          },
+                          !isExpand && {
+                            borderBottomWidth: 1,
+
+                            borderBottomColor: colors.text,
+                            // borderColor: '#dbdbdb',
+                          },
+                          !isExpandReason && {
+                            borderBottomWidth: 1,
+
+                            borderBottomColor: colors.text,
+                            // borderColor: '#dbdbdb',
+                          },
+                        ])}>
                         <Text key={items.id} bold>
                           {items.jam}
                         </Text>
@@ -1529,6 +1636,25 @@ function BookingFacility({route}) {
                                 : null}
                             </View>
                           )}
+
+                          {items.status_avail == 'N' && items.reason != '' ? (
+                            <View>
+                              <Text
+                                bold
+                                style={{
+                                  width: 250,
+                                }}>
+                                {items.reason}
+                              </Text>
+                            </View>
+                          ) : null}
+
+                          {isExpandReason &&
+                            (items.reason != '' ? (
+                              <Text key={indexs}>
+                                {items.reason} {indexs}
+                              </Text>
+                            ) : null)}
                         </View>
 
                         {items.status_avail == 'Y' ||
@@ -1565,7 +1691,12 @@ function BookingFacility({route}) {
                         ) : (
                           <TouchableOpacity
                             style={{marginRight: 5}}
-                            onPress={() => setExpandIcon(indexs)}>
+                            // onPress={() => setExpandIcon(indexs)}
+                            onPress={indexs =>
+                              items.reason != ''
+                                ? setExpandIconReason(indexs)
+                                : setExpandIcon(indexs)
+                            }>
                             {/* {console.log('boolean apasi ini', indexs)} */}
                             <View
                               style={{
@@ -1589,7 +1720,8 @@ function BookingFacility({route}) {
                         )}
                       </View>
                     ))
-                  : tab.id == 4 && (
+                  : tab.id == 4 &&
+                    dataBooked4.close_status == 'N' && (
                       <View
                         style={{
                           flex: 1,

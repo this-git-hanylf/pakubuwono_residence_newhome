@@ -41,7 +41,7 @@ const Notification = props => {
   const [refreshing, setRefreshing] = useState(false);
   // const [notification, setNotification] = useState(NotificationData);
   const users = useSelector(state => getUser(state));
-  const [email, setEmail] = useState(users.user);
+  const [email, setEmail] = useState(user != null ? user.user : '');
   const [loading, setLoading] = useState(true);
   const [dataTowerUser, setdataTowerUser] = useState([]);
   const [arrDataTowerUser, setArrDataTowerUser] = useState([]);
@@ -81,6 +81,13 @@ const Notification = props => {
         `http://103.111.204.131/apiwebpbi/api/notification?email=${email}&entity_cd=01&project_no=01`,
       ),
     );
+  };
+
+  //untuk refresh screen, load data notif dan badge notif
+  const refreshPull = () => {
+    // alert('refresh  pull');
+    refreshDataNotif(); //badge notif
+    getNotification(data); //data notif
   };
 
   const goNotif = decrement;
@@ -268,7 +275,7 @@ const Notification = props => {
               colors={[colors.primary]}
               tintColor={colors.primary}
               refreshing={refreshing}
-              onRefresh={() => {}}
+              onRefresh={() => refreshPull()}
             />
           }
           // data={dataNotif}

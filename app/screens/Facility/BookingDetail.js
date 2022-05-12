@@ -104,7 +104,13 @@ export default BookingDetail = props => {
   const getLotNo = async () => {
     try {
       const res = await axios.get(
-        'http://103.111.204.131/apiwebpbi/api/facility/book/unit?email=' +
+        'http://103.111.204.131/apiwebpbi/api/facility/book/unit?entity=' +
+          entity_cd +
+          '&' +
+          'project=' +
+          project_no +
+          '&' +
+          'email=' +
           email,
       );
       if (res) {
