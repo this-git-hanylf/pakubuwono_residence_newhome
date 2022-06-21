@@ -12,8 +12,10 @@ import {
   SafeAreaView,
   Text,
   Transaction2Col,
+  SearchInput,
+  TextInput,
 } from '@components';
-import {BaseColor, BaseStyle, useTheme} from '@config';
+import {BaseColor, BaseStyle, useTheme, Typography, FontWeight} from '@config';
 import {
   HomeChannelData,
   HomeListData,
@@ -50,6 +52,9 @@ import {notifikasi_nbadge, actionTypes} from '../../actions/NotifActions';
 import apiCall from '../../config/ApiActionCreator';
 import getNotifRed from '../../selectors/NotifSelectors';
 
+import LinearGradient from 'react-native-linear-gradient';
+import ModalSelector from 'react-native-modal-selector';
+
 const wait = timeout => {
   return new Promise(resolve => setTimeout(resolve, timeout));
 };
@@ -65,6 +70,12 @@ const Home = props => {
   const [loading, setLoading] = useState(true);
   const user = useSelector(state => getUser(state));
   console.log('user dihome', user);
+  const [fotoprofil, setFotoProfil] = useState(
+    user != null
+      ? {uri: user.pict}
+      : require('../../assets/images/image-home/Main_Image.png'),
+  );
+  const [name, setName] = useState(user != null ? user.name : '');
   const notif = useSelector(state => getNotifRed(state));
   console.log('cobanotif di home', notif);
   // const email = user.user;
@@ -76,6 +87,11 @@ const Home = props => {
   const [getDataHistory, setDataHistory] = useState([]);
   const [hasError, setErrors] = useState(false);
   const [data, setData] = useState([]);
+  const [lotno, setLotno] = useState([]);
+  console.log('lotno array 0', lotno[1].lot_no);
+  const [text_lotno, setTextLotno] = useState('');
+
+  const [keyword, setKeyword] = useState('');
   const dispatch = useDispatch();
   const [refreshing, setRefreshing] = useState(false);
 
@@ -130,6 +146,90 @@ const Home = props => {
       ),
     );
   }, []);
+
+  const getTower = async () => {
+    const data = {
+      email: user.user,
+      app: 'O',
+    };
+    console.log('params for tower', data);
+    const config = {
+      headers: {
+        accept: 'application/json',
+        'Content-Type': 'application/json',
+        // token: "",
+      },
+    };
+
+    await axios
+      .get(
+        `http://103.111.204.131/apiwebpbi/api/getData/mysql/${data.email}/${data.app}`,
+      )
+      .then(res => {
+        const datas = res.data;
+
+        const arrDataTower = datas.Data;
+        arrDataTower.map(dat => {
+          if (dat) {
+            setdataTowerUser(dat);
+            setEntity(dat.entity_cd);
+            setProjectNo(dat.project_no);
+            console.log('entity dari tower map', dat.entity_cd);
+            console.log('project dari tower map', dat.project_no);
+            notifUser(dat.entity_cd, dat.project_no);
+          }
+        });
+        setArrDataTowerUser(arrDataTower);
+        setSpinner(false);
+        getLotNo();
+        // return res.data;
+      })
+      .catch(error => {
+        console.log('error get tower api', error);
+        // alert('error get');
+      });
+  };
+
+  const getLotNo = async () => {
+    const entity = entity_cd;
+    const project = project_no;
+    try {
+      console.log(
+        'url api lotno',
+        'http://34.87.121.155:2121/apiwebpbi/api/facility/book/unit?entity=' +
+          entity_cd +
+          '&' +
+          'project=' +
+          project_no +
+          '&' +
+          'email=' +
+          email,
+      );
+      const res = await axios.get(
+        'http://34.87.121.155:2121/apiwebpbi/api/facility/book/unit?entity=' +
+          entity_cd +
+          '&' +
+          'project=' +
+          project_no +
+          '&' +
+          'email=' +
+          email,
+      );
+      if (res) {
+        const resLotno = res.data.data;
+        console.log('reslotno', resLotno);
+
+        // console.log('reslotno', resLotno[0].lot_no);
+        setLotno(resLotno);
+        // setTimeDate(data[0]);
+
+        setSpinner(false);
+      }
+      return res;
+    } catch (err) {
+      console.log('error lotno ya', err.response);
+    }
+  };
 
   // useEffect(() => {
   //   axios
@@ -287,23 +387,48 @@ const Home = props => {
   useEffect(() => {
     // console.log('galery', galery);
     // getDataImage();
+    // dataImage();
+
+    // console.log('datauser', user);
+    // // console.log('about', data);
+    // setTimeout(() => {
+    //   fetchDataDue();
+    //   fetchDataHistory();
+    //   fetchDataNotDue();
+    //       getTower();
+    //   // fetchAbout();
+    //   // dataImage();
+
+    //   setLoading(false);
+    // }, 1000);
+    console.log('galery', galery);
     dataImage();
-
     console.log('datauser', user);
-    // console.log('about', data);
-    setTimeout(() => {
-      fetchDataDue();
-      fetchDataHistory();
-      fetchDataNotDue();
-      // fetchAbout();
-      // dataImage();
-
-      setLoading(false);
-    }, 1000);
+    console.log('about', data);
+    fetchDataDue();
+    fetchDataNotDue();
+    fetchDataHistory();
+    getTower();
+    // fetchAbout();
+    setLoading(false);
   }, []);
 
   const goPostDetail = item => () => {
     navigation.navigate('PostDetail', {item: item});
+  };
+
+  const onChangeText = text => {
+    setKeyword(text);
+    // setCategory(
+    //   text
+    //     ? category.filter(item => item.title.includes(text))
+    //     : CategoryData,
+    // );
+  };
+
+  const onChangelot = lot => {
+    console.log('lot', lot);
+    setTextLotno(lot);
   };
 
   const renderContent = () => {
@@ -315,242 +440,227 @@ const Home = props => {
         edges={['right', 'top', 'left']}>
         {user == null || user == '' ? (
           <Text>data user dihome null</Text>
-        ) : (
-          <HeaderHome />
-        )}
+        ) : // <HeaderHome />
+        null}
 
         <ScrollView
           // contentContainerStyle={styles.paddingSrollView}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }>
-          {/* <Image
-            source={require('../../assets/images/pakubuwono.png')}
-            style={{
-              height: 60,
-              width: 180,
-              flexDirection: 'row',
-              alignItems: 'center',
-              marginHorizontal: 80,
-              marginBottom: 15,
-              marginTop: -15,
-              flexDirection: 'row',
-              alignSelf: 'center',
-            }}
-          /> */}
-          {/* <V style={{paddingTop: 10}}> */}
-          {/* <Animated.View
-            style={[
-              styles.headerImageStyle,
-              {
-                opacity: headerImageOpacity,
-                height: heightViewImg,
-                padding: 0,
-                flex: 1,
-              },
-            ]}>
-            <Swiper
-              height={240}
-              onMomentumScrollEnd={(e, state, context) =>
-                console.log('index:', state.index)
+          <View style={{flex: 1}}>
+            <ImageBackground
+              // source={require('../../assets/images/image-home/Main_Image.png')}
+              source={require('../../assets/images/image-home/Pakubuwono.jpeg')}
+              style={
+                {
+                  // height: '100%',
+                  // height: 400,
+                  // width: '100%',
+                  // flex: 1,
+                  // resizeMode: 'cover',
+                  // borderBottomLeftRadius: 500,
+                  // borderBottomRightRadius: 175,
+                }
               }
-              autoplay={true}
-              autoplayTimeout={5}
-              dot={
+              imageStyle={{
+                height: 400,
+                width: '100%',
+                borderBottomLeftRadius: 175,
+                borderBottomRightRadius: 175,
+              }}>
+              <LinearGradient
+                colors={['rgba(73, 73, 73, 0)', 'rgba(73, 73, 73, 1)']}
+                // colors={['#4c669f', '#3b5998', '#192f6a']}
+                // {...otherGradientProps}
+                style={{
+                  height: 400,
+                  // height: '85%',
+                  width: '100%',
+
+                  flexDirection: 'column',
+                  // flex: 1,
+                  justifyContent: 'center',
+                  // top: 30,
+                  borderBottomLeftRadius: 175,
+                  borderBottomRightRadius: 175,
+                }}>
                 <View
                   style={{
-                    backgroundColor: 'rgba(0,0,0,.2)',
-                    width: 5,
-                    height: 5,
-                    borderRadius: 4,
-                    marginLeft: 3,
-                    marginRight: 3,
-                    marginTop: 3,
-                    marginBottom: 3,
-                  }}
-                />
-              }
-              activeDot={
-                <View
-                  style={{
-                    backgroundColor: colors.primary,
-                    width: 8,
-                    height: 8,
-                    borderRadius: 4,
-                    marginLeft: 3,
-                    marginRight: 3,
-                    marginTop: 3,
-                    marginBottom: 3,
-                  }}
-                />
-              }
-              paginationStyle={{
-                bottom: -18,
-                // left: null,
-                // right: 10,
-              }}
-              loop>
-              {data.map((item, key) => {
-                return (
+                    flexDirection: 'column',
+                    flex: 1,
+                    justifyContent: 'center',
+                    top: 30,
+                  }}>
+                  {/* ------- TEXT WELCOME HOME ------- */}
                   <View
                     style={{
-                      flex: 1,
+                      // flex: 1,
+                      alignItems: 'center',
+
+                      left: 47,
                       justifyContent: 'center',
-                      backgroundColor: 'transparent',
-                    }}
-                    key={key}>
-                    <Image
-                      key={key}
-                      // key={'fast-' + `${item.id}`}
-                      // key={item.length}
+
+                      width: '50%',
+                    }}>
+                    <Text
                       style={{
-                        flex: 1,
-                        width,
-                        // borderRadius: 10,
-                      }}
-                      source={{uri: item.pict}}
-                    />
+                        fontSize: 50,
+                        color: 'white',
+                        fontFamily: 'DMSerifDisplay',
+                        lineHeight: 55,
+                      }}>
+                      Welcome Home
+                    </Text>
                   </View>
-                );
-              })}
-            </Swiper>
-          </Animated.View> */}
+                  {/* ------- CLOSE TEXT WELCOME HOME ------- */}
 
-          {/* ngetes data image null apa ngga
-           */}
-
-          {/* {data != null || data != 0 || data != '' ? (
-            <Text>ada data image disini</Text>
-          ) : (
-            <Text>gak ke load imagenya</Text>
-          )} */}
-          <Animated.View
-            style={[
-              styles.headerImageStyle,
-              {
-                opacity: headerImageOpacity,
-                height: heightViewImg,
-                // flex: 1,
-              },
-            ]}>
-            <Swiper
-              dotStyle={{
-                backgroundColor: BaseColor.dividerColor,
-                marginBottom: 8,
-              }}
-              activeDotStyle={{
-                marginBottom: 8,
-              }}
-              paginationStyle={{
-                bottom: -20,
-                // left: null,
-                // right: 10,
-              }}
-              loop={true}
-              autoplayTimeout={5}
-              autoplay={true}
-              activeDotColor={colors.primary}
-              removeClippedSubviews={false}
-              onIndexChanged={index => onSelect(index)}>
-              {data.map((item, key) => {
-                return (
-                  <View
+                  {/* ----- SEARCH INPUT ----- */}
+                  {/* <View
                     style={{
-                      flex: 1,
+                      // flex: 1,
+                      alignItems: 'center',
+                      left: 47,
                       justifyContent: 'center',
-                      backgroundColor: 'transparent',
-                    }}
-                    key={key}>
-                    <Image
-                      key={key}
-                      // key={'fast-' + `${item.id}`}
-                      // key={item.length}
-                      style={{
-                        flex: 1,
-                        width,
-                        // borderRadius: 10,
-                      }}
-                      source={{uri: `${item.pict}`}}
+                      width: '80%',
+                    }}>
+                    <SearchInput
+                      style={[BaseStyle.textInput, Typography.body1]}
+                      onChangeText={onChangeText}
+                      autoCorrect={false}
+                      placeholder={t('Explore your luxury lifestyle')}
+                      placeholderTextColor={BaseColor.grayColor}
+                      value={keyword}
+                      selectionColor={colors.primary}
+                      onSubmitEditing={() => {}}
+                      icon={
+                        <Icon
+                          name="search"
+                          solid
+                          size={24}
+                          color={colors.primary}
+                        />
+                      }
                     />
+                  </View> */}
+
+                  <View style={{alignItems: 'center', top: 15}}>
+                    <Image
+                      style={{
+                        height: 70,
+                        width: '50%',
+                      }}
+                      source={require('../../assets/images/image-home/vector-logo-pbi.png')}></Image>
                   </View>
-                  // <TouchableOpacity
-                  //   key={key}
-                  //   style={{flex: 1}}
-                  //   activeOpacity={1}
-                  //   onPress={() =>
-                  //     navigation.navigate('PreviewImages', {images: data})
-                  //   }>
-                  //   <Image
-                  //     key={key}
-                  //     style={{flex: 1, width: '100%'}}
-                  //     // source={{uri: `${item.pict}`}}
-                  //     source={{uri: item.pict}}
-                  //   />
-                  // </TouchableOpacity>
-                );
-              })}
-            </Swiper>
-          </Animated.View>
+                </View>
+              </LinearGradient>
+            </ImageBackground>
+          </View>
 
-          {/* </ScrollView> */}
-
-          {/* <News43
-            loading={loading}
-            onPress={goPostDetail(mainNews)}
-            style={{marginTop: 1}}
-            title={mainNews.title}
-          /> */}
           <View
             style={{
               flexDirection: 'row',
-              marginVertical: 15,
-              paddingHorizontal: 20,
-              paddingVertical: 15,
+              marginLeft: 35,
+              marginTop: 10,
+              marginBottom: 10,
             }}>
-            {/* <View style={{flex: 1, paddingRight: 7}}>
-              <CardReport06
-                style={{backgroundColor: colors.primary, borderRadius: 25}}
-                icon="arrow-up"
-                title="Invoice Outstanding"
-                price={invoice == undefined ? 0 : invoice}
-                percent={numFormat(sum)}
-                onPress={() => navigation.navigate('Billing')}
-              />
-            </View>
-            <View style={{flex: 1, paddingLeft: 7}}>
-              <CardReport06
-                style={{backgroundColor: colors.primary, borderRadius: 25}}
-                icon="arrow-up"
-                title="Invoice History"
-                price={invoiceHistory == undefined ? 0 : invoiceHistory}
-                percent={numFormat(sumHistory)}
-                onPress={() => navigation.navigate('BillingHistory')}
-              />
-            </View> */}
-            <View style={{flex: 1, paddingRight: 7}}>
-              <CardReport06
-                style={{backgroundColor: colors.primary, borderRadius: 25}}
-                icon="arrow-up"
-                title="Invoice Outstanding"
-                // price={invoice == undefined ? 0 : invoice}
-                // percent={numFormat(sum)}
+            <Image
+              style={{
+                height: 60,
+                width: 60,
+                borderRadius: 30,
+              }}
+              // source={require('../../assets/images/image-home/Main_Image.png')}
+              source={fotoprofil}></Image>
+            <View style={{alignSelf: 'center', marginLeft: 10}}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
+                <Text
+                  style={{
+                    fontSize: 20,
+                    marginVertical: 3,
+                    fontFamily: 'DMSerifDisplay',
+                  }}>
+                  {/* Nama pemilik */}
+                  {name}
+                </Text>
+                <Icon
+                  name="star"
+                  solid
+                  size={18}
+                  color={colors.primary}
+                  style={{marginHorizontal: 5}}
+                />
+              </View>
 
-                price={total_outstanding == undefined ? 0 : total_outstanding}
-                percent={numFormat(math_total)}
-                onPress={() => navigation.navigate('Billing')}
-              />
-            </View>
-            <View style={{flex: 1, paddingLeft: 7}}>
-              <CardReport06
-                style={{backgroundColor: colors.primary, borderRadius: 25}}
-                icon="arrow-up"
-                title="Invoice History"
-                price={invoiceHistory == undefined ? 0 : invoiceHistory}
-                percent={numFormat(sumHistory)}
-                onPress={() => navigation.navigate('BillingHistory')}
-              />
+              <View
+                style={{
+                  backgroundColor: '#315447',
+                  height: 30,
+                  justifyContent: 'center',
+                  paddingHorizontal: 10,
+                  borderRadius: 10,
+                }}>
+                <View style={{flexDirection: 'row', paddingLeft: 10}}>
+                  <Text
+                    style={{
+                      color: '#fff',
+                      alignSelf: 'center',
+                      fontSize: 14,
+                      justifyContent: 'center',
+                      paddingRight: 10,
+
+                      fontWeight: '800',
+                      fontFamily: 'KaiseiHarunoUmi',
+                    }}>
+                    Unit
+                  </Text>
+
+                  <ModalSelector
+                    style={{justifyContent: 'center', alignSelf: 'center'}}
+                    data={lotno}
+                    optionTextStyle={{color: '#333'}}
+                    selectedItemTextStyle={{color: '#3C85F1'}}
+                    accessible={true}
+                    keyExtractor={item => item.lot_no}
+                    labelExtractor={item => item.lot_no} //khusus untuk lotno
+                    cancelButtonAccessibilityLabel={'Cancel Button'}
+                    onChange={option => {
+                      onChangelot(option);
+                    }}>
+                    <Text
+                      style={{
+                        color: '#CDB04A',
+                        alignSelf: 'center',
+                        fontSize: 16,
+                        // top: 10,
+                        // flex: 1,
+                        justifyContent: 'center',
+                        fontWeight: '800',
+                        fontFamily: 'KaiseiHarunoUmi',
+                      }}>
+                      {text_lotno.lot_no == null
+                        ? lotno[0].lot_no
+                        : text_lotno.lot_no}
+                    </Text>
+                  </ModalSelector>
+
+                  <Icon
+                    name="caret-down"
+                    solid
+                    size={26}
+                    // color={colors.primary}
+                    style={{marginLeft: 5}}
+                    color={'#CDB04A'}
+                  />
+                </View>
+              </View>
             </View>
           </View>
+
           <View style={styles.paddingContent}>
             {user == null || user == '' ? (
               <Text>user not available</Text>

@@ -53,13 +53,14 @@ const Categories = ({style = {}}) => {
             <View
               style={{
                 flex: 1,
-                marginVertical: 10,
-                alignItems: 'center',
-                justifyContent: 'center',
+                marginVertical: 12,
+                // alignItems: 'center',
+                // justifyContent: 'center',
               }}>
               <CategoryIconSoft
                 isRound
                 // icon={item.icon}
+                style={{padding: 0}}
                 icon_url={item.icon_url}
                 title={t(item.title)}
                 onPress={() =>

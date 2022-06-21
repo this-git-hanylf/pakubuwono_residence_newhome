@@ -102,8 +102,8 @@ const Profile = props => {
           showsVerticalScrollIndicator={false}>
           {user && (
             <ProfileDetail
-              // image={user.pict}
-              image={{uri: `${user.pict}`}}
+              image={user.pict}
+              // image={{uri: `${user.pict}`}}
               textFirst={user.name}
               textSecond={user.user}
             />

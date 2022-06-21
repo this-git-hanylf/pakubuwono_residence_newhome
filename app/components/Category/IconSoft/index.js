@@ -50,7 +50,7 @@ export default function CategoryIconSoft({
         style={StyleSheet.flatten([
           styles.iconContent,
           isNormal && {
-            backgroundColor: parseHexTransparency(colors.primary, 100),
+            backgroundColor: parseHexTransparency(colors.primary, 30),
           },
           isWhite && {
             backgroundColor: parseHexTransparency(colors.whiteColor, 30),
