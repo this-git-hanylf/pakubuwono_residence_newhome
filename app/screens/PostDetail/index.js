@@ -81,6 +81,7 @@ const PostDetail = props => {
 
   const onShare = async () => {
     console.log('options', options);
+    console.log('items share', item);
     const htmlnews = item.news_descs.replace(/<\/?[^>]+(>|$;)/gi, '');
 
     const htmlnewsnbsp = htmlnews.replace(/&nbsp;/g, ' ');
@@ -89,7 +90,7 @@ const PostDetail = props => {
 
     try {
       const result = await Share.share({
-        message: item.source,
+        message: item.source != null ? item.source : htmlnewsquot,
         // message: htmlnewsquot, //coba diganti sama source url yang tercantum di web
         title: item.news_title,
         url: item.source,
@@ -103,6 +104,7 @@ const PostDetail = props => {
         alert('Post cancelled');
       }
     } catch (error) {
+      console.log('error share', error);
       alert(error.message);
     }
   };

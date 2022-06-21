@@ -102,6 +102,20 @@ export default BookingDetail = props => {
   const [cekpartner, setcekpartner] = useState('all');
 
   const getLotNo = async () => {
+    const entity_cd = route?.params.items.entity_cd;
+    const project_no = route?.params.items.project_no;
+    console.log(
+      'res url lotno',
+      'http://103.111.204.131/apiwebpbi/api/facility/book/unit?entity=' +
+        entity_cd +
+        '&' +
+        'project=' +
+        project_no +
+        '&' +
+        'email=' +
+        email,
+    );
+
     try {
       const res = await axios.get(
         'http://103.111.204.131/apiwebpbi/api/facility/book/unit?entity=' +

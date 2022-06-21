@@ -157,6 +157,7 @@ const Rent = props => {
                 scrollEnabled={false}
                 contentContainerStyle={styles.paddingFlatList}
                 data={rent}
+                keyExtractor={(item, index) => item.rowID}
                 renderItem={({item, index}) => (
                   <ProductBlock
                     key={index}
@@ -179,6 +180,7 @@ const Rent = props => {
                     isFavorite={item.isFavorite}
                     salePercent={item.salePercent}
                     currency={item.currency}
+                    price={item.price}
                   />
                 )}
               />
@@ -213,6 +215,7 @@ const Rent = props => {
                     isFavorite={item.isFavorite}
                     salePercent={item.salePercent}
                     currency={item.currency}
+                    price={item.price}
                   />
                 )}
               />

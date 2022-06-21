@@ -31,6 +31,7 @@ import {
   colors,
   ListOptionSelected,
   VenueSelectOption,
+  // LoadingCount,
 } from '@components';
 // holiday - village;
 import IconFontisto from 'react-native-vector-icons/Fontisto';
@@ -43,6 +44,8 @@ import {useNavigation, useRoute} from '@react-navigation/core';
 import {ListTransactionExpand} from '../../components';
 import {TabView, SceneMap} from 'react-native-tab-view';
 import ModalProduct from './ModalProduct';
+
+import {ProgressBar} from 'react-native-paper';
 
 import {useSelector} from 'react-redux';
 import getUser from '../../selectors/UserSelectors';
@@ -89,6 +92,7 @@ function BookingFacility({route}) {
   const [isIconUp, setIconUp] = useState(false);
   const [entity, setEntity] = useState('');
   const [project_no, setProjectNo] = useState('');
+  const [loadingTab, setLoadingTab] = useState(true);
 
   useEffect(() => {
     axios
@@ -567,6 +571,13 @@ function BookingFacility({route}) {
     }, 5000);
   }, []);
 
+  useEffect(() => {
+    setTimeout(() => {
+      // setSpinnerHours(false);
+      setLoadingTab(false);
+    }, 8000);
+  }, []);
+
   const onChangeOption = option => {
     console.log('option klik', option.venue_cd);
     const venue_klik = option.venue_cd;
@@ -700,15 +711,29 @@ function BookingFacility({route}) {
           <Text headline style={{fontWeight: 'normal'}}>
             Book Screen
           </Text> */}
-            {spinner ? (
+            {loadingTab ? (
               <View>
                 {/* <Spinner visible={this.state.spinner} /> */}
-                <Placeholder style={{marginVertical: 4, paddingHorizontal: 10}}>
+                {/* <Placeholder style={{marginVertical: 4, paddingHorizontal: 10}}>
                   <PlaceholderLine width={100} noMargin style={{height: 40}} />
-                </Placeholder>
+                </Placeholder> */}
+                <ProgressBar
+                  progress={1}
+                  color={colors.primary}
+                  indeterminate={true}
+                />
+                {/* <Text>loading tab nih</Text> */}
               </View>
             ) : (
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  alignSelf: 'center',
+                  alignContent: 'center',
+                  flex: 1,
+                  width: '100%',
+                }}>
                 {TABS.map((item, index) => (
                   <View key={index} style={{flex: 1, paddingHorizontal: 5}}>
                     <Tag
@@ -738,7 +763,7 @@ function BookingFacility({route}) {
                           body1={tab.id != item.id}
                           light={tab.id != item.id}
                           whiteColor={tab.id == item.id}
-                          style={{textAlign: 'center'}}>
+                          style={{textAlign: 'center', fontSize: 14}}>
                           {moment(item.title)
                             .format('ddd DD')
                             .replace(' ', '\n')}
@@ -750,13 +775,14 @@ function BookingFacility({route}) {
               </View>
             )}
 
-            {/* ---coba ya */}
-            {spinnerHour === true ? (
+            {/* ---coba ya. khusus tab 1 pake nya loadingtab, supaya sama kayak tab tanggal munculnya */}
+            {loadingTab ? (
               <View>
                 {/* <Spinner visible={this.state.spinner} /> */}
-                <Placeholder style={{marginVertical: 4, paddingHorizontal: 10}}>
+                {/* <Placeholder style={{marginVertical: 4, paddingHorizontal: 10}}>
                   <PlaceholderLine width={100} noMargin style={{height: 40}} />
-                </Placeholder>
+                </Placeholder> */}
+                {/* <Text>loading content tab 1</Text> */}
               </View>
             ) : (
               <View
@@ -1030,9 +1056,9 @@ function BookingFacility({route}) {
             {spinnerHour ? (
               <View>
                 {/* <Spinner visible={this.state.spinner} /> */}
-                <Placeholder style={{marginVertical: 4, paddingHorizontal: 10}}>
+                {/* <Placeholder style={{marginVertical: 4, paddingHorizontal: 10}}>
                   <PlaceholderLine width={100} noMargin style={{height: 40}} />
-                </Placeholder>
+                </Placeholder> */}
               </View>
             ) : (
               <View style={{flex: 1, paddingHorizontal: 5}}>
@@ -1272,9 +1298,9 @@ function BookingFacility({route}) {
             {spinnerHour ? (
               <View>
                 {/* <Spinner visible={this.state.spinner} /> */}
-                <Placeholder style={{marginVertical: 4, paddingHorizontal: 10}}>
+                {/* <Placeholder style={{marginVertical: 4, paddingHorizontal: 10}}>
                   <PlaceholderLine width={100} noMargin style={{height: 40}} />
-                </Placeholder>
+                </Placeholder> */}
               </View>
             ) : (
               <View style={{flex: 1, paddingHorizontal: 5}}>
@@ -1514,9 +1540,9 @@ function BookingFacility({route}) {
             {spinnerHour ? (
               <View>
                 {/* <Spinner visible={this.state.spinner} /> */}
-                <Placeholder style={{marginVertical: 4, paddingHorizontal: 10}}>
+                {/* <Placeholder style={{marginVertical: 4, paddingHorizontal: 10}}>
                   <PlaceholderLine width={100} noMargin style={{height: 40}} />
-                </Placeholder>
+                </Placeholder> */}
               </View>
             ) : (
               <View style={{flex: 1, paddingHorizontal: 5}}>
