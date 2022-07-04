@@ -51,6 +51,16 @@ const SignIn = props => {
     [email, password, token_firebase, dispatch],
   );
 
+  const loginklik = () => {
+    loginUser();
+    loadProject();
+  };
+
+  const loadProject = useCallback(
+    () => dispatch(data_project({emails: email})),
+    [{emails: email}, dispatch],
+  );
+
   const passwordChanged = useCallback(value => setPassword(value), []);
   const emailChanged = useCallback(value => setEmail(value), []);
 
@@ -142,7 +152,7 @@ const SignIn = props => {
               full
               loading={loading}
               style={{marginTop: 20}}
-              onPress={loginUser}>
+              onPress={loginklik}>
               {t('sign_in')}
             </Button>
           </View>

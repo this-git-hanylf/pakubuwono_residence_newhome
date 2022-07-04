@@ -185,6 +185,7 @@ const Home = props => {
 
   const [default_text_lotno, setDefaultLotno] = useState(true);
   const [newsannounce, setNewsAnnounce] = useState([]);
+  const [newsannounceslice, setNewsAnnounceSlice] = useState([]);
 
   const {width} = Dimensions.get('window');
 
@@ -320,18 +321,24 @@ const Home = props => {
     }
   }
 
-  async function getNewsAnnounce() {
-    try {
-      const res = await axios.get(
-        `http://34.87.121.155:2121/ifcaprop-api/api/news-announce`,
-      );
-      setNewsAnnounce(res.data.Data);
-      // console.log('data get history', res.data.Data);
-    } catch (error) {
-      setErrors(error);
-      // alert(hasError.toString());
-    }
-  }
+  const getNewsAnnounce = async () => {
+    // console.log('kok ini gada');
+    await axios
+      .get(`http://34.87.121.155:8000/ifcaprop-api/api/news-announce`)
+      .then(res => {
+        console.log('res news', res.data.data);
+        const datanews = res.data.data;
+        const slicedatanews = datanews.slice(0, 6);
+        console.log('slice data', slicedatanews);
+        setNewsAnnounceSlice(slicedatanews);
+        setNewsAnnounce(datanews);
+        // return res.data;
+      })
+      .catch(error => {
+        console.log('error get news announce home', error);
+        // alert('error get');
+      });
+  };
 
   // useEffect(() => {
   //   axios
@@ -502,6 +509,10 @@ const Home = props => {
     getLotNo();
     notifUser();
     setLoading(false);
+  }, []);
+
+  useEffect(() => {
+    getNewsAnnounce();
   }, []);
 
   const goPostDetail = item => () => {
@@ -804,9 +815,9 @@ const Home = props => {
               </Text>
               <Text>News and Announcement</Text>
             </View>
-            <View style={{left: 15}}>
+            <View style={{marginVertical: 15}}>
               <SliderNews
-                data={newsannounce}
+                data={newsannounceslice}
                 local={true}
                 // onPress={console.log('klik')}
               />

@@ -39,6 +39,7 @@ const AnnouceDetail = props => {
   const [heightHeader, setHeightHeader] = useState(Utils.heightHeader());
   const scrollY = useRef(new Animated.Value(0)).current;
   const productData = {...item};
+  console.log('from home', productData);
 
   const {
     style,

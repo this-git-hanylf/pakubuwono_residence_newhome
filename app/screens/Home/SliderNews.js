@@ -19,7 +19,7 @@ import {
   TouchableOpacity,
   Text,
 } from 'react-native';
-
+import axios from 'axios';
 import {Header, SafeAreaView, Icon} from '@components';
 import {BaseStyle, useTheme} from '@config';
 import {useTranslation} from 'react-i18next';
@@ -75,6 +75,7 @@ const SliderNews = ({
 
   const goPostDetail = item => {
     console.log('for news', item);
+    item.category == 'N' ? getNewsDetail(item) : getAnnounceDetail(item);
     // const itemDummy = {
     //   news_descs: 'Window Cleaning Ironwood 01 s/d 04 Maret 2022',
     //   news_title: 'Window Cleaning',
@@ -92,6 +93,38 @@ const SliderNews = ({
     // };
     // console.log('item dummy for news', itemDummy);
     // navigation.navigate('PostDetail', {item: itemDummy});
+  };
+
+  const getNewsDetail = async item => {
+    console.log('rowid for detail', item.rowID);
+    await axios
+      .get(`http://34.87.121.155:8000/ifcaprop-api/api/news/id/${item.rowID}`)
+      .then(res => {
+        console.log('res news detail', res.data.data);
+
+        navigation.navigate('PostDetail', {item: res.data.data});
+      })
+      .catch(error => {
+        console.log('error get news announce detail', error);
+        // alert('error get');
+      });
+  };
+
+  const getAnnounceDetail = async item => {
+    console.log('rowid for detail', item.rowID);
+    await axios
+      .get(
+        `http://34.87.121.155:8000/ifcaprop-api/api/announce/id/${item.rowID}`,
+      )
+      .then(res => {
+        console.log('res announce detail', res.data.data);
+
+        navigation.navigate('AnnouceDetail', {item: res.data.data});
+      })
+      .catch(error => {
+        console.log('error get news announce detail', error);
+        // alert('error get');
+      });
   };
 
   return (
@@ -133,7 +166,8 @@ const SliderNews = ({
                 borderRadius: 10,
               }}
               //   source={{ uri: item.image }}
-              source={item.url_image}
+              //   source={item.url_image}
+              source={{uri: item.url_image}}
               //   source={local ? item.image : {uri: item.image}}
             />
             {/* <Text>{item.image}</Text> */}
