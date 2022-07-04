@@ -564,7 +564,7 @@ export default ChoosePartner = props => {
             </View>
           </ScrollView>
           {showButton ? (
-            <View style={{marginBottom: 0}}>
+            <View style={{marginBottom: 50}}>
               <Button
                 small
                 style={{

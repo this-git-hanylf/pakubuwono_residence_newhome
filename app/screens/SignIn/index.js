@@ -23,6 +23,7 @@ import {isLoadingSelector} from '../../selectors/StatusSelectors';
 import {login, actionTypes} from '../../actions/UserActions';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging from '@react-native-firebase/messaging';
+import {data_project} from '../../actions/ProjectActions';
 
 const SignIn = props => {
   const {navigation} = props;
@@ -37,6 +38,7 @@ const SignIn = props => {
   const [token, setTokenBasic] = useState('');
 
   const user = useSelector(state => getUser(state));
+
   const isLoading = useSelector(state =>
     isLoadingSelector([actionTypes.LOGIN], state),
   );

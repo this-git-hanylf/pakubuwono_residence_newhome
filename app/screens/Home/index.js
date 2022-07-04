@@ -23,7 +23,7 @@ import {
   HomeTopicData,
   PostListData,
 } from '@data';
-import React, {useEffect, useState, useRef, useCallback} from 'react';
+import React, {useEffect, useState, useRef, useCallback, useMemo} from 'react';
 import {useTranslation} from 'react-i18next';
 import {
   FlatList,
@@ -55,9 +55,90 @@ import getNotifRed from '../../selectors/NotifSelectors';
 import LinearGradient from 'react-native-linear-gradient';
 import ModalSelector from 'react-native-modal-selector';
 
+import SliderNews from './SliderNews';
+
+import getProject from '../../selectors/ProjectSelector';
+import {data_project} from '../../actions/ProjectActions';
+
+import MasonryList from '@react-native-seoul/masonry-list';
+
 const wait = timeout => {
   return new Promise(resolve => setTimeout(resolve, timeout));
 };
+
+const imagesdummy = [
+  {
+    rowID: '1',
+    image: require('@assets/images/image-home/news/image1.jpeg'),
+    news_id: 'N',
+  },
+  {
+    rowID: '2',
+    image: require('@assets/images/image-home/news/image1.jpeg'),
+    announce_id: 'A',
+  },
+  // {
+  //   image:
+  //     'https://images.unsplash.com/photo-1567226475328-9d6baaf565cf?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=60',
+  //   desc: 'Silent Waters in the mountains in midst of Himilayas',
+  // },
+  // {
+  //   image:
+  //     'https://images.unsplash.com/photo-1455620611406-966ca6889d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1130&q=80',
+  //   desc: 'Red fort in India New Delhi is a magnificient masterpeiece of humans',
+  // },
+  // {
+  //   image:
+  //     'https://images.unsplash.com/photo-1477587458883-47145ed94245?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80',
+  //   desc: 'Sample Description below the image for representation purpose only',
+  // },
+];
+
+const eventdummy = [
+  {
+    id: '1',
+    pict: 'https://ii1.pepperfry.com/media/catalog/product/m/o/568x625/modern-chaise-lounger-in-grey-colour-by-dreamzz-furniture-modern-chaise-lounger-in-grey-colour-by-dr-tmnirx.jpg',
+    text: 'Pioneer LHS Chaise Lounger in Grey Colour',
+  },
+  {
+    id: '2',
+    pict: 'https://www.precedent-furniture.com/sites/precedent-furniture.com/files/styles/header_slideshow/public/3360_SL%20CR.jpg?itok=3Ltk6red',
+    text: 'Precedant Furniture',
+  },
+  {
+    id: '3',
+    pict: 'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/leverette-fabric-queen-upholstered-platform-bed-1594829293.jpg',
+    text: 'Leverette Upholstered Platform Bed',
+  },
+  {
+    id: '4',
+    pict: 'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/briget-side-table-1582143245.jpg?crop=1.00xw:0.770xh;0,0.129xh&resize=768:*',
+    text: 'Briget Accent Table',
+  },
+  {
+    id: '5',
+    pict: 'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/rivet-emerly-media-console-1610578756.jpg?crop=1xw:1xh;center,top&resize=768:*',
+    text: 'Rivet Emerly Media Console',
+  },
+  {
+    id: '6',
+    pict: 'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/drew-barrymore-flower-home-petal-chair-1594829759.jpeg?crop=1xw:1xh;center,top&resize=768:*',
+    text: 'Drew Barrymore Flower Home Accent Chair',
+  },
+  {
+    id: '7',
+    pict: 'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/drew-barrymore-flower-home-petal-chair-1594829759.jpeg?crop=1xw:1xh;center,top&resize=768:*',
+    text: 'Drew Barrymore Flower Home Accent Chair',
+  },
+  {
+    id: '8',
+    pict: 'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/drew-barrymore-flower-home-petal-chair-1594829759.jpeg?crop=1xw:1xh;center,top&resize=768:*',
+    text: 'Drew Barrymore Flower Home Accent Chair',
+  },
+];
+
+const sliceArrEvent = eventdummy.slice(0, 6); //ini membatasi load data dari mobile, bukan dari api
+// console.log('slice array event', sliceArrEvent);
 
 const Home = props => {
   const {navigation} = props;
@@ -70,6 +151,10 @@ const Home = props => {
   const [loading, setLoading] = useState(true);
   const user = useSelector(state => getUser(state));
   console.log('user dihome', user);
+
+  const project = useSelector(state => getProject(state));
+  console.log('project selector', project);
+
   const [fotoprofil, setFotoProfil] = useState(
     user != null
       ? {uri: user.pict}
@@ -88,12 +173,18 @@ const Home = props => {
   const [hasError, setErrors] = useState(false);
   const [data, setData] = useState([]);
   const [lotno, setLotno] = useState([]);
-  console.log('lotno array 0', lotno[1].lot_no);
+  console.log('lotno array 0', lotno.lot_no);
   const [text_lotno, setTextLotno] = useState('');
+
+  const [entity_cd, setEntity] = useState(project.Data[0].entity_cd);
+  const [project_no, setProjectNo] = useState(project.Data[0].project_no);
 
   const [keyword, setKeyword] = useState('');
   const dispatch = useDispatch();
   const [refreshing, setRefreshing] = useState(false);
+
+  const [default_text_lotno, setDefaultLotno] = useState(true);
+  const [newsannounce, setNewsAnnounce] = useState([]);
 
   const {width} = Dimensions.get('window');
 
@@ -113,6 +204,11 @@ const Home = props => {
   //     .catch(error => console.error(error))
   //     .finally(() => setLoading(false));
   // }, []);
+
+  const loadProject = useCallback(
+    () => dispatch(data_project({emails: email})),
+    [{emails: email}, dispatch],
+  );
 
   useEffect(() => {
     messaging().onNotificationOpenedApp(remoteMessage => {
@@ -147,89 +243,95 @@ const Home = props => {
     );
   }, []);
 
-  const getTower = async () => {
-    const data = {
-      email: user.user,
-      app: 'O',
-    };
-    console.log('params for tower', data);
-    const config = {
-      headers: {
-        accept: 'application/json',
-        'Content-Type': 'application/json',
-        // token: "",
-      },
-    };
+  // const getTower = async () => {
+  //   const data = {
+  //     email: user.user,
+  //     app: 'O',
+  //   };
+  //   console.log('params for tower', data);
+  //   const config = {
+  //     headers: {
+  //       accept: 'application/json',
+  //       'Content-Type': 'application/json',
+  //       // token: "",
+  //     },
+  //   };
 
-    await axios
-      .get(
-        `http://103.111.204.131/apiwebpbi/api/getData/mysql/${data.email}/${data.app}`,
-      )
-      .then(res => {
-        const datas = res.data;
+  //   await axios
+  //     .get(
+  //       `http://103.111.204.131/apiwebpbi/api/getData/mysql/${data.email}/${data.app}`,
+  //     )
+  //     .then(res => {
+  //       const datas = res.data;
 
-        const arrDataTower = datas.Data;
-        arrDataTower.map(dat => {
-          if (dat) {
-            setdataTowerUser(dat);
-            setEntity(dat.entity_cd);
-            setProjectNo(dat.project_no);
-            console.log('entity dari tower map', dat.entity_cd);
-            console.log('project dari tower map', dat.project_no);
-            notifUser(dat.entity_cd, dat.project_no);
-          }
-        });
-        setArrDataTowerUser(arrDataTower);
-        setSpinner(false);
-        getLotNo();
-        // return res.data;
-      })
-      .catch(error => {
-        console.log('error get tower api', error);
-        // alert('error get');
-      });
-  };
+  //       const arrDataTower = datas.Data;
+  //       arrDataTower.map(dat => {
+  //         if (dat) {
+  //           setdataTowerUser(dat);
+  //           setEntity(dat.entity_cd);
+  //           setProjectNo(dat.project_no);
+  //           console.log('entity dari tower map', dat.entity_cd);
+  //           console.log('project dari tower map', dat.project_no);
+  //           notifUser(dat.entity_cd, dat.project_no);
+  //         }
+  //       });
+  //       setArrDataTowerUser(arrDataTower);
+  //       setSpinner(false);
+  //       getLotNo();
+  //       // return res.data;
+  //     })
+  //     .catch(error => {
+  //       console.log('error get tower api', error);
+  //       // alert('error get');
+  //     });
+  // };
 
-  const getLotNo = async () => {
-    const entity = entity_cd;
-    const project = project_no;
+  async function getLotNo() {
+    console.log(
+      'url api lotno',
+      'http://34.87.121.155:2121/apiwebpbi/api/facility/book/unit?entity=' +
+        entity_cd +
+        '&' +
+        'project=' +
+        project_no +
+        '&' +
+        'email=' +
+        email,
+    );
     try {
-      console.log(
-        'url api lotno',
-        'http://34.87.121.155:2121/apiwebpbi/api/facility/book/unit?entity=' +
-          entity_cd +
-          '&' +
-          'project=' +
-          project_no +
-          '&' +
-          'email=' +
-          email,
-      );
       const res = await axios.get(
-        'http://34.87.121.155:2121/apiwebpbi/api/facility/book/unit?entity=' +
+        `http://34.87.121.155:2121/apiwebpbi/api/facility/book/unit?entity=` +
           entity_cd +
           '&' +
           'project=' +
-          project_no +
-          '&' +
           'email=' +
           email,
       );
-      if (res) {
-        const resLotno = res.data.data;
-        console.log('reslotno', resLotno);
-
-        // console.log('reslotno', resLotno[0].lot_no);
-        setLotno(resLotno);
-        // setTimeDate(data[0]);
-
-        setSpinner(false);
+      const resLotno = res.data.data;
+      console.log('reslotno', resLotno);
+      setLotno(resLotno);
+      if (default_text_lotno == true) {
+        setTextLotno(resLotno[0].lot_no);
       }
-      return res;
-    } catch (err) {
-      console.log('error lotno ya', err.response);
+      setSpinner(false);
+    } catch (error) {
+      setErrors(error);
+      // alert(hasError.toString());
     }
-  };
+  }
+
+  async function getNewsAnnounce() {
+    try {
+      const res = await axios.get(
+        `http://34.87.121.155:2121/ifcaprop-api/api/news-announce`,
+      );
+      setNewsAnnounce(res.data.Data);
+      // console.log('data get history', res.data.Data);
+    } catch (error) {
+      setErrors(error);
+      // alert(hasError.toString());
+    }
+  }
 
   // useEffect(() => {
   //   axios
@@ -385,22 +487,6 @@ const Home = props => {
   });
 
   useEffect(() => {
-    // console.log('galery', galery);
-    // getDataImage();
-    // dataImage();
-
-    // console.log('datauser', user);
-    // // console.log('about', data);
-    // setTimeout(() => {
-    //   fetchDataDue();
-    //   fetchDataHistory();
-    //   fetchDataNotDue();
-    //       getTower();
-    //   // fetchAbout();
-    //   // dataImage();
-
-    //   setLoading(false);
-    // }, 1000);
     console.log('galery', galery);
     dataImage();
     console.log('datauser', user);
@@ -408,8 +494,13 @@ const Home = props => {
     fetchDataDue();
     fetchDataNotDue();
     fetchDataHistory();
-    getTower();
+    // getTower();
     // fetchAbout();
+    getNewsAnnounce();
+
+    loadProject();
+    getLotNo();
+    notifUser();
     setLoading(false);
   }, []);
 
@@ -428,7 +519,28 @@ const Home = props => {
 
   const onChangelot = lot => {
     console.log('lot', lot);
+    setDefaultLotno(false);
     setTextLotno(lot);
+  };
+
+  const CardItem = ({item}) => {
+    return (
+      <View key={item.id} style={([styles.shadow], {})}>
+        <Image
+          source={{uri: item.pict}}
+          style={
+            ([styles.shadow],
+            {
+              height: item.id % 2 ? 300 : 200,
+              width: 200,
+              margin: 5,
+              borderRadius: 10,
+              alignSelf: 'stretch',
+            })
+          }
+          resizeMode={'cover'}></Image>
+      </View>
+    );
   };
 
   const renderContent = () => {
@@ -621,6 +733,16 @@ const Home = props => {
 
                   <ModalSelector
                     style={{justifyContent: 'center', alignSelf: 'center'}}
+                    childrenContainerStyle={{
+                      color: '#CDB04A',
+                      alignSelf: 'center',
+                      fontSize: 16,
+                      // top: 10,
+                      // flex: 1,
+                      justifyContent: 'center',
+                      fontWeight: '800',
+                      fontFamily: 'KaiseiHarunoUmi',
+                    }}
                     data={lotno}
                     optionTextStyle={{color: '#333'}}
                     selectedItemTextStyle={{color: '#3C85F1'}}
@@ -628,6 +750,7 @@ const Home = props => {
                     keyExtractor={item => item.lot_no}
                     labelExtractor={item => item.lot_no} //khusus untuk lotno
                     cancelButtonAccessibilityLabel={'Cancel Button'}
+                    initValue={'ahlo'}
                     onChange={option => {
                       onChangelot(option);
                     }}>
@@ -667,6 +790,114 @@ const Home = props => {
             ) : (
               <Categories style={{marginTop: 10}} />
             )}
+          </View>
+
+          <View style={{marginBottom: 10, flex: 1}}>
+            <View style={{marginLeft: 30, marginTop: 20, marginBottom: 10}}>
+              <Text
+                style={{
+                  fontSize: 24,
+                  // color: 'white',
+                  fontFamily: 'DMSerifDisplay',
+                }}>
+                Our Bulletin
+              </Text>
+              <Text>News and Announcement</Text>
+            </View>
+            <View style={{left: 15}}>
+              <SliderNews
+                data={newsannounce}
+                local={true}
+                // onPress={console.log('klik')}
+              />
+            </View>
+          </View>
+
+          <View style={{marginBottom: 20, flex: 1}}>
+            <View style={{marginLeft: 30, marginTop: 20, marginBottom: 10}}>
+              <Text
+                style={{
+                  fontSize: 24,
+                  // color: 'white',
+                  fontFamily: 'DMSerifDisplay',
+                }}>
+                This Weekend
+              </Text>
+              <Text>Event And Restaurant</Text>
+            </View>
+            <View style={{marginVertical: 10, marginHorizontal: 10}}>
+              <ScrollView horizontal>
+                <MasonryList
+                  data={eventdummy}
+                  style={{alignSelf: 'stretch'}}
+                  showsHorizontalScrollIndicator={false}
+                  showsVerticalScrollIndicator={false}
+                  scrollEnabled={false}
+                  contentContainerStyle={{
+                    paddingHorizontal: 10,
+                    alignSelf: 'stretch',
+                    // alignSelf: 'flex-start',
+                  }}
+                  keyExtractor={item => item.id}
+                  numColumns={3}
+                  renderItem={CardItem}
+                />
+              </ScrollView>
+            </View>
+          </View>
+
+          <View style={{marginBottom: 20, flex: 1}}>
+            <View style={{marginLeft: 30, marginTop: 20, marginBottom: 10}}>
+              <Text
+                style={{
+                  fontSize: 24,
+                  // color: 'white',
+                  fontFamily: 'DMSerifDisplay',
+                }}>
+                Club And Facilities
+              </Text>
+              <Text>Check Our Promo Here</Text>
+            </View>
+            <View style={{marginVertical: 10, marginHorizontal: 10}}>
+              <ScrollView horizontal>
+                <FlatList
+                  pagingEnabled={true}
+                  decelerationRate="fast"
+                  bounces={false}
+                  data={eventdummy}
+                  numColumns={3}
+                  contentContainerStyle={{
+                    paddingHorizontal: 10,
+                  }}
+                  showsHorizontalScrollIndicator={false}
+                  showsVerticalScrollIndicator={false}
+                  renderItem={({item, index}) => (
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate('PreviewImages', {
+                          images: eventdummy,
+                        })
+                      }>
+                      <View key={item.id} style={{}}>
+                        <Image
+                          source={{uri: item.pict}}
+                          style={
+                            ([styles.shadow],
+                            {
+                              height: 300,
+                              margin: 5,
+                              width: 220,
+                              borderRadius: 10,
+                            })
+                          }
+                          resizeMode={'cover'}></Image>
+                      </View>
+                    </TouchableOpacity>
+                  )}
+                  keyExtractor={(item, index) => item.toString() + index}
+                />
+              </ScrollView>
+            </View>
           </View>
 
           {/* {loading ? renderPlaceholder() : renderContent()} */}
