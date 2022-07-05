@@ -63,6 +63,8 @@ import {data_project} from '../../actions/ProjectActions';
 import MasonryList from '@react-native-seoul/masonry-list';
 import {ActivityIndicator} from 'react-native-paper';
 
+import {Platform} from 'react-native';
+
 const wait = timeout => {
   return new Promise(resolve => setTimeout(resolve, timeout));
 };
@@ -188,6 +190,16 @@ const Home = props => {
   const [newsannounce, setNewsAnnounce] = useState([]);
   const [newsannounceslice, setNewsAnnounceSlice] = useState([]);
   const [loadNewsAnnounce, setLoadNews] = useState(true);
+
+  const [promoclubfac, setPromoClubFac] = useState([]);
+  const [promoclubfacslice, setPromoClubFacSlice] = useState([]);
+  const [loadpromoclubAnnounce, setLoadPromoClub] = useState(true);
+  const [imagePromoClubFac, setImagePromoClubFac] = useState([]);
+
+  const [eventresto, setEventRestaurant] = useState([]);
+  const [eventrestoslice, setEventRestaurantSlice] = useState([]);
+  const [loadeventresto, setLoadEventResto] = useState(true);
+  const [imageEventResto, setImageEventResto] = useState([]);
 
   const {width} = Dimensions.get('window');
 
@@ -351,6 +363,79 @@ const Home = props => {
         const datapromoclub = res.data.data;
         const slicedatapromo = datapromoclub.slice(0, 6);
         console.log('slice data promo', slicedatapromo);
+
+        // filter by category
+
+        const filterForPromo = datapromoclub
+          .filter(item => item.category === 'P')
+          .map(items => items);
+
+        const filterForClubFacilities = datapromoclub
+          .filter(item => item.category === 'CF')
+          .map(items => items);
+
+        const filterForEvent = datapromoclub
+          .filter(item => item.category == 'E')
+          .map(items => items);
+
+        const filterForRestaurant = datapromoclub
+          .filter(item => item.category == 'R')
+          .map(items => items);
+
+        // join data atau data gabungan all per 2 category
+
+        const joinFilterDataPromoClubFac = [
+          ...filterForPromo,
+          ...filterForClubFacilities,
+        ];
+
+        const joinFilterDataEventRestaurant = [
+          ...filterForEvent,
+          ...filterForRestaurant,
+        ];
+
+        // slice data for image
+
+        const slicedatapromoclubfac = joinFilterDataPromoClubFac.slice(0, 6);
+        const slicedataeventresto = joinFilterDataEventRestaurant.slice(0, 6);
+
+        // pecah array images from data slice
+
+        const arrayImagePromoClubFac = slicedatapromoclubfac.map(
+          (item, key) => {
+            return {
+              ...item.images[0],
+            };
+          },
+        );
+
+        const arrayImageEventResto = slicedataeventresto.map((item, key) => {
+          return {
+            ...item.images[0],
+          };
+        });
+
+        // const slicedatapromo = datapromoclub.slice(0, 6);
+        // console.log('slice data promo', slicedatapromo);
+        // console.log('image promo club', datapromoclub.image);
+
+        // const tes = slicedatapromo.map((item, key) => {
+        //   return {
+        //     ...item.images[0],
+        //   };
+        // });
+        // console.log('tes gambar map', tes);
+
+        console.log('image club fac', arrayImagePromoClubFac);
+
+        setImagePromoClubFac(arrayImagePromoClubFac);
+        setPromoClubFacSlice(slicedatapromoclubfac);
+        setPromoClubFac(joinFilterDataPromoClubFac);
+
+        setImageEventResto(arrayImageEventResto);
+        setEventRestaurantSlice(slicedatapromoclubfac);
+        setEventRestaurant(joinFilterDataEventRestaurant);
+
         setLoadNews(false);
         // return res.data;
       })
@@ -560,23 +645,28 @@ const Home = props => {
     setTextLotno(lot);
   };
 
-  const CardItem = ({item}) => {
+  const CardItem = ({i, item}) => {
     return (
-      <View key={item.id} style={([styles.shadow], {})}>
-        <Image
-          source={{uri: item.pict}}
-          style={
-            ([styles.shadow],
-            {
-              height: item.id % 2 ? 300 : 200,
-              width: 200,
-              margin: 5,
-              borderRadius: 10,
-              alignSelf: 'stretch',
-            })
-          }
-          resizeMode={'cover'}></Image>
-      </View>
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate('PreviewImageHome', {images: item.pict})
+        }>
+        <View key={i} style={([styles.shadow], {})}>
+          <Image
+            source={{uri: item.pict}}
+            style={
+              ([styles.shadow],
+              {
+                height: i % 2 ? 300 : 200,
+                width: 200,
+                margin: 5,
+                borderRadius: 10,
+                alignSelf: 'stretch',
+              })
+            }
+            resizeMode={'cover'}></Image>
+        </View>
+      </TouchableOpacity>
     );
   };
 
@@ -896,7 +986,7 @@ const Home = props => {
             <View style={{marginVertical: 10, marginHorizontal: 10}}>
               <ScrollView horizontal>
                 <MasonryList
-                  data={sliceArrEvent}
+                  data={imageEventResto}
                   style={{alignSelf: 'stretch'}}
                   showsHorizontalScrollIndicator={false}
                   showsVerticalScrollIndicator={false}
@@ -906,7 +996,7 @@ const Home = props => {
                     alignSelf: 'stretch',
                     // alignSelf: 'flex-start',
                   }}
-                  keyExtractor={item => item.id}
+                  keyExtractor={(item, index) => index}
                   numColumns={3}
                   renderItem={CardItem}
                 />
@@ -932,7 +1022,7 @@ const Home = props => {
                   pagingEnabled={true}
                   decelerationRate="fast"
                   bounces={false}
-                  data={sliceArrEvent}
+                  data={imagePromoClubFac}
                   numColumns={3}
                   contentContainerStyle={{
                     paddingHorizontal: 10,
@@ -942,11 +1032,11 @@ const Home = props => {
                   renderItem={({item, index}) => (
                     <TouchableOpacity
                       onPress={() =>
-                        navigation.navigate('PreviewImages', {
-                          images: sliceArrEvent,
+                        navigation.navigate('PreviewImageHome', {
+                          images: item.pict,
                         })
                       }>
-                      <View key={item.id} style={{}}>
+                      <View key={item.rowID} style={{}}>
                         <Image
                           source={{uri: item.pict}}
                           style={
@@ -962,7 +1052,7 @@ const Home = props => {
                       </View>
                     </TouchableOpacity>
                   )}
-                  keyExtractor={(item, index) => item.toString() + index}
+                  keyExtractor={(item, index) => index}
                 />
               </ScrollView>
             </View>

@@ -76,6 +76,8 @@ import {tabBarIconHaveNoty} from './components';
 import ScreenSignature from '../screens/Helpdesk/ScreenSignature';
 import Store from '../screens/Store';
 
+import PreviewImageHome from '../screens/Home/PreviewImageHome';
+
 const Stack = createStackNavigator();
 
 export const WalletTabScreens = {
@@ -415,6 +417,11 @@ function MainStack() {
       <Stack.Screen
         name="NewsAnnounce"
         component={NewsAnnounce}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="PreviewImageHome"
+        component={PreviewImageHome}
         options={{headerShown: false}}
       />
     </Stack.Navigator>
