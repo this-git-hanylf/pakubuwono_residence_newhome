@@ -120,7 +120,7 @@ const Home = props => {
   useEffect(() => {
     dispatch(
       apiCall(
-        `http://34.87.121.155:8181/apiwebpbi/api/notification?email=${email}&entity_cd=01&project_no=01`,
+        `http://103.111.204.131/apiwebpbi/api/notification?email=${email}&entity_cd=01&project_no=01`,
       ),
     );
   }, []);
@@ -141,7 +141,7 @@ const Home = props => {
 
     await axios
       .get(
-        `http://34.87.121.155:2121/apiwebpbi/api/getData/mysql/${data.email}/${data.app}`,
+        `http://103.111.204.131/apiwebpbi/api/getData/mysql/${data.email}/${data.app}`,
       )
       .then(res => {
         const datas = res.data;
@@ -191,7 +191,7 @@ const Home = props => {
 
   const dataImage = async () => {
     await axios
-      .get(`http://34.87.121.155:2121/apiwebpbi/api/about/image`)
+      .get(`http://103.111.204.131/apiwebpbi/api/about/image`)
       .then(res => {
         console.log('res image', res.data.data);
         // console.log('data images', res.data[0].images);
@@ -207,7 +207,7 @@ const Home = props => {
   async function fetchDataDue() {
     try {
       const res = await axios.get(
-        `http://34.87.121.155:2121/apiwebpbi/api/getDataDueSummary/IFCAPB/${user.user}`,
+        `http://103.111.204.131/apiwebpbi/api/getDataDueSummary/IFCAPB/${user.user}`,
       );
       setDataDue(res.data.Data);
       console.log('data get data due', res.data.Data);
@@ -220,7 +220,7 @@ const Home = props => {
   async function fetchDataNotDue() {
     try {
       const res = await axios.get(
-        `http://34.87.121.155:2121/apiwebpbi/api/getDataCurrentSummary/IFCAPB/${user.user}`,
+        `http://103.111.204.131/apiwebpbi/api/getDataCurrentSummary/IFCAPB/${user.user}`,
       );
       setDataNotDue(res.data.Data);
       console.log('data get data not due', res.data.Data);
@@ -233,7 +233,7 @@ const Home = props => {
   async function fetchDataHistory() {
     try {
       const res = await axios.get(
-        `http://34.87.121.155:2121/apiwebpbi/api/getSummaryHistory/IFCAPB/${user.user}`,
+        `http://103.111.204.131/apiwebpbi/api/getSummaryHistory/IFCAPB/${user.user}`,
       );
       setDataHistory(res.data.Data);
       console.log('data get history', res.data.Data);

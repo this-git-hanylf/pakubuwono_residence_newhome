@@ -98,7 +98,7 @@ const SliderNews = ({
   const getNewsDetail = async item => {
     console.log('rowid for detail', item.rowID);
     await axios
-      .get(`http://34.87.121.155:8000/ifcaprop-api/api/news/id/${item.rowID}`)
+      .get(`http://103.111.204.131/apiwebpbi/api/news/id/${item.rowID}`)
       .then(res => {
         console.log('res news detail', res.data.data);
 
@@ -113,9 +113,7 @@ const SliderNews = ({
   const getAnnounceDetail = async item => {
     console.log('rowid for detail', item.rowID);
     await axios
-      .get(
-        `http://34.87.121.155:8000/ifcaprop-api/api/announce/id/${item.rowID}`,
-      )
+      .get(`http://103.111.204.131/apiwebpbi/api/announce/id/${item.rowID}`)
       .then(res => {
         console.log('res announce detail', res.data.data);
 

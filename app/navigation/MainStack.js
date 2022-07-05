@@ -32,6 +32,7 @@ import PostDetail from '../screens/PostDetail';
 import MeterInfo from '../screens/MeterInfo';
 import Search from '../screens/Search';
 import PreviewImage from '../screens/PreviewImage';
+import NewsAnnounce from '../screens/NewsAnnouncement';
 
 import SelectDarkOption from '../screens/SelectDarkOption';
 import EProductPageNotFound from '../screens/EProductPageNotFound';
@@ -409,6 +410,11 @@ function MainStack() {
       <Stack.Screen
         name="Store"
         component={Store}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="NewsAnnounce"
+        component={NewsAnnounce}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

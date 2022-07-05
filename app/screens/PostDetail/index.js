@@ -67,7 +67,9 @@ const PostDetail = props => {
     url_image,
     date,
     source,
-  } = item;
+    date_created,
+  } = item[0];
+  // } = item;
 
   useEffect(() => {
     setTimeout(() => {
@@ -179,7 +181,11 @@ const PostDetail = props => {
       <SafeAreaView
         style={[BaseStyle.safeAreaView]}
         forceInset={{top: 'always', bottom: 'always'}}>
-        <Header title={item.news_title} />
+        {/* <Header title={item.news_title} /> */}
+        <Header
+          // title={item.news_title}
+          title={news_title}
+        />
         <ScrollView
           onContentSizeChange={() => {
             setHeightHeader(Utils.heightHeader());
@@ -211,11 +217,15 @@ const PostDetail = props => {
               paddingHorizontal: 20,
             }}>
             <Text medium caption1 grayColor>
-              {item.date}
-              {moment(item.date_created).startOf('hour').fromNow()}
+              {/* {item.date}
+              {moment(item.date_created).startOf('hour').fromNow()} */}
+
+              {date}
+              {moment(date_created).startOf('hour').fromNow()}
             </Text>
             <Text title1 semibold style={{marginVertical: 10}}>
-              {item.news_title}
+              {/* {item.news_title} */}
+              {news_title}
             </Text>
           </View>
 

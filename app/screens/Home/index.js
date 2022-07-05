@@ -61,6 +61,7 @@ import getProject from '../../selectors/ProjectSelector';
 import {data_project} from '../../actions/ProjectActions';
 
 import MasonryList from '@react-native-seoul/masonry-list';
+import {ActivityIndicator} from 'react-native-paper';
 
 const wait = timeout => {
   return new Promise(resolve => setTimeout(resolve, timeout));
@@ -186,6 +187,7 @@ const Home = props => {
   const [default_text_lotno, setDefaultLotno] = useState(true);
   const [newsannounce, setNewsAnnounce] = useState([]);
   const [newsannounceslice, setNewsAnnounceSlice] = useState([]);
+  const [loadNewsAnnounce, setLoadNews] = useState(true);
 
   const {width} = Dimensions.get('window');
 
@@ -290,7 +292,7 @@ const Home = props => {
   async function getLotNo() {
     console.log(
       'url api lotno',
-      'http://34.87.121.155:2121/apiwebpbi/api/facility/book/unit?entity=' +
+      'http://103.111.204.131/apiwebpbi/api/facility/book/unit?entity=' +
         entity_cd +
         '&' +
         'project=' +
@@ -301,7 +303,7 @@ const Home = props => {
     );
     try {
       const res = await axios.get(
-        `http://34.87.121.155:2121/apiwebpbi/api/facility/book/unit?entity=` +
+        `http://103.111.204.131/apiwebpbi/api/facility/book/unit?entity=` +
           entity_cd +
           '&' +
           'project=' +
@@ -324,7 +326,7 @@ const Home = props => {
   const getNewsAnnounce = async () => {
     // console.log('kok ini gada');
     await axios
-      .get(`http://34.87.121.155:8000/ifcaprop-api/api/news-announce`)
+      .get(`http://103.111.204.131/apiwebpbi/api/news-announce`)
       .then(res => {
         console.log('res news', res.data.data);
         const datanews = res.data.data;
@@ -332,6 +334,24 @@ const Home = props => {
         console.log('slice data', slicedatanews);
         setNewsAnnounceSlice(slicedatanews);
         setNewsAnnounce(datanews);
+        setLoadNews(false);
+        // return res.data;
+      })
+      .catch(error => {
+        console.log('error get news announce home', error);
+        // alert('error get');
+      });
+  };
+
+  const dataPromoClubFacilities = async () => {
+    await axios
+      .get(`http://34.87.121.155:2121/apiwebpbi/api/promoclubfacilities`)
+      .then(res => {
+        console.log('res promoclubfacilities', res.data.data);
+        const datapromoclub = res.data.data;
+        const slicedatapromo = datapromoclub.slice(0, 6);
+        console.log('slice data promo', slicedatapromo);
+        setLoadNews(false);
         // return res.data;
       })
       .catch(error => {
@@ -496,6 +516,8 @@ const Home = props => {
   useEffect(() => {
     console.log('galery', galery);
     dataImage();
+    getNewsAnnounce();
+    dataPromoClubFacilities();
     console.log('datauser', user);
     console.log('about', data);
     fetchDataDue();
@@ -503,7 +525,6 @@ const Home = props => {
     fetchDataHistory();
     // getTower();
     // fetchAbout();
-    getNewsAnnounce();
 
     loadProject();
     getLotNo();
@@ -511,12 +532,17 @@ const Home = props => {
     setLoading(false);
   }, []);
 
-  useEffect(() => {
-    getNewsAnnounce();
-  }, []);
+  // useEffect(() => {
+  //   getNewsAnnounce();
+  // }, []);
 
   const goPostDetail = item => () => {
     navigation.navigate('PostDetail', {item: item});
+  };
+
+  const goToMoreNewsAnnounce = item => {
+    console.log('item go to', item.length);
+    navigation.navigate('NewsAnnounce', {items: item});
   };
 
   const onChangeText = text => {
@@ -814,13 +840,44 @@ const Home = props => {
                 Our Bulletin
               </Text>
               <Text>News and Announcement</Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  marginRight: 20,
+                }}>
+                <Text>News and Announcement</Text>
+                {
+                  newsannounce.length >= 6 ? (
+                    <TouchableOpacity
+                      onPress={() => goToMoreNewsAnnounce(newsannounce)}>
+                      <View style={{alignSelf: 'center', flexDirection: 'row'}}>
+                        <Text style={{marginHorizontal: 5, fontSize: 14}}>
+                          More
+                        </Text>
+                        <Icon
+                          name="arrow-right"
+                          solid
+                          size={16}
+                          color={colors.primary}
+                        />
+                      </View>
+                    </TouchableOpacity>
+                  ) : null
+                  // <Text>kurang dari 6</Text>
+                }
+              </View>
             </View>
-            <View style={{marginVertical: 15}}>
-              <SliderNews
-                data={newsannounceslice}
-                local={true}
-                // onPress={console.log('klik')}
-              />
+            <View style={{marginVertical: 10, marginLeft: 20}}>
+              {loadNewsAnnounce ? (
+                <ActivityIndicator />
+              ) : (
+                <SliderNews
+                  data={newsannounceslice}
+                  local={true}
+                  // onPress={console.log('klik')}
+                />
+              )}
             </View>
           </View>
 
@@ -839,7 +896,7 @@ const Home = props => {
             <View style={{marginVertical: 10, marginHorizontal: 10}}>
               <ScrollView horizontal>
                 <MasonryList
-                  data={eventdummy}
+                  data={sliceArrEvent}
                   style={{alignSelf: 'stretch'}}
                   showsHorizontalScrollIndicator={false}
                   showsVerticalScrollIndicator={false}
@@ -875,7 +932,7 @@ const Home = props => {
                   pagingEnabled={true}
                   decelerationRate="fast"
                   bounces={false}
-                  data={eventdummy}
+                  data={sliceArrEvent}
                   numColumns={3}
                   contentContainerStyle={{
                     paddingHorizontal: 10,
@@ -886,7 +943,7 @@ const Home = props => {
                     <TouchableOpacity
                       onPress={() =>
                         navigation.navigate('PreviewImages', {
-                          images: eventdummy,
+                          images: sliceArrEvent,
                         })
                       }>
                       <View key={item.id} style={{}}>
