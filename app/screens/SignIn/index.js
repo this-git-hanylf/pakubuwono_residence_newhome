@@ -24,6 +24,7 @@ import {login, actionTypes} from '../../actions/UserActions';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging from '@react-native-firebase/messaging';
 import {data_project} from '../../actions/ProjectActions';
+import getProject from '../../selectors/ProjectSelector';
 
 const SignIn = props => {
   const {navigation} = props;
@@ -37,6 +38,7 @@ const SignIn = props => {
   const [token_firebase, setTokenFirebase] = useState('');
   const [token, setTokenBasic] = useState('');
 
+  const project = useSelector(state => getProject(state));
   const user = useSelector(state => getUser(state));
 
   const isLoading = useSelector(state =>
