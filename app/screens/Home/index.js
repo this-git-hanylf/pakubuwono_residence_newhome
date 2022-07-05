@@ -326,7 +326,7 @@ const Home = props => {
       console.log('reslotno', resLotno);
       setLotno(resLotno);
       if (default_text_lotno == true) {
-        setTextLotno(resLotno[0].lot_no);
+        setTextLotno(resLotno[0]);
       }
       setSpinner(false);
     } catch (error) {
@@ -892,9 +892,7 @@ const Home = props => {
                         fontWeight: '800',
                         fontFamily: 'KaiseiHarunoUmi',
                       }}>
-                      {text_lotno.lot_no == null
-                        ? lotno[0].lot_no
-                        : text_lotno.lot_no}
+                      {text_lotno.lot_no}
                     </Text>
                   </ModalSelector>
 
