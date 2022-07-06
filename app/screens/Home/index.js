@@ -33,7 +33,7 @@ import {
   Animated,
   ImageBackground,
   RefreshControl,
-  ActivityIndicator,
+  // ActivityIndicator,
   Dimensions,
 } from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
@@ -176,7 +176,7 @@ const Home = props => {
   const [hasError, setErrors] = useState(false);
   const [data, setData] = useState([]);
   const [lotno, setLotno] = useState([]);
-  console.log('lotno array 0', lotno.lot_no);
+  console.log('lotno array 0', lotno);
   const [text_lotno, setTextLotno] = useState('');
 
   const [entity_cd, setEntity] = useState(project.Data[0].entity_cd);
@@ -319,6 +319,8 @@ const Home = props => {
           entity_cd +
           '&' +
           'project=' +
+          project_no +
+          '&' +
           'email=' +
           email,
       );
@@ -357,7 +359,7 @@ const Home = props => {
 
   const dataPromoClubFacilities = async () => {
     await axios
-      .get(`http://34.87.121.155:2121/apiwebpbi/api/promoclubfacilities`)
+      .get(`http://103.111.204.131/apiwebpbi/api/promoclubfacilities`)
       .then(res => {
         console.log('res promoclubfacilities', res.data.data);
         const datapromoclub = res.data.data;
@@ -455,6 +457,12 @@ const Home = props => {
   //     .catch(error => console.error(error))
   //     .finally(() => setLoading(false));
   // }, []);
+
+  const notifUser = useCallback(
+    (entity_cd, project_no) =>
+      dispatch(notifikasi_nbadge(email, entity_cd, project_no)),
+    [email, entity_cd, project_no, dispatch],
+  );
 
   const dataImage = async () => {
     await axios
@@ -626,8 +634,18 @@ const Home = props => {
   };
 
   const goToMoreNewsAnnounce = item => {
-    console.log('item go to', item.length);
+    // console.log('item go to', item.length);
     navigation.navigate('NewsAnnounce', {items: item});
+  };
+
+  const goToEventResto = item => {
+    // console.log('item go to', item.length);
+    navigation.navigate('EventResto', {items: item});
+  };
+
+  const goToPromoClubFac = item => {
+    console.log('item go to', item.length);
+    navigation.navigate('ClubFacilities', {items: item});
   };
 
   const onChangeText = text => {
@@ -787,7 +805,7 @@ const Home = props => {
                     <Image
                       style={{
                         height: 70,
-                        width: '50%',
+                        width: '60%',
                       }}
                       source={require('../../assets/images/image-home/vector-logo-pbi.png')}></Image>
                   </View>
@@ -927,7 +945,7 @@ const Home = props => {
                 }}>
                 Our Bulletin
               </Text>
-              <Text>News and Announcement</Text>
+
               <View
                 style={{
                   flexDirection: 'row',
@@ -979,8 +997,36 @@ const Home = props => {
                 }}>
                 This Weekend
               </Text>
-              <Text>Event And Restaurant</Text>
+
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  marginRight: 20,
+                }}>
+                <Text>Event And Restaurant</Text>
+                {
+                  eventresto.length >= 6 ? (
+                    <TouchableOpacity
+                      onPress={() => goToEventResto(eventresto)}>
+                      <View style={{alignSelf: 'center', flexDirection: 'row'}}>
+                        <Text style={{marginHorizontal: 5, fontSize: 14}}>
+                          More
+                        </Text>
+                        <Icon
+                          name="arrow-right"
+                          solid
+                          size={16}
+                          color={colors.primary}
+                        />
+                      </View>
+                    </TouchableOpacity>
+                  ) : null
+                  // <Text>kurang dari 6</Text>
+                }
+              </View>
             </View>
+
             <View style={{marginVertical: 10, marginHorizontal: 10}}>
               <ScrollView horizontal>
                 <MasonryList
@@ -1012,7 +1058,49 @@ const Home = props => {
                 }}>
                 Club And Facilities
               </Text>
-              <Text>Check Our Promo Here</Text>
+
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  marginRight: 20,
+                }}>
+                <Text>Check Our Promo Here</Text>
+                {
+                  promoclubfac.length >= 6 ? (
+                    <TouchableOpacity
+                      onPress={() => goToPromoClubFac(promoclubfac)}>
+                      <View style={{alignSelf: 'center', flexDirection: 'row'}}>
+                        <Text style={{marginHorizontal: 5, fontSize: 14}}>
+                          More
+                        </Text>
+                        <Icon
+                          name="arrow-right"
+                          solid
+                          size={16}
+                          color={colors.primary}
+                        />
+                      </View>
+                    </TouchableOpacity>
+                  ) : (
+                    <TouchableOpacity
+                      onPress={() => goToPromoClubFac(promoclubfac)}>
+                      <View style={{alignSelf: 'center', flexDirection: 'row'}}>
+                        <Text style={{marginHorizontal: 5, fontSize: 14}}>
+                          More
+                        </Text>
+                        <Icon
+                          name="arrow-right"
+                          solid
+                          size={16}
+                          color={colors.primary}
+                        />
+                      </View>
+                    </TouchableOpacity>
+                  )
+                  // <Text>kurang dari 6</Text>
+                }
+              </View>
             </View>
             <View style={{marginVertical: 10, marginHorizontal: 10}}>
               <ScrollView horizontal>
