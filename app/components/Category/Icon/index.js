@@ -21,18 +21,25 @@ export default function CategoryIcon(props) {
       style={[styles.contain, {backgroundColor: colors.backgroundColor}, style]}
       onPress={onPress}
       activeOpacity={0.9}>
-      <View
-        style={[styles.iconContent, {backgroundColor: colors.primaryLight}]}>
-        <Icon name={icon} size={32} color={BaseColor.whiteColor} solid />
+      <View style={[styles.iconContent, {backgroundColor: colors.primary}]}>
+        <Icon name={icon} size={30} color={BaseColor.goldColor} solid />
       </View>
-      <View style={{padding: 10}}>
-        <Text headline semibold>
-          {title}
-        </Text>
-        <Text footnote semibold grayColor style={{marginTop: 5}}>
-          {subtitle}
-        </Text>
-      </View>
+      {subtitle == '' ? (
+        <View style={{padding: 10, alignSelf: 'center'}}>
+          <Text headline semibold>
+            {title}
+          </Text>
+        </View>
+      ) : (
+        <View style={{padding: 10}}>
+          <Text headline semibold>
+            {title}
+          </Text>
+          <Text footnote semibold grayColor style={{marginTop: 5}}>
+            {subtitle}
+          </Text>
+        </View>
+      )}
     </TouchableOpacity>
   );
 }

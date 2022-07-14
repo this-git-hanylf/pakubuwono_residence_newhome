@@ -429,7 +429,7 @@ export default function SubmitHelpdesk({route, props}) {
       {/* <Button onPress={() => modalBankMaster()}>
         <Text>choose location</Text>
       </Button> */}
-      <TouchableOpacity onPress={() => modalBankMaster()}>
+      {/* <TouchableOpacity onPress={() => modalBankMaster()}>
         <TextInput
           onChangeText={val => setTextLocation(val)}
           placeholder="Choose Location"
@@ -443,7 +443,7 @@ export default function SubmitHelpdesk({route, props}) {
             marginHorizontal: 20,
           }}
           value={textLocation}></TextInput>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
 
       <View style={{marginHorizontal: 20, marginTop: 20}}>
         <Text
@@ -455,13 +455,13 @@ export default function SubmitHelpdesk({route, props}) {
             marginTop: 0,
             paddingTop: 0,
           }}>
-          Work Request
+          Special Notes (Schedule Visit Arrangement)
         </Text>
         <TextInput
           multiline
           numberOfLines={4}
           blurOnSubmit
-          placeholder="Description"
+          placeholder="Special Notes"
           style={styles.textArea}
           onChangeText={text => setTextDescs(text)}
         />

@@ -88,7 +88,8 @@ export default function PreviewImageHome({navigation, route}) {
           // key={key}
           style={{width: '100%', height: '95%'}}
           resizeMode="contain"
-          source={{uri: images}}
+          // source={{uri: images}}
+          source={require('@assets/images/ChairmanMessage.jpeg')}
         />
       </View>
     </SafeAreaView>
